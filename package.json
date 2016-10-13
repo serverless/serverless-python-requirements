@@ -1,0 +1,48 @@
+{
+  "name": "serverless-wsgi",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=4.0"
+  },
+  "description": "Serverless WSGI Plugin",
+  "author": "logan.dk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/logandk/serverless-wsgi"
+  },
+  "keywords": [
+    "serverless",
+    "wsgi",
+    "flask",
+    "serverless framework plugin",
+    "serverless applications",
+    "serverless plugins",
+    "api gateway",
+    "lambda",
+    "aws",
+    "aws lambda",
+    "amazon",
+    "amazon web services",
+    "serverless.com"
+  ],
+  "files": [
+    "index.js",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "requirements.py",
+    "requirements.txt",
+    "serve.py",
+    "wsgi.py"
+  ],
+  "main": "index.js",
+  "bin": {},
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {
+    "bluebird": "^3.0.6",
+    "fs-extra": "^0.26.7",
+    "lodash": "^4.13.1"
+  }
+}
