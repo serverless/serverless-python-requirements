@@ -149,7 +149,7 @@ For more information, see [https://pip.readthedocs.io/en/1.1/requirements.html](
 
 ### Local server
 
-For convenience, a `sls wsgi serve` is provided to run your WSGI application
+For convenience, a `sls wsgi serve` command is provided to run your WSGI application
 locally. This command requires the `werkzeug` Python package to be installed,
 and acts as a simple wrapper for starting werkzeug's built-in HTTP server.
 
