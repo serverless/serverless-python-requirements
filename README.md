@@ -67,6 +67,12 @@ All functions that will use WSGI need to have `wsgi.handler` set as the Lambda h
 use the `lambda-proxy` integration for API Gateway.
 
 ```yaml
+service: example
+
+provider:
+  name: aws
+  runtime: python2.7
+
 plugins:
   - serverless-wsgi
 
