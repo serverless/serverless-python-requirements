@@ -35,5 +35,5 @@ import requests
 ## Limitations
 
  * MacOS & Windows: For now this only works with pure Python modules unless running serverless on the same architeture as AWS (x86_64 Linux).
-  * If using the `package` directive in `serverless.yml` ensure that `.requirements` and `requirements.py` are included.
+ * if using the `package` directive in `serverless.yml` ensure that `.requirements` and `requirements.py` are included.
 
