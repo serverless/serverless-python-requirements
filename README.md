@@ -31,3 +31,7 @@ import requirements
 # Now you can use deps you specified in requirements.txt!
 import requests
 ```
+
+## Limintations
+
+For now this only works with pure Python modules unless running serverless on the same architeture as AWS (x86_64 Linux).
