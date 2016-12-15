@@ -79,8 +79,6 @@ class ServerlessPythonRequirements {
               'clean',
             ],
           },
-        },
-        commands: {
           'install': {
             usage: 'install requirements manually',
             lifecycleEvents: [

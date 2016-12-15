@@ -37,3 +37,9 @@ import requests
  * MacOS & Windows: For now this only works with pure Python modules unless running serverless on the same architeture as AWS (x86_64 Linux).
  * if using the `package` directive in `serverless.yml` ensure that `.requirements` and `requirements.py` are included.
 
+
+## Manual invocations
+
+The `.requirements` and `requirements.py` files are left behind to simplify
+development. To clean them up, run `sls requirements clean`. You can also
+install them manually for local development with `sls requirements install`.
