@@ -32,6 +32,6 @@ import requirements
 import requests
 ```
 
-## Limintations
+## Limitations
 
 For now this only works with pure Python modules unless running serverless on the same architeture as AWS (x86_64 Linux).
