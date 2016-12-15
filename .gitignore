@@ -38,3 +38,7 @@ node_modules
 #SERVERLESS STUFF
 admin.env
 .env
+
+#PYTHON STUFF
+*.py[co]
+__pycache__
