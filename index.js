@@ -70,13 +70,38 @@ class ServerlessPythonRequirements {
     this.serverless = serverless;
     this.options = options;
 
+    this.commands = {
+      'requirements': {
+        commands: {
+          'clean': {
+            usage: 'Remove .requirements and requirements.py',
+            lifecycleEvents: [
+              'clean',
+            ],
+          },
+        },
+        commands: {
+          'install': {
+            usage: 'install requirements manually',
+            lifecycleEvents: [
+              'install',
+            ],
+          },
+        },
+      },
+    };
+
     this.hooks = {
       'before:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
         .then(this.packVendorHelper)
         .then(this.packRequirements),
 
-      'after:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
-        .then(this.cleanup),
+      'requirements:install:install': () => BbPromise.bind(this)
+        .then(this.packVendorHelper)
+        .then(this.packRequirements),
+
+      'requirements:clean:clean': () => BbPromise.bind(this)
+        .then(this.cleanup)
     };
   }
 }
