@@ -9,27 +9,13 @@ const child_process = require('child_process');
 
 BbPromise.promisifyAll(fse);
 
-class ServerlessWSGI {
-  validate() {
-    if (this.serverless.service.custom && this.serverless.service.custom.wsgi && this.serverless.service.custom.wsgi.app) {
-      this.wsgiApp = this.serverless.service.custom.wsgi.app;
-    } else {
-      throw new this.serverless.classes.Error(
-        'Missing WSGI app, please specify custom.wsgi.app. For instance, if you have a Flask application "app" in "api.py", set the Serverless custom.wsgi.app configuration option to: api.app');
-    }
-  };
+class ServerlessPythonRequirements {
+  packVendorHelper() {
+    this.serverless.cli.log('Packaging Python requirements helper...');
 
-  packWsgiHandler() {
-    this.serverless.cli.log('Packaging Python WSGI handler...');
-
-    return BbPromise.all([
-      fse.copyAsync(
-        path.resolve(__dirname, 'wsgi.py'),
-        path.join(this.serverless.config.servicePath, 'wsgi.py')),
-      fse.writeFileAsync(
-        path.join(this.serverless.config.servicePath, '.wsgi_app'),
-        this.wsgiApp)
-    ]);
+    return fse.copyAsync(
+      path.resolve(__dirname, 'requirements.py'),
+      path.join(this.serverless.config.servicePath, 'requirements.py'));
   };
 
   packRequirements() {
@@ -42,11 +28,12 @@ class ServerlessWSGI {
     this.serverless.cli.log('Packaging required Python packages...');
 
     return new BbPromise((resolve, reject) => {
-      const res = child_process.spawnSync('python', [
-        path.resolve(__dirname, 'requirements.py'),
-        path.resolve(__dirname, 'requirements.txt'),
+      const res = child_process.spawnSync('pip', [
+        'install',
+        '-t',
+        path.join(this.serverless.config.servicePath, '.requirements'),
+        '-r',
         requirementsFile,
-        path.join(this.serverless.config.servicePath, '.requirements')
       ]);
       if (res.error) {
         return reject(res.error);
@@ -59,7 +46,7 @@ class ServerlessWSGI {
   };
 
   cleanup() {
-    const artifacts = ['wsgi.py', '.wsgi_app', '.requirements'];
+    const artifacts = ['requirements.py', '.requirements'];
 
     return BbPromise.all(_.map(artifacts, (artifact) =>
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
@@ -83,39 +70,15 @@ class ServerlessWSGI {
     this.serverless = serverless;
     this.options = options;
 
-    this.commands = {
-      wsgi: {
-        commands: {
-          serve: {
-            usage: 'Serve the WSGI application locally.',
-            lifecycleEvents: [
-              'serve',
-            ],
-            options: {
-              port: {
-                usage: 'The local server port, defaults to 5000.',
-                shortcut: 'p',
-              },
-            },
-          },
-        },
-      },
-    };
-
     this.hooks = {
       'before:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.packWsgiHandler)
+        .then(this.packVendorHelper)
         .then(this.packRequirements),
 
       'after:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
         .then(this.cleanup),
-
-      'wsgi:serve:serve': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.serve)
     };
   }
 }
 
-module.exports = ServerlessWSGI;
+module.exports = ServerlessPythonRequirements;

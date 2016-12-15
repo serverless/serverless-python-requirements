@@ -1,20 +1,21 @@
 {
-  "name": "serverless-wsgi",
+  "name": "serverless-python-requirements",
   "version": "1.0.0",
   "engines": {
     "node": ">=4.0"
   },
-  "description": "Serverless WSGI Plugin",
-  "author": "logan.dk",
+  "description": "Serverless Python Requirements Plugin",
+  "author": "United Income <engineering@unitedincome.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/logandk/serverless-wsgi"
+    "url": "https://github.com/UnitedIncome/serverless-python-requirements"
   },
   "keywords": [
     "serverless",
-    "wsgi",
-    "flask",
+    "python",
+    "requirements",
+    "pip",
     "serverless framework plugin",
     "serverless applications",
     "serverless plugins",
@@ -30,11 +31,8 @@
     "index.js",
     "LICENSE",
     "package.json",
-    "README.md",
     "requirements.py",
-    "requirements.txt",
-    "serve.py",
-    "wsgi.py"
+    "README.md"
   ],
   "main": "index.js",
   "bin": {},
