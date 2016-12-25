@@ -19,22 +19,29 @@ class ServerlessPythonRequirements {
   };
 
   packRequirements() {
-    const requirementsFile = path.join(this.serverless.config.servicePath, 'requirements.txt');
-
-    if (!fse.existsSync(requirementsFile)) {
+    if (!fse.existsSync(path.join(this.serverless.config.servicePath, 'requirements.txt'))) {
       return BbPromise.resolve();
     }
 
     this.serverless.cli.log('Packaging required Python packages...');
 
     return new BbPromise((resolve, reject) => {
-      const res = child_process.spawnSync('pip', [
+      let cmd = 'pip';
+      let options = [
         'install',
-        '-t',
-        path.join(this.serverless.config.servicePath, '.requirements'),
-        '-r',
-        requirementsFile,
-      ]);
+        '-t', '.requirements',
+        '-r', 'requirements.txt',
+      ];
+      if (this.serverless.service.custom &&
+          this.serverless.service.custom.dockerizePip) {
+        cmd = 'docker';
+        options = [
+          'run', '--rm',
+          '-v', `${this.serverless.config.servicePath}:/var/task:z`,
+          'lambci/lambda:build-python2.7', 'pip',
+        ].concat(options);
+      }
+      const res = child_process.spawnSync(cmd, options);
       if (res.error) {
         return reject(res.error);
       }

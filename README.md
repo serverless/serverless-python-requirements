@@ -32,9 +32,16 @@ import requirements
 import requests
 ```
 
-## Limitations
+## Cross compiling!
+Compiling non-pure-Python modules is supported on MacOS via the use of Docker
+and the [docker-lambda](https://github.com/lambci/docker-lambda) image.
+To enable docker usage, add the following to your `serverless.yml`:
+```yaml
+custom:
+  dockerizePip: true
+```
 
- * MacOS & Windows: For now this only works with pure Python modules unless running serverless on the same architeture as AWS (x86_64 Linux).
+## Limitations
  * if using the `package` directive in `serverless.yml` ensure that `.requirements` and `requirements.py` are included.
 
 
