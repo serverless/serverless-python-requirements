@@ -43,3 +43,9 @@ import requests
 The `.requirements` and `requirements.py` files are left behind to simplify
 development. To clean them up, run `sls requirements clean`. You can also
 install them manually for local development with `sls requirements install`.
+
+## Credit
+This plugin is influenced by
+[serverless-wsgi](https://github.com/logandk/serverless-wsgi) from
+[@logandk](https://github.com/logandk). I however wanted a simpler pip install
+process. It now also supports bundling packages without the wsgi handler.
