@@ -6,6 +6,7 @@ const _ = require('lodash');
 const path = require('path');
 const fse = require('fs-extra');
 const child_process = require('child_process');
+const {EasyZip} = require('easy-zip');
 
 BbPromise.promisifyAll(fse);
 
@@ -18,7 +19,7 @@ class ServerlessPythonRequirements {
       path.join(this.serverless.config.servicePath, 'requirements.py'));
   };
 
-  packRequirements() {
+  installRequirements() {
     if (!fse.existsSync(path.join(this.serverless.config.servicePath, 'requirements.txt'))) {
       return BbPromise.resolve();
     }
@@ -52,8 +53,32 @@ class ServerlessPythonRequirements {
     });
   };
 
+  packRequirements() {
+    return this.installRequirements().then(() => {
+      return new BbPromise((resolve, reject) => {
+        if (this.serverless.service.custom && this.serverless.service.custom.zipImport) {
+          const zip = new EasyZip();
+          zip.zipFolder('.requirements', (err) => {
+            if (err) {
+              reject();
+              return;
+            }
+            zip.writeToFile('.requirements.zip');
+            fse.remove('.requirements', (err) => err?reject():resolve());
+          }, {rootFolder: '.'});
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   cleanup() {
-    const artifacts = ['requirements.py', '.requirements'];
+    const artifacts = ['requirements.py'];
+    if (this.serverless.service.custom && this.serverless.service.custom.zipImport)
+      artifacts.push('.requirements.zip')
+    else
+      artifacts.push('.requirements')
 
     return BbPromise.all(_.map(artifacts, (artifact) =>
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
