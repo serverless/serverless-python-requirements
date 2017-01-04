@@ -41,8 +41,21 @@ custom:
   dockerizePip: true
 ```
 
+## ZipImport!
+To help deal with potentially large dependencies (for example: `numpy`, `scipy`
+and `scikit-learn`) there is support for having python import using
+[zipimport](https://docs.python.org/2.7/library/zipimport.html). To enable this
+add the following to your  `serverless.yml`:
+```yaml
+custom:
+  zipImport: true
+```
+
+
 ## Limitations
- * if using the `package` directive in `serverless.yml` ensure that `.requirements` and `requirements.py` are included.
+ * if using the `package` directive in `serverless.yml` ensure that
+`requirements.py` is are included as well as `.requirements` or
+`.requirements.zip` if using [ZipImport](#zipimport).
 
 
 ## Manual invocations
