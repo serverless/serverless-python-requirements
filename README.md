@@ -38,7 +38,8 @@ and the [docker-lambda](https://github.com/lambci/docker-lambda) image.
 To enable docker usage, add the following to your `serverless.yml`:
 ```yaml
 custom:
-  dockerizePip: true
+  pythonRequirements:
+    dockerizePip: true
 ```
 
 ## ZipImport!
@@ -48,7 +49,8 @@ and `scikit-learn`) there is support for having python import using
 add the following to your  `serverless.yml`:
 ```yaml
 custom:
-  zipImport: true
+  pythonRequirements:
+    zipImport: true
 ```
 
 

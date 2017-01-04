@@ -33,8 +33,7 @@ class ServerlessPythonRequirements {
         '-t', '.requirements',
         '-r', 'requirements.txt',
       ];
-      if (this.serverless.service.custom &&
-          this.serverless.service.custom.dockerizePip) {
+      if (this.custom.dockerizePip) {
         cmd = 'docker';
         options = [
           'run', '--rm',
@@ -56,7 +55,7 @@ class ServerlessPythonRequirements {
   packRequirements() {
     return this.installRequirements().then(() => {
       return new BbPromise((resolve, reject) => {
-        if (this.serverless.service.custom && this.serverless.service.custom.zipImport) {
+        if (this.custom.zipImport) {
           const zip = new Zip();
           zip.addLocalFolder('.requirements', '');
           zip.writeZip('.requirements.zip');
@@ -68,7 +67,7 @@ class ServerlessPythonRequirements {
 
   cleanup() {
     const artifacts = ['requirements.py'];
-    if (this.serverless.service.custom && this.serverless.service.custom.zipImport)
+    if (this.custom.zipImport)
       artifacts.push('.requirements.zip')
     else
       artifacts.push('.requirements')
@@ -94,6 +93,7 @@ class ServerlessPythonRequirements {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
+    this.custom = this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {};
 
     this.commands = {
       'requirements': {
