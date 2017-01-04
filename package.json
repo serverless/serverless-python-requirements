@@ -40,7 +40,7 @@
   "devDependencies": {},
   "dependencies": {
     "bluebird": "^3.0.6",
-    "easy-zip": "github:owenchong/easy-zip",
+    "adm-zip": "0.4.7",
     "fs-extra": "^0.26.7",
     "lodash": "^4.13.1"
   }

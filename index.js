@@ -6,7 +6,7 @@ const _ = require('lodash');
 const path = require('path');
 const fse = require('fs-extra');
 const child_process = require('child_process');
-const {EasyZip} = require('easy-zip');
+const Zip = require('adm-zip');
 
 BbPromise.promisifyAll(fse);
 
@@ -57,18 +57,11 @@ class ServerlessPythonRequirements {
     return this.installRequirements().then(() => {
       return new BbPromise((resolve, reject) => {
         if (this.serverless.service.custom && this.serverless.service.custom.zipImport) {
-          const zip = new EasyZip();
-          zip.zipFolder('.requirements', (err) => {
-            if (err) {
-              reject();
-              return;
-            }
-            zip.writeToFile('.requirements.zip');
-            fse.remove('.requirements', (err) => err?reject():resolve());
-          }, {rootFolder: '.'});
-        } else {
-          resolve();
-        }
+          const zip = new Zip();
+          zip.addLocalFolder('.requirements', '');
+          zip.writeZip('.requirements.zip');
+          fse.remove('.requirements', (err) => err?reject():resolve());
+        } else resolve();
       });
     });
   }
