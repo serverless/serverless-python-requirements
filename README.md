@@ -2,6 +2,8 @@
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 
+[![npm](https://nodei.co/npm/serverless-python-requirements.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/serverless-python-requirements)
+
 A Serverless v1.0 plugin to automatically bundle dependencies from 
 `requirements.txt`.
 
