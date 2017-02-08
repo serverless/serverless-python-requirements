@@ -29,7 +29,7 @@ class ServerlessPythonRequirements {
     return new BbPromise((resolve, reject) => {
       let cmd = 'pip';
       let options = [
-        'install',
+        '--isolated', 'install',
         '-t', '.requirements',
         '-r', 'requirements.txt',
       ];
