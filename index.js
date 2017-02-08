@@ -31,6 +31,7 @@ class ServerlessPythonRequirements {
         'install',
         '-t', '.requirements',
         '-r', 'requirements.txt',
+        '-U', '--upgrade-strategy=only-if-needed'
       ];
       if (this.serverless.service.custom &&
           this.serverless.service.custom.dockerizePip) {
@@ -52,8 +53,34 @@ class ServerlessPythonRequirements {
     });
   };
 
+  packLocalRequirements() {
+    if (!fse.existsSync(path.join(this.serverless.config.servicePath, 'requirements.txt'))) {
+      return BbPromise.resolve();
+    }
+
+    this.serverless.cli.log('Packaging required Python packages locally...');
+
+    return new BbPromise((resolve, reject) => {
+      let cmd = 'pip';
+      let options = [
+        '--isolated', 'install',
+        '-t', '.local_requirements',
+        '-r', 'requirements.txt',
+        '-U', '--upgrade-strategy=only-if-needed'
+      ];
+      const res = child_process.spawnSync(cmd, options);
+      if (res.error) {
+        return reject(res.error);
+      }
+      if (res.status != 0) {
+        return reject(res.stderr);
+      }
+      resolve();
+    });
+  };
+
   cleanup() {
-    const artifacts = ['requirements.py', '.requirements'];
+    const artifacts = ['requirements.py', '.requirements', '.local_requirements'];
 
     return BbPromise.all(_.map(artifacts, (artifact) =>
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
@@ -87,10 +114,18 @@ class ServerlessPythonRequirements {
             ],
           },
           'install': {
-            usage: 'install requirements manually',
+            usage: 'Install requirements manually',
             lifecycleEvents: [
               'install',
             ],
+            commands: {
+              'local': {
+                usage: 'Install requirements using host machine (not docker) into .local_requirements',
+                lifecycleEvents: [
+                  'installLocal'
+                ]
+              }
+            },
           },
         },
       },
@@ -104,6 +139,10 @@ class ServerlessPythonRequirements {
       'requirements:install:install': () => BbPromise.bind(this)
         .then(this.packVendorHelper)
         .then(this.packRequirements),
+
+      'requirements:install:local:installLocal': () => BbPromise.bind(this)
+        .then(this.packVendorHelper)
+        .then(this.packLocalRequirements),
 
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
