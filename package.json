@@ -40,7 +40,7 @@
   "devDependencies": {},
   "dependencies": {
     "bluebird": "^3.0.6",
-    "fs-extra": "^0.26.7",
+    "fs-extra": "^2.0.0",
     "lodash": "^4.13.1"
   }
 }
