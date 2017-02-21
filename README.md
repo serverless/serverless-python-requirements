@@ -5,7 +5,7 @@
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
 A Serverless v1.0 plugin to automatically bundle dependencies from 
-`requirements.txt`.
+`requirements.txt` and makes them available in your `PYTHONPATH`.
 
 
 ## Install
@@ -22,17 +22,10 @@ plugins:
 ```
 
 
-## Adding the dependencies to `sys.path`
+## How serverless-python-requirements adds the dependencies to `sys.path`
 
-`serverless-python-requirements` adds a module called `requirements` to your
-puck. To easily make the bundled dependencies available, simply import it. Eg.
-add this to the top of any file using dependencies specified in your
-`requirements.txt`:
-```python
-import requirements
-# Now you can use deps you specified in requirements.txt!
-import requests
-```
+`serverless-python-requirements` adds a module called `sitecustomize` to your
+puck, which is imported automatically by Python's `site` module.
 
 ## Cross compiling!
 Compiling non-pure-Python modules is supported on MacOS via the use of Docker
@@ -58,15 +51,15 @@ custom:
 
 ## Limitations
  * if using the `package` directive in `serverless.yml` ensure that
-`requirements.py` is are included as well as `.requirements` or
+`sitecustomize.py` is are included as well as `.requirements` or
 `.requirements.zip` if using [ZipImport](#zipimport).
 
 
 ## Manual invocations
 
-The `.requirements` and `requirements.py` files are left behind to simplify
-development. To clean them up, run `sls requirements clean`. You can also
-install them manually for local development with `sls requirements install`.
+The `.requirements` and `sitecustomize.py` files are left behind to speed up
+subsequent deployments. To clean them up, run `sls requirements clean`. You can
+also install them manually with `sls requirements install`.
 
 ## Credit
 This plugin is influenced by

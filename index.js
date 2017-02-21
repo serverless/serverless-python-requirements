@@ -15,8 +15,8 @@ class ServerlessPythonRequirements {
     this.serverless.cli.log('Packaging Python requirements helper...');
 
     return fse.copyAsync(
-      path.resolve(__dirname, 'requirements.py'),
-      path.join(this.serverless.config.servicePath, 'requirements.py'));
+      path.resolve(__dirname, 'sitecustomize.py'),
+      path.join(this.serverless.config.servicePath, 'sitecustomize.py'));
   };
 
   installRequirements() {
@@ -66,7 +66,7 @@ class ServerlessPythonRequirements {
   }
 
   cleanup() {
-    const artifacts = ['requirements.py'];
+    const artifacts = ['sitecustomize.py'];
     if (this.custom.zipImport)
       artifacts.push('.requirements.zip')
     else
@@ -99,7 +99,7 @@ class ServerlessPythonRequirements {
       'requirements': {
         commands: {
           'clean': {
-            usage: 'Remove .requirements and requirements.py',
+            usage: 'Remove .requirements, .requirements.zip and sitecustomize.py',
             lifecycleEvents: [
               'clean',
             ],
