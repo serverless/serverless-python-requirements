@@ -24,7 +24,7 @@ class ServerlessPythonRequirements {
       return BbPromise.resolve();
     }
 
-    this.serverless.cli.log('Packaging required Python packages...');
+    this.serverless.cli.log('Installing required Python packages...');
 
     return new BbPromise((resolve, reject) => {
       let cmd = 'pip';
@@ -56,6 +56,7 @@ class ServerlessPythonRequirements {
     return this.installRequirements().then(() => {
       return new BbPromise((resolve, reject) => {
         if (this.custom.zipImport) {
+          this.serverless.cli.log('Zipping required Python packages...');
           const zip = new Zip();
           zip.addLocalFolder('.requirements', '');
           zip.writeZip('.requirements.zip');
@@ -63,6 +64,21 @@ class ServerlessPythonRequirements {
         } else resolve();
       });
     });
+  }
+
+  linkRequirements() {
+    if (!this.custom.zipImport && this.custom.link) {
+      this.serverless.cli.log('Linking required Python packages...');
+      fse.readdirSync('.requirements').map(file =>
+        fse.symlinkSync(`.requirements/${file}`, `./${file}`));
+    }
+  }
+
+  unlinkRequirements() {
+    if (!this.custom.zipImport && this.custom.link) {
+      this.serverless.cli.log('Unlinking required Python packages...');
+      fse.readdirSync('.requirements').map(file => fse.unlinkSync(file));
+    }
   }
 
   cleanup() {
@@ -79,7 +95,11 @@ class ServerlessPythonRequirements {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
-    this.custom = this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {};
+    this.custom = Object.assign({
+      zipImport: false,
+      link: true,
+    }, this.serverless.service.custom &&
+    this.serverless.service.custom.pythonRequirements || {});
 
     this.commands = {
       'requirements': {
@@ -103,7 +123,11 @@ class ServerlessPythonRequirements {
     this.hooks = {
       'before:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
         .then(this.packVendorHelper)
-        .then(this.packRequirements),
+        .then(this.packRequirements)
+        .then(this.linkRequirements),
+
+      'after:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
+        .then(this.unlinkRequirements),
 
       'requirements:install:install': () => BbPromise.bind(this)
         .then(this.packVendorHelper)
@@ -111,6 +135,7 @@ class ServerlessPythonRequirements {
 
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
+        .then(this.unlinkRequirements),
     };
   }
 }

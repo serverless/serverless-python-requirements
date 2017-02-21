@@ -5,7 +5,7 @@
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
 A Serverless v1.0 plugin to automatically bundle dependencies from 
-`requirements.txt`.
+`requirements.txt` and make them available in your `PYTHONPATH`.
 
 
 ## Install
@@ -23,6 +23,21 @@ plugins:
 
 
 ## Adding the dependencies to `sys.path`
+
+### Automatic
+The default behavior of this plugin is to link libraries into the working tree
+during deployment so that they are in your handler's `PYTHONPATH` when running
+on lambda.
+
+### Manual
+This method is required when using [ZipImport](#zipimport) support and can be
+enabled manually by adding the following option to your config:
+
+```yaml
+custom:
+  pythonRequirements:
+    link: false
+```
 
 `serverless-python-requirements` adds a module called `requirements` to your
 puck. To easily make the bundled dependencies available, simply import it. Eg.
