@@ -76,20 +76,6 @@ class ServerlessPythonRequirements {
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
   };
 
-  serve() {
-    const port = this.options.port || 5000;
-
-    return new BbPromise((resolve, reject) => {
-      child_process.spawnSync('python', [
-        path.resolve(__dirname, 'serve.py'),
-        this.serverless.config.servicePath,
-        this.wsgiApp,
-        port
-      ], { stdio: 'inherit' });
-      resolve();
-    });
-  };
-
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
