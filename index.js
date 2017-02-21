@@ -6,6 +6,7 @@ const _ = require('lodash');
 const path = require('path');
 const fse = require('fs-extra');
 const child_process = require('child_process');
+const Zip = require('adm-zip');
 
 BbPromise.promisifyAll(fse);
 
@@ -18,7 +19,7 @@ class ServerlessPythonRequirements {
       path.join(this.serverless.config.servicePath, 'requirements.py'));
   };
 
-  packRequirements() {
+  installRequirements() {
     if (!fse.existsSync(path.join(this.serverless.config.servicePath, 'requirements.txt'))) {
       return BbPromise.resolve();
     }
@@ -32,8 +33,7 @@ class ServerlessPythonRequirements {
         '-t', '.requirements',
         '-r', 'requirements.txt',
       ];
-      if (this.serverless.service.custom &&
-          this.serverless.service.custom.dockerizePip) {
+      if (this.custom.dockerizePip) {
         cmd = 'docker';
         options = [
           'run', '--rm',
@@ -52,8 +52,25 @@ class ServerlessPythonRequirements {
     });
   };
 
+  packRequirements() {
+    return this.installRequirements().then(() => {
+      return new BbPromise((resolve, reject) => {
+        if (this.custom.zipImport) {
+          const zip = new Zip();
+          zip.addLocalFolder('.requirements', '');
+          zip.writeZip('.requirements.zip');
+          fse.remove('.requirements', (err) => err?reject():resolve());
+        } else resolve();
+      });
+    });
+  }
+
   cleanup() {
-    const artifacts = ['requirements.py', '.requirements'];
+    const artifacts = ['requirements.py'];
+    if (this.custom.zipImport)
+      artifacts.push('.requirements.zip')
+    else
+      artifacts.push('.requirements')
 
     return BbPromise.all(_.map(artifacts, (artifact) =>
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
@@ -76,6 +93,7 @@ class ServerlessPythonRequirements {
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
+    this.custom = this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {};
 
     this.commands = {
       'requirements': {
