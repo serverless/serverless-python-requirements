@@ -12,7 +12,7 @@ BbPromise.promisifyAll(fse);
 
 class ServerlessPythonRequirements {
   packVendorHelper() {
-    this.serverless.cli.log('Packaging Python requirements helper...');
+    this.serverless.cli.log('Installing Python requirements helper...');
 
     return fse.copyAsync(
       path.resolve(__dirname, 'requirements.py'),
