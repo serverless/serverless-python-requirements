@@ -22,36 +22,10 @@ plugins:
 ```
 
 
-## Adding the dependencies to `sys.path`
-
-### Automatic
-The default behavior of this plugin is to link libraries into the working tree
-during deployment so that they are in your handler's `PYTHONPATH` when running
-on lambda.
-
-### Manual
-This method is required when using [ZipImport](#zipimport) support and can be
-enabled manually by adding the following option to your config:
-
-```yaml
-custom:
-  pythonRequirements:
-    link: false
-```
-
-`serverless-python-requirements` adds a module called `requirements` to your
-puck. To easily make the bundled dependencies available, simply import it. Eg.
-add this to the top of any file using dependencies specified in your
-`requirements.txt`:
-```python
-import requirements
-# Now you can use deps you specified in requirements.txt!
-import requests
-```
-
 ## Cross compiling!
-Compiling non-pure-Python modules is supported on MacOS via the use of Docker
-and the [docker-lambda](https://github.com/lambci/docker-lambda) image.
+Compiling non-pure-Python modules or fetching their manylinux wheels is
+supported on non-linux OSs via the use of Docker and the
+[docker-lambda](https://github.com/lambci/docker-lambda) image.
 To enable docker usage, add the following to your `serverless.yml`:
 ```yaml
 custom:
@@ -59,29 +33,28 @@ custom:
     dockerizePip: true
 ```
 
-## ZipImport!
+## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
-and `scikit-learn`) there is support for having python import using
-[zipimport](https://docs.python.org/2.7/library/zipimport.html). To enable this
-add the following to your  `serverless.yml`:
+and `scikit-learn`) there is support for compressing the libraries. This does
+require a minor change to your code to decompress them.  To enable this add the
+following to your  `serverless.yml`:
 ```yaml
 custom:
   pythonRequirements:
-    zipImport: true
+    zip: true
 ```
 
-
-## Limitations
- * if using the `package` directive in `serverless.yml` ensure that
-`requirements.py` is are included as well as `.requirements` or
-`.requirements.zip` if using [ZipImport](#zipimport).
-
+and add this to your handler module before any code that imports your deps:
+```python
+import unzip_requirements
+```
 
 ## Manual invocations
 
-The `.requirements` and `requirements.py` files are left behind to simplify
-development. To clean them up, run `sls requirements clean`. You can also
-install them manually for local development with `sls requirements install`.
+The `.requirements` and `requirements.zip`(if using zip support) files are left
+behind to speed things up on subsequent deploys. To clean them up, run
+`sls requirements clean`. You can also create them manually with
+`sls requirements install`.
 
 ## Credit
 This plugin is influenced by

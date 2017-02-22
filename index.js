@@ -11,12 +11,21 @@ const {zipDirectory} = require('./zipService');
 BbPromise.promisifyAll(fse);
 
 class ServerlessPythonRequirements {
-  packVendorHelper() {
-    this.serverless.cli.log('Installing Python requirements helper...');
+  addVendorHelper() {
+    if (this.custom.zip) {
+      this.serverless.cli.log('Removing Python requirements helper...');
 
-    return fse.copyAsync(
-      path.resolve(__dirname, 'requirements.py'),
-      path.join(this.serverless.config.servicePath, 'requirements.py'));
+      return fse.copyAsync(
+        path.resolve(__dirname, 'unzip_requirements.py'),
+        path.join(this.serverless.config.servicePath, 'unzip_requirements.py'));
+    }
+  };
+
+  removeVendorHelper() {
+    if (this.custom.zip) {
+      this.serverless.cli.log('Adding Python requirements helper...');
+      return fse.removeAsync('unzip_requirements.py');
+    }
   };
 
   installRequirements() {
@@ -60,13 +69,15 @@ class ServerlessPythonRequirements {
 
   packRequirements() {
     return this.installRequirements().then(() => {
-      if (this.custom.zipImport)
+      if (this.custom.zip) {
+        this.serverless.cli.log('Zipping required Python packages...');
         return zipDirectory('.requirements', '.requirements.zip');
+      }
     });
   }
 
   linkRequirements() {
-    if (!this.custom.zipImport && this.custom.link) {
+    if (!this.custom.zip) {
       this.serverless.cli.log('Linking required Python packages...');
       fse.readdirSync('.requirements').map(file =>
         fse.symlinkSync(`.requirements/${file}`, `./${file}`));
@@ -74,18 +85,18 @@ class ServerlessPythonRequirements {
   }
 
   unlinkRequirements() {
-    if (!this.custom.zipImport && this.custom.link) {
+    if (!this.custom.zip) {
       this.serverless.cli.log('Unlinking required Python packages...');
       fse.readdirSync('.requirements').map(file => fse.unlinkSync(file));
     }
   }
 
   cleanup() {
-    const artifacts = ['requirements.py'];
-    if (this.custom.zipImport)
-      artifacts.push('.requirements.zip')
-    else
-      artifacts.push('.requirements')
+    const artifacts = ['.requirements'];
+    if (this.custom.zip) {
+      artifacts.push('.requirements.zip');
+      artifacts.push('unzip_requirements.py');
+    }
 
     return BbPromise.all(_.map(artifacts, (artifact) =>
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
@@ -95,16 +106,19 @@ class ServerlessPythonRequirements {
     this.serverless = serverless;
     this.options = options;
     this.custom = Object.assign({
-      zipImport: false,
-      link: true,
+      zip: false,
     }, this.serverless.service.custom &&
     this.serverless.service.custom.pythonRequirements || {});
+
+    if (!_.has(this.serverless.service, ['package', 'exclude']))
+      _.set(this.serverless.service, ['package', 'exclude'], []);
+    this.serverless.service.package.exclude.push('.requirements/**');
 
     this.commands = {
       'requirements': {
         commands: {
           'clean': {
-            usage: 'Remove .requirements and requirements.py',
+            usage: 'Remove .requirements and requirements.zip',
             lifecycleEvents: [
               'clean',
             ],
@@ -121,15 +135,16 @@ class ServerlessPythonRequirements {
 
     this.hooks = {
       'before:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
-        .then(this.packVendorHelper)
+        .then(this.addVendorHelper)
         .then(this.packRequirements)
         .then(this.linkRequirements),
 
       'after:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
+        .then(this.removeVendorHelper)
         .then(this.unlinkRequirements),
 
       'requirements:install:install': () => BbPromise.bind(this)
-        .then(this.packVendorHelper)
+        .then(this.addVendorHelper)
         .then(this.packRequirements),
 
       'requirements:clean:clean': () => BbPromise.bind(this)
