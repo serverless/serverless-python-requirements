@@ -6,7 +6,7 @@ const _ = require('lodash');
 const path = require('path');
 const fse = require('fs-extra');
 const child_process = require('child_process');
-const {zipDirectory} = require('./zipService');
+const zipDirectory = require('./zipService').zipDirectory;
 
 BbPromise.promisifyAll(fse);
 
