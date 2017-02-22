@@ -27,19 +27,25 @@ class ServerlessPythonRequirements {
     this.serverless.cli.log('Installing required Python packages...');
 
     return new BbPromise((resolve, reject) => {
-      let cmd = 'pip';
-      let options = [
-        '--isolated', 'install',
-        '-t', '.requirements',
-        '-r', 'requirements.txt',
+      let cmd, options;
+      const pipCmd = [
+        'pip', '--isolated', 'install',
+        '-t', '.requirements', '-r', 'requirements.txt',
+      ];
+      const dockerCmd = [
+        'docker', 'run', '--rm',
+        '-v', `${this.serverless.config.servicePath}:/var/task:z`,
+        'lambci/lambda:build-python2.7',
+        'bash', '-c',
       ];
       if (this.custom.dockerizePip) {
-        cmd = 'docker';
-        options = [
-          'run', '--rm',
-          '-v', `${this.serverless.config.servicePath}:/var/task:z`,
-          'lambci/lambda:build-python2.7', 'pip',
-        ].concat(options);
+        cmd = dockerCmd[0];
+        options = dockerCmd.slice(1);
+        pipCmd.unshift('pip install --upgrade pip &&')
+        options.push(pipCmd.join(' '))
+      } else {
+        cmd = pipCmd[0];
+        options = pipCmd.slice(1);
       }
       const res = child_process.spawnSync(cmd, options);
       if (res.error) {
