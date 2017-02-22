@@ -1,6 +1,6 @@
 {
   "name": "serverless-python-requirements",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0-beta.3",
   "engines": {
     "node": ">=4.0"
   },
@@ -29,6 +29,7 @@
   ],
   "files": [
     "index.js",
+    "zipService.js",
     "LICENSE",
     "package.json",
     "requirements.py",
@@ -39,9 +40,10 @@
   "scripts": {},
   "devDependencies": {},
   "dependencies": {
+    "archiver": "^1.3.0",
     "bluebird": "^3.0.6",
-    "adm-zip": "0.4.7",
     "fs-extra": "^0.26.7",
+    "glob-all": "^3.1.0",
     "lodash": "^4.13.1"
   }
 }
