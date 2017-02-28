@@ -79,8 +79,17 @@ class ServerlessPythonRequirements {
   linkRequirements() {
     if (!this.custom.zip) {
       this.serverless.cli.log('Linking required Python packages...');
-      fse.readdirSync('.requirements').map(file =>
-        fse.symlinkSync(`.requirements/${file}`, `./${file}`));
+      fse.readdirSync('.requirements').map(file => {
+        try {
+          fse.symlinkSync(`.requirements/${file}`, `./${file}`)
+        } catch (exception) {
+          let linkDest = null;
+          try {linkDest = fse.readlinkSync(`./${file}`);} catch (e) {}
+          if (linkDest !== `.requirements/${file}`)
+            throw new Error(`Unable to link dependency "${file}" because a file by the same name exists in this service`);
+        }
+      }
+        );
     }
   }
 
