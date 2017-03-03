@@ -22,7 +22,7 @@ class ServerlessPythonRequirements {
   };
 
   removeVendorHelper() {
-    if (this.custom.zip) {
+    if (this.custom.zip && this.custom.cleanupZipHelper) {
       this.serverless.cli.log('Adding Python requirements helper...');
       return fse.removeAsync('unzip_requirements.py');
     }
@@ -118,6 +118,7 @@ class ServerlessPythonRequirements {
     this.options = options;
     this.custom = Object.assign({
       zip: false,
+      cleanupZipHelper: true,
     }, this.serverless.service.custom &&
     this.serverless.service.custom.pythonRequirements || {});
 
@@ -162,6 +163,7 @@ class ServerlessPythonRequirements {
 
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
+        .then(this.removeVendorHelper)
         .then(this.unlinkRequirements),
     };
   }

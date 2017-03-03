@@ -49,12 +49,22 @@ and add this to your handler module before any code that imports your deps:
 import unzip_requirements
 ```
 
+If you want to be able to use `sls invoke local` and don't have a check for
+lambda or a `try`/`except ImportError` around that impolrt, you can use the
+following option to make this plugin not delete the `unzip_requirements`
+helper:
+```yaml
+custom:
+  pythonRequirements:
+    removeVendorHelper: false
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left
 behind to speed things up on subsequent deploys. To clean them up, run
-`sls requirements clean`. You can also create them manually with
-`sls requirements install`.
+`sls requirements clean`. You can also create them (and `unzip_requirements` if
+using zip support) manually with `sls requirements install`.
 
 ## Credit
 This plugin is influenced by
