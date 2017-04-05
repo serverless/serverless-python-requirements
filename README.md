@@ -1,6 +1,7 @@
 # Serverless Python Requirements
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
+[![Greenkeeper badge](https://badges.greenkeeper.io/UnitedIncome/serverless-python-requirements.svg)](https://greenkeeper.io/)
 
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
