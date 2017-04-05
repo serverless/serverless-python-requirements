@@ -122,10 +122,10 @@ class ServerlessPythonRequirements {
     }, this.serverless.service.custom &&
     this.serverless.service.custom.pythonRequirements || {});
 
-    if (!_.has(this.serverless.service, ['package', 'exclude']))
+    if (!_.get(this.serverless.service, 'package.exclude'))
       _.set(this.serverless.service, ['package', 'exclude'], []);
     this.serverless.service.package.exclude.push('.requirements/**');
-    if (!_.has(this.serverless.service, ['package', 'include']))
+    if (!_.get(this.serverless.service, 'package.include'))
       _.set(this.serverless.service, ['package', 'include'], []);
 
     this.commands = {
