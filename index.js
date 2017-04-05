@@ -147,20 +147,23 @@ class ServerlessPythonRequirements {
       },
     };
 
-    this.hooks = {
-      'before:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
+    let before = () => BbPromise.bind(this)
         .then(this.addVendorHelper)
         .then(this.packRequirements)
-        .then(this.linkRequirements),
+        .then(this.linkRequirements);
 
-      'after:deploy:createDeploymentArtifacts': () => BbPromise.bind(this)
+    let after = () => BbPromise.bind(this)
         .then(this.removeVendorHelper)
-        .then(this.unlinkRequirements),
+        .then(this.unlinkRequirements);
 
+    this.hooks = {
+      'before:deploy:createDeploymentArtifacts': before,
+      'after:deploy:createDeploymentArtifacts': after,
+      'before:deploy:function:packageFunction': before,
+      'after:deploy:function:packageFunction': after,
       'requirements:install:install': () => BbPromise.bind(this)
         .then(this.addVendorHelper)
         .then(this.packRequirements),
-
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
         .then(this.removeVendorHelper)
