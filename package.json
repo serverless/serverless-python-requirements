@@ -1,8 +1,8 @@
 {
   "name": "serverless-python-requirements",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "engines": {
-    "node": ">=4.0"
+    "node": ">=6.0"
   },
   "description": "Serverless Python Requirements Plugin",
   "author": "United Income <engineering@unitedincome.com>",
