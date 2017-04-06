@@ -43,6 +43,7 @@ class ServerlessPythonRequirements {
       ];
       const dockerCmd = [
         'docker', 'run', '--rm',
+        '-u', process.getuid() + ':' + process.getgid(),
         '-v', `${this.serverless.config.servicePath}:/var/task:z`,
         'lambci/lambda:build-python2.7',
         'bash', '-c',
