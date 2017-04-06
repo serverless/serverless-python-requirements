@@ -46,13 +46,11 @@ class ServerlessPythonRequirements {
         '-u', process.getuid() + ':' + process.getgid(),
         '-v', `${this.serverless.config.servicePath}:/var/task:z`,
         'lambci/lambda:build-python2.7',
-        'bash', '-c',
       ];
       if (this.custom.dockerizePip) {
         cmd = dockerCmd[0];
         options = dockerCmd.slice(1);
-        pipCmd.unshift('pip install --upgrade pip &&')
-        options.push(pipCmd.join(' '))
+        options.push(...pipCmd)
       } else {
         cmd = pipCmd[0];
         options = pipCmd.slice(1);
