@@ -41,15 +41,14 @@ class ServerlessPythonRequirements {
         'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', 'requirements.txt',
       ];
-      const dockerCmd = [
-        'docker', 'run', '--rm',
-        '-u', process.getuid() + ':' + process.getgid(),
-        '-v', `${this.serverless.config.servicePath}:/var/task:z`,
-        'lambci/lambda:build-python2.7',
-      ];
       if (this.custom.dockerizePip) {
-        cmd = dockerCmd[0];
-        options = dockerCmd.slice(1);
+        cmd = 'docker';
+        options = [
+          'run', '--rm',
+          '-u', process.getuid() + ':' + process.getgid(),
+          '-v', `${this.serverless.config.servicePath}:/var/task:z`,
+          'lambci/lambda:build-python2.7',
+        ];
         options.push(...pipCmd)
       } else {
         cmd = pipCmd[0];
