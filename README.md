@@ -5,7 +5,7 @@
 
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?downloads=true&downloadRank=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
-A Serverless v1.0 plugin to automatically bundle dependencies from 
+A Serverless v1.0 plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
 
@@ -33,6 +33,7 @@ custom:
   pythonRequirements:
     dockerizePip: true
 ```
+
 
 ## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
@@ -66,6 +67,21 @@ The `.requirements` and `requirements.zip`(if using zip support) files are left
 behind to speed things up on subsequent deploys. To clean them up, run
 `sls requirements clean`. You can also create them (and `unzip_requirements` if
 using zip support) manually with `sls requirements install`.
+
+
+## Updating to python 3.6
+
+This requires an update to your serverless.yml:
+
+```
+provider:
+  name: aws
+  runtime: python3.6
+```
+
+And be sure to clean up `.requirements` or `requirements.zip` if they exist as
+python2.7 and python3.6 code can't coexist.
+
 
 ## Credit
 This plugin is influenced by

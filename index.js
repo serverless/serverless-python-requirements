@@ -33,12 +33,13 @@ class ServerlessPythonRequirements {
       return BbPromise.resolve();
     }
 
-    this.serverless.cli.log('Installing required Python packages...');
+    const runtime = this.serverless.service.provider.runtime;
+    this.serverless.cli.log(`Installing required Python packages for runtime ${runtime}...`);
 
     return new BbPromise((resolve, reject) => {
       let cmd, options;
       const pipCmd = [
-        'pip', '--isolated', 'install',
+        runtime, '-m', 'pip', '-v', '--isolated', 'install',
         '-t', '.requirements', '-r', 'requirements.txt',
       ];
       if (this.custom.dockerizePip) {
@@ -47,7 +48,7 @@ class ServerlessPythonRequirements {
           'run', '--rm',
           '-u', process.getuid() + ':' + process.getgid(),
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
-          'lambci/lambda:build-python2.7',
+          `lambci/lambda:build-${runtime}`,
         ];
         options.push(...pipCmd)
       } else {
