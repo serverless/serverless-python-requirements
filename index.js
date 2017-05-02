@@ -47,7 +47,7 @@ class ServerlessPythonRequirements {
         options = [
           'run', '--rm',
           '-u', process.getuid() + ':' + process.getgid(),
-          '-v', `${this.serverless.config.servicePath}:/var/task:z`,
+          `${this.serverless.config.servicePath}:/var/task:z`,
           `lambci/lambda:build-${runtime}`,
         ];
         options.push(...pipCmd)
