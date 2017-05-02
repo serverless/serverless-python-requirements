@@ -39,7 +39,7 @@ class ServerlessPythonRequirements {
     return new BbPromise((resolve, reject) => {
       let cmd, options;
       const pipCmd = [
-        runtime, '-m', 'pip', '-v', '--isolated', 'install',
+        runtime, '-m', 'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', 'requirements.txt',
       ];
       if (this.custom.dockerizePip) {
@@ -47,7 +47,7 @@ class ServerlessPythonRequirements {
         options = [
           'run', '--rm',
           '-u', process.getuid() + ':' + process.getgid(),
-          `${this.serverless.config.servicePath}:/var/task:z`,
+          '-v', `${this.serverless.config.servicePath}:/var/task:z`,
           `lambci/lambda:build-${runtime}`,
         ];
         options.push(...pipCmd)
