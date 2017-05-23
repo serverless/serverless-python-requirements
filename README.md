@@ -1,7 +1,6 @@
 # Serverless Python Requirements
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![Greenkeeper badge](https://badges.greenkeeper.io/UnitedIncome/serverless-python-requirements.svg)](https://greenkeeper.io/)
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?mini=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
 A Serverless v1.0 plugin to automatically bundle dependencies from
