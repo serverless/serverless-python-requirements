@@ -111,7 +111,6 @@ class ServerlessPythonRequirements {
     return BbPromise.all(_.map(artifacts, (artifact) =>
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
   };
-
   custom() {
     return Object.assign({
       zip: false,
@@ -159,8 +158,8 @@ class ServerlessPythonRequirements {
         .then(this.unlinkRequirements);
 
     this.hooks = {
-      'before:deploy:createDeploymentArtifacts': before,
-      'after:deploy:createDeploymentArtifacts': after,
+      'before:package:createDeploymentArtifacts': before,
+      'after:package:createDeploymentArtifacts': after,
       'before:deploy:function:packageFunction': before,
       'after:deploy:function:packageFunction': after,
       'requirements:install:install': () => BbPromise.bind(this)
