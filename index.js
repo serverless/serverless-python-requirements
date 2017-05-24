@@ -12,7 +12,7 @@ BbPromise.promisifyAll(fse);
 
 class ServerlessPythonRequirements {
   addVendorHelper() {
-    if (this.custom.zip) {
+    if (this.custom().zip) {
       this.serverless.cli.log('Removing Python requirements helper...');
 
       return fse.copyAsync(
@@ -22,7 +22,7 @@ class ServerlessPythonRequirements {
   };
 
   removeVendorHelper() {
-    if (this.custom.zip && this.custom.cleanupZipHelper) {
+    if (this.custom().zip && this.custom().cleanupZipHelper) {
       this.serverless.cli.log('Adding Python requirements helper...');
       return fse.removeAsync('unzip_requirements.py');
     }
@@ -42,7 +42,7 @@ class ServerlessPythonRequirements {
         runtime, '-m', 'pip', '--isolated', 'install', '--system',
         '-t', '.requirements', '-r', 'requirements.txt',
       ];
-      if (this.custom.dockerizePip) {
+      if (this.custom().dockerizePip) {
         cmd = 'docker';
         options = [
           'run', '--rm',
@@ -68,7 +68,7 @@ class ServerlessPythonRequirements {
 
   packRequirements() {
     return this.installRequirements().then(() => {
-      if (this.custom.zip) {
+      if (this.custom().zip) {
         this.serverless.cli.log('Zipping required Python packages...');
         return zipDirectory('.requirements', '.requirements.zip');
       }
@@ -76,7 +76,7 @@ class ServerlessPythonRequirements {
   }
 
   linkRequirements() {
-    if (!this.custom.zip) {
+    if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
       fse.readdirSync('.requirements').map(file => {
           this.serverless.service.package.include.push(file);
@@ -95,7 +95,7 @@ class ServerlessPythonRequirements {
   }
 
   unlinkRequirements() {
-    if (!this.custom.zip) {
+    if (!this.custom().zip) {
       this.serverless.cli.log('Unlinking required Python packages...');
       fse.readdirSync('.requirements').map(file => fse.unlinkSync(file));
     }
@@ -103,7 +103,7 @@ class ServerlessPythonRequirements {
 
   cleanup() {
     const artifacts = ['.requirements'];
-    if (this.custom.zip) {
+    if (this.custom().zip) {
       artifacts.push('.requirements.zip');
       artifacts.push('unzip_requirements.py');
     }
@@ -112,14 +112,17 @@ class ServerlessPythonRequirements {
       fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
   };
 
-  constructor(serverless, options) {
-    this.serverless = serverless;
-    this.options = options;
-    this.custom = Object.assign({
+  custom() {
+    return Object.assign({
       zip: false,
       cleanupZipHelper: true,
     }, this.serverless.service.custom &&
     this.serverless.service.custom.pythonRequirements || {});
+  }
+
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
 
     if (!_.get(this.serverless.service, 'package.exclude'))
       _.set(this.serverless.service, ['package', 'exclude'], []);
