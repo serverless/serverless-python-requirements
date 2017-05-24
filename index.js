@@ -39,7 +39,7 @@ class ServerlessPythonRequirements {
     return new BbPromise((resolve, reject) => {
       let cmd, options;
       const pipCmd = [
-        runtime, '-m', 'pip', '--isolated', 'install', '--system',
+        runtime, '-m', 'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', 'requirements.txt',
       ];
       if (this.custom.dockerizePip) {
