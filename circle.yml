@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    working_directory: /sls-py-req
+    docker:
+      - image: ubuntu
+    steps:
+      - checkout
+      # install nodejs
+      - run: curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
+      - run: apt install nodejs
+      # install python3.6
+      - run: apt install python3.6
+      # install serverless
+      - run: npm install -g serverless
+      # install serverless
+      - run: cd example && npm i && sls package
