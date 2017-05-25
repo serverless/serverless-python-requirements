@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /sls-py-req
     docker:
-      - image: ubuntu:devel
+      - image: ubuntu:rolling
     steps:
       - checkout
       # update pkg cache
