@@ -13,11 +13,7 @@ jobs:
       # install serverless
       - run: npm install -g serverless
       # install test deps (this plugin)
-      # no clue why circle screws up the sym link ¯\_(ツ)_/¯
-      - run: rm example/serverless-python-requirements
-      - run: mkdir example/serverless-python-requirements
-      - run: cp package.json *.js  example/serverless-python-requirements/.
-      - run: cd example && npm i
+      - run: cd example && npm i ..
       # try to package!
       - run: cd example && sls package
       # unzip it and check for requests
