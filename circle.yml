@@ -6,17 +6,19 @@ jobs:
       - image: ubuntu:rolling
     steps:
       - checkout
-      # update pkg cache
-      - run: apt -y update
-      # install python3.6
-      - run: apt -y install python3.6
+      # Apt deps
+      - run: apt -y update && apt -y install python3-pip python3.6 curl unzip
       # install nodejs
-      - run: apt -y install wget
-      - run: wget -qO- https://deb.nodesource.com/setup_6.x | bash -
-      - run: apt -y install nodejs
+      - run: curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt -y install nodejs
       # install serverless
       - run: npm install -g serverless
       # install test deps (this plugin)
+      # no clue why circle screws up the sym link ¯\_(ツ)_/¯
+      - run: rm example/serverless-python-requirements
+      - run: mkdir example/serverless-python-requirements
+      - run: cp package.json *.js  example/serverless-python-requirements/.
       - run: cd example && npm i
       # try to package!
       - run: cd example && sls package
+      # unzip it and check for requests
+      - run: unzip example/.serverless/sls-py-req-test.zip -d puck && ls puck/requests
