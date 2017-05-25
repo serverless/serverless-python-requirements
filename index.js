@@ -166,7 +166,6 @@ class ServerlessPythonRequirements {
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
         .then(this.removeVendorHelper)
-        .then(this.unlinkRequirements),
     };
   }
 }
