@@ -7,13 +7,13 @@ jobs:
     steps:
       - checkout
       # update pkg cache
-      - run: apt update
+      - run: apt -y update
       # install python3.6
-      - run: apt install python3.6
+      - run: apt -y install python3.6
       # install nodejs
-      - run: apt install wget
+      - run: apt -y install wget
       - run: wget -qO- https://deb.nodesource.com/setup_6.x | bash -
-      - run: apt install nodejs
+      - run: apt -y install nodejs
       # install serverless
       - run: npm install -g serverless
       # install test deps (this plugin)
