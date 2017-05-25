@@ -6,6 +6,8 @@ jobs:
       - image: ubuntu:devel
     steps:
       - checkout
+      # update pkg cache
+      - run: apt update
       # install python3.6
       - run: apt install python3.6
       # install nodejs
