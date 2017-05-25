@@ -3,16 +3,18 @@ jobs:
   build:
     working_directory: /sls-py-req
     docker:
-      - image: ubuntu
+      - image: ubuntu:devel
     steps:
       - checkout
       # install python3.6
       - run: apt install python3.6
-      # install serverless
-      - run: npm install -g serverless
       # install nodejs
       - run: apt install wget
       - run: wget -qO- https://deb.nodesource.com/setup_6.x | bash -
       - run: apt install nodejs
       # install serverless
-      - run: cd example && npm i && sls package
+      - run: npm install -g serverless
+      # install test deps (this plugin)
+      - run: cd example && npm i
+      # try to package!
+      - run: cd example && sls package
