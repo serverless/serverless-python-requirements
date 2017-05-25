@@ -7,10 +7,6 @@ provider:
 plugins:
   - serverless-python-requirements
 
-package:
-  exclude:
-    - serverless-python-requirements/**
-
 functions:
   hello:
     handler: handler.hello
