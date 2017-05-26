@@ -5,12 +5,19 @@ const BbPromise = require('bluebird');
 const _ = require('lodash');
 const path = require('path');
 const fse = require('fs-extra');
-const child_process = require('child_process');
+const {spawnSync} = require('child_process');
 const zipDirectory = require('./zipService').zipDirectory;
 
 BbPromise.promisifyAll(fse);
 
+/**
+ * Plugin for Serverless 1.x that bundles python requirements!
+ */
 class ServerlessPythonRequirements {
+  /**
+   * add the vendor helper to the current service tree
+   * @return {Promise}
+   */
   addVendorHelper() {
     if (this.custom().zip) {
       this.serverless.cli.log('Removing Python requirements helper...');
@@ -21,6 +28,10 @@ class ServerlessPythonRequirements {
     }
   };
 
+  /**
+   * remove the vendor helper from the current service tree
+   * @return {Promise}
+   */
   removeVendorHelper() {
     if (this.custom().zip && this.custom().cleanupZipHelper) {
       this.serverless.cli.log('Adding Python requirements helper...');
@@ -28,23 +39,30 @@ class ServerlessPythonRequirements {
     }
   };
 
+  /**
+   * pip install the requirements to the .requirements directory
+   * @return {Promise}
+   */
   installRequirements() {
-    if (!fse.existsSync(path.join(this.serverless.config.servicePath, 'requirements.txt'))) {
+    if (!fse.existsSync(path.join(this.serverless.config.servicePath,
+                                  'requirements.txt'))) {
       return BbPromise.resolve();
     }
 
     const runtime = this.serverless.service.provider.runtime;
-    this.serverless.cli.log(`Installing required Python packages for runtime ${runtime}...`);
+    this.serverless.cli.log(
+      `Installing required Python packages for runtime ${runtime}...`);
 
     return new BbPromise((resolve, reject) => {
-      let cmd, options;
+      let cmd;
+      let options;
       const pipCmd = [
         runtime, '-m', 'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', 'requirements.txt',
       ];
       if (!this.custom().dockerizePip) {
-        const pipTestRes = child_process.spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
-        console.log(pipTestRes)
+        const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
+        console.log(pipTestRes);
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
           pipCmd.push('--system');
       }
@@ -56,12 +74,12 @@ class ServerlessPythonRequirements {
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
           `lambci/lambda:build-${runtime}`,
         ];
-        options.push(...pipCmd)
+        options.push(...pipCmd);
       } else {
         cmd = pipCmd[0];
         options = pipCmd.slice(1);
       }
-      const res = child_process.spawnSync(cmd, options);
+      const res = spawnSync(cmd, options);
       if (res.error) {
         return reject(res.error);
       }
@@ -72,6 +90,10 @@ class ServerlessPythonRequirements {
     });
   };
 
+  /**
+   * zip up .requirements
+   * @return {Promise}
+   */
   packRequirements() {
     return this.installRequirements().then(() => {
       if (this.custom().zip) {
@@ -81,32 +103,47 @@ class ServerlessPythonRequirements {
     });
   }
 
+  /**
+   * link all the files in .requirements to the service directory root
+   * @return {undefined}
+   */
   linkRequirements() {
     if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
-      fse.readdirSync('.requirements').map(file => {
+      fse.readdirSync('.requirements').map((file) => {
           this.serverless.service.package.include.push(file);
           this.serverless.service.package.include.push(`${file}/**`);
         try {
-          fse.symlinkSync(`.requirements/${file}`, `./${file}`)
+          fse.symlinkSync(`.requirements/${file}`, `./${file}`);
         } catch (exception) {
           let linkDest = null;
-          try {linkDest = fse.readlinkSync(`./${file}`);} catch (e) {}
+          try {
+            linkDest = fse.readlinkSync(`./${file}`);
+          } catch (e) {}
           if (linkDest !== `.requirements/${file}`)
-            throw new Error(`Unable to link dependency "${file}" because a file by the same name exists in this service`);
+            throw new Error(`Unable to link dependency "${file}" because a file
+                             by the same name exists in this service`);
         }
       }
         );
     }
   }
 
+  /**
+   * unlink all the files in .requirements from the service directory root
+   * @return {undefined}
+   */
   unlinkRequirements() {
     if (!this.custom().zip) {
       this.serverless.cli.log('Unlinking required Python packages...');
-      fse.readdirSync('.requirements').map(file => fse.unlinkSync(file));
+      fse.readdirSync('.requirements').map((file) => fse.unlinkSync(file));
     }
   }
 
+  /**
+   * clean up .requirements and .requirements.zip and unzip_requirements.py
+   * @return {Promise}
+   */
   cleanup() {
     const artifacts = ['.requirements'];
     if (this.custom().zip) {
@@ -114,9 +151,14 @@ class ServerlessPythonRequirements {
       artifacts.push('unzip_requirements.py');
     }
 
-    return BbPromise.all(_.map(artifacts, (artifact) =>
-      fse.removeAsync(path.join(this.serverless.config.servicePath, artifact))));;
+    return BbPromise.all(_.map(artifacts, (artifact) => fse.removeAsync(
+      path.join(this.serverless.config.servicePath, artifact))));
   };
+
+  /**
+   * get the custom.pythonRequirements contents, with defaults set
+   * @return {Object}
+   */
   custom() {
     return Object.assign({
       zip: false,
@@ -125,6 +167,13 @@ class ServerlessPythonRequirements {
     this.serverless.service.custom.pythonRequirements || {});
   }
 
+  /**
+   * The plugin constructor
+   * @param {Object} serverless
+   * @param {Object} options
+   * makes
+   * @return {undefined}
+   */
   constructor(serverless, options) {
     this.serverless = serverless;
     this.options = options;
@@ -173,7 +222,7 @@ class ServerlessPythonRequirements {
         .then(this.packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
-        .then(this.removeVendorHelper)
+        .then(this.removeVendorHelper),
     };
   }
 }

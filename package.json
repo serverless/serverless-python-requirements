@@ -37,8 +37,13 @@
   ],
   "main": "index.js",
   "bin": {},
-  "scripts": {},
-  "devDependencies": {},
+  "scripts": {
+    "lint": "eslint *.js"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.1"
+  },
   "dependencies": {
     "archiver": "^1.3.0",
     "bluebird": "^3.0.6",

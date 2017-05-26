@@ -12,6 +12,8 @@ jobs:
       - run: curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt -y install nodejs
       # install serverless
       - run: npm install -g serverless
+      # lint:
+      - run: npm run lint
       # install test deps (this plugin)
       - run: cd example && npm i ..
       # try to package!
