@@ -62,7 +62,6 @@ class ServerlessPythonRequirements {
       ];
       if (!this.custom().dockerizePip) {
         const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
-        console.log(pipTestRes);
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
           pipCmd.push('--system');
       }
