@@ -16,19 +16,11 @@ jobs:
       - run: npm i
       # lint:
       - run: npm run lint
-      # install test deps (this plugin)
-      - run: cd example && npm i ..
-      # try to package!
-      - run: cd example && sls package
-      # unzip it and check for requests
-      - run: unzip example/.serverless/sls-py-req-test.zip -d puck && ls puck/requests
-      # clean before running as user
-      - run: rm -r puck && cd example && SLS_DEBUG=t sls requirements clean
+      # test!
+      - run: npm run test
       # create a user
       - run: useradd -m tester
       # give this dir to the test user
       - run: chown -R tester .
-      # try to package!
-      - run: cd example && su -c "env SLS_DEBUG=t sls package" tester
-      # unzip it and check for requests
-      - run: unzip example/.serverless/sls-py-req-test.zip -d puck && ls puck/requests
+      # test as user!
+      - run: su -c "npm run test" tester

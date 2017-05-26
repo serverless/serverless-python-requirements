@@ -38,6 +38,7 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
+    "test": "bash -x test.sh",
     "lint": "eslint *.js"
   },
   "devDependencies": {
