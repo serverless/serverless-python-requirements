@@ -51,13 +51,13 @@ import unzip_requirements
 ```
 
 If you want to be able to use `sls invoke local` and don't have a check for
-lambda or a `try`/`except ImportError` around that impolrt, you can use the
+lambda or a `try`/`except ImportError` around that import, you can use the
 following option to make this plugin not delete the `unzip_requirements`
 helper:
 ```yaml
 custom:
   pythonRequirements:
-    removeVendorHelper: false
+    cleanupZipHelper: false
 ```
 
 ## Manual invocations
