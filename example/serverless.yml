@@ -6,6 +6,11 @@ provider:
 
 plugins:
   - serverless-python-requirements
+custom:
+  pythonRequirements:
+    zip: false
+    cleanupZipHelper: true
+    dockerizePip: false
 
 functions:
   hello:

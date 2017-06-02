@@ -38,7 +38,7 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
-    "test": "bash -x test.sh",
+    "test": "bats test.bats",
     "lint": "eslint *.js"
   },
   "devDependencies": {

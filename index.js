@@ -89,7 +89,7 @@ class ServerlessPythonRequirements {
         '-t', '.requirements', '-r', '.serverless/requirements.txt',
       ];
       if (this.custom().pipCmdExtraArgs) {
-        pipCmd.push(...this.custom().pipCmdExtraArgs)
+        pipCmd.push(...this.custom().pipCmdExtraArgs);
       }
       if (!this.custom().dockerizePip) {
         const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
@@ -248,16 +248,16 @@ class ServerlessPythonRequirements {
     let after = () => BbPromise.bind(this)
         .then(this.removeVendorHelper)
         .then(this.unlinkRequirements);
-    
+
     let invalidateCaches = () => {
       if (this.custom().invalidateCaches) {
         return BbPromise.bind(this)
           .then(this.cleanup)
-          .then(this.removeVendorHelper)
+          .then(this.removeVendorHelper);
       } else {
-        return BbPromise.resolve()
+        return BbPromise.resolve();
       }
-    }
+    };
 
     this.hooks = {
       'after:package:cleanup': invalidateCaches,
