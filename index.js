@@ -67,11 +67,15 @@ class ServerlessPythonRequirements {
       }
       if (this.custom().dockerizePip) {
         cmd = 'docker';
+
+        const image = this.custom().dockerImage || `lambci/lambda:build-${runtime}`;
+        this.serverless.cli.log("Docker Image: " + image)
+
         options = [
           'run', '--rm',
           '-u', process.getuid() + ':' + process.getgid(),
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
-          `lambci/lambda:build-${runtime}`,
+          `${image}`,
         ];
         options.push(...pipCmd);
       } else {

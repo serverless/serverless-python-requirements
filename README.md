@@ -33,6 +33,13 @@ custom:
   pythonRequirements:
     dockerizePip: true
 ```
+To utilize your own Docker container instead of the default, add the following to your `serverless.yml`:
+```yaml
+custom:
+  pythonRequirements:
+    dockerImage: <image name>:tag
+```
+This must be the full image name and tag to use, including the runtime specific tag if applicable.
 
 
 ## Dealing with Lambda's size limitations
