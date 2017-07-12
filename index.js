@@ -68,10 +68,7 @@ class ServerlessPythonRequirements {
       if (this.custom().dockerizePip) {
         cmd = 'docker';
 
-        let image = `lambci/lambda:build-${runtime}`
-        if (this.custom().dockerImage != null) {
-            image = this.custom().dockerImage
-        }
+        const image = this.custom().dockerImage || `lambci/lambda:build-${runtime}`;
         this.serverless.cli.log("Docker Image: " + image)
 
         options = [
