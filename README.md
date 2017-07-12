@@ -4,9 +4,10 @@
 [![circleci](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser/master.svg)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?mini=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
-A Serverless v1.0 plugin to automatically bundle dependencies from
+A Serverless v1.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
+**Requires Serverless >= v1.12**
 
 ## Install
 
