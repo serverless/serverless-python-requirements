@@ -20,7 +20,7 @@ class ServerlessPythonRequirements {
    */
   addVendorHelper() {
     if (this.custom().zip) {
-      this.serverless.cli.log('Removing Python requirements helper...');
+      this.serverless.cli.log('Adding Python requirements helper...');
 
       return fse.copyAsync(
         path.resolve(__dirname, 'unzip_requirements.py'),
@@ -34,7 +34,7 @@ class ServerlessPythonRequirements {
    */
   removeVendorHelper() {
     if (this.custom().zip && this.custom().cleanupZipHelper) {
-      this.serverless.cli.log('Adding Python requirements helper...');
+      this.serverless.cli.log('Removing Python requirements helper...');
       return fse.removeAsync('unzip_requirements.py');
     }
   };
