@@ -52,16 +52,15 @@ class ServerlessPythonRequirements {
     this.serverless.cli.log(
       `Parsing Python requirements.txt`);
 
-    var fs = require('fs');
-    var reqs = fs.readFileSync("requirements.txt").toString().split('\n');
+    const reqs = fse.readFileSync("requirements.txt").toString().split('\n');
 
-    var newReqs = ''
-    for (var i in reqs) {
-      if(reqs[i].indexOf('#no-deploy') == -1) {
-        newReqs += reqs[i] + '\n'
-      }
+    let newReqs = ''
+    for (const req of reqs) {
+      if (req.indexOf('#no-deploy') === -1) {
+          newReqs += `${req}\n`;
+        }
     }
-    fs.writeFileSync(".requirements.txt", newReqs, 'utf8');
+    fse.writeFileSync(".serverless/requirements.txt", newReqs, 'utf8');
 
     return true
   };
@@ -72,7 +71,7 @@ class ServerlessPythonRequirements {
    */
   installRequirements() {
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
-                                  '.requirements.txt'))) {
+                                  '.serverless/requirements.txt'))) {
       return BbPromise.resolve();
     }
 
@@ -85,7 +84,7 @@ class ServerlessPythonRequirements {
       let options;
       const pipCmd = [
         runtime, '-m', 'pip', '--isolated', 'install',
-        '-t', '.requirements', '-r', '.requirements.txt',
+        '-t', '.requirements', '-r', '.serverless/requirements.txt',
       ];
       if (!this.custom().dockerizePip) {
         const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
