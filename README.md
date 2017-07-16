@@ -79,7 +79,7 @@ botocore #no-deploy
 docutils #no-deploy
 jmespath #no-deploy
 python-dateutil #no-deploy
-s3transfer==0.1.10 #no-deploy
+s3transfer #no-deploy
 six #no-deploy
 ```
 
