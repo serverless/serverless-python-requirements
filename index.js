@@ -41,28 +41,28 @@ class ServerlessPythonRequirements {
 
   /**
    * parse requirements.txt into .requirements.txt, leaving out #no-deploy lines
-   * @return true
+   * @return {true}
    */
   parseRequirements() {
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
                                   'requirements.txt'))) {
-      return BbPromise.resolve();
+      return true;
     }
 
     this.serverless.cli.log(
       `Parsing Python requirements.txt`);
 
-    const reqs = fse.readFileSync("requirements.txt").toString().split('\n');
+    const reqs = fse.readFileSync('requirements.txt').toString().split('\n');
 
-    let newReqs = ''
+    let newReqs = '';
     for (const req of reqs) {
       if (req.indexOf('#no-deploy') === -1) {
           newReqs += `${req}\n`;
         }
     }
-    fse.writeFileSync(".serverless/requirements.txt", newReqs, 'utf8');
+    fse.writeFileSync('.serverless/requirements.txt', newReqs, 'utf8');
 
-    return true
+    return true;
   };
 
   /**
@@ -94,8 +94,9 @@ class ServerlessPythonRequirements {
       if (this.custom().dockerizePip) {
         cmd = 'docker';
 
-        const image = this.custom().dockerImage || `lambci/lambda:build-${runtime}`;
-        this.serverless.cli.log("Docker Image: " + image)
+        const image = this.custom().dockerImage
+         || `lambci/lambda:build-${runtime}`;
+        this.serverless.cli.log(`Docker Image: ${image}`);
 
         options = [
           'run', '--rm',
@@ -150,7 +151,7 @@ class ServerlessPythonRequirements {
             linkDest = fse.readlinkSync(`./${file}`);
           } catch (e) {}
           if (linkDest !== `.requirements/${file}`)
-            throw new Error(`Unable to link dependency "${file}" because a file
+            throw new Error(`Unable to link dependency '${file}' because a file
                              by the same name exists in this service`);
         }
       }
