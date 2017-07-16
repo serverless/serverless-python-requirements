@@ -68,6 +68,21 @@ custom:
     cleanupZipHelper: false
 ```
 
+## Omitting Packages 
+You can omit a package from deployment by adding `#no-deploy` to the
+requirement's line in `requirements.txt`. For example, this will not install
+the AWS SDKs that are already installed on Lambda, but will install numpy:
+```
+numpy
+boto3 #no-deploy
+botocore #no-deploy
+docutils #no-deploy
+jmespath #no-deploy
+python-dateutil #no-deploy
+s3transfer==0.1.10 #no-deploy
+six #no-deploy
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left
