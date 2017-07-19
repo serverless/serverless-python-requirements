@@ -60,6 +60,8 @@ class ServerlessPythonRequirements {
           newReqs += `${req}\n`;
         }
     }
+    if (!fse.existsSync('.serverless'))
+      fse.mkdirSync('.serverless');
     fse.writeFileSync('.serverless/requirements.txt', newReqs, 'utf8');
 
     return true;
