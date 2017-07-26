@@ -88,6 +88,9 @@ class ServerlessPythonRequirements {
         runtime, '-m', 'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', '.serverless/requirements.txt',
       ];
+      if (this.custom().pipCmdExtraArgs) {
+        pipCmd.push(...this.custom().pipCmdExtraArgs)
+      }
       if (!this.custom().dockerizePip) {
         const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
