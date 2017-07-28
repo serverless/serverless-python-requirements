@@ -8,7 +8,7 @@ jobs:
       - checkout
       - setup_remote_docker
       # Apt deps
-      - run: apt -y update && apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker
+      - run: apt -y update && apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker virtualenv
       # install nodejs
       - run: curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt -y install nodejs
       # install serverless
