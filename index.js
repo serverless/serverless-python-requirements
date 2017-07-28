@@ -97,7 +97,7 @@ class ServerlessPythonRequirements {
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
           `${image}`,
           'pip', 'install', '-t', '.serverless/requirements',
-          '-r', '.serverless/requirements.txt'
+          '-r', '.serverless/requirements.txt',
         ];
         if (this.custom().pipCmdExtraArgs) {
           options.push(...this.custom().pipCmdExtraArgs);
