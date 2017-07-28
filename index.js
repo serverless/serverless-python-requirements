@@ -84,19 +84,6 @@ class ServerlessPythonRequirements {
     return new BbPromise((resolve, reject) => {
       let cmd;
       let options;
-      spawnSync('virtualenv', ['-p', runtime, '.serverless/venv']);
-      const pipCmd = [
-        '.serverless/venv/bin/python', '-m', 'pip', 'install',
-        '-r', '.serverless/requirements.txt',
-      ];
-      if (this.custom().pipCmdExtraArgs) {
-        pipCmd.push(...this.custom().pipCmdExtraArgs);
-      }
-      if (!this.custom().dockerizePip) {
-        const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
-        if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
-          pipCmd.push('--system');
-      }
       if (this.custom().dockerizePip) {
         cmd = 'docker';
 
@@ -109,11 +96,23 @@ class ServerlessPythonRequirements {
           '-u', process.getuid() + ':' + process.getgid(),
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
           `${image}`,
+          'pip', 'install', '-t', '.serverless/requirements',
+          '-r', '.serverless/requirements.txt'
         ];
+        if (this.custom().pipCmdExtraArgs) {
+          options.push(...this.custom().pipCmdExtraArgs);
+        }
         options.push(...pipCmd);
       } else {
-        cmd = pipCmd[0];
-        options = pipCmd.slice(1);
+        spawnSync('virtualenv', ['-p', runtime, '.serverless/venv']);
+        cmd = '.serverless/venv/bin/python';
+        options = [
+          '-m', 'pip',
+          'install', '-r', '.serverless/requirements.txt',
+        ];
+        if (this.custom().pipCmdExtraArgs) {
+          options.push(...this.custom().pipCmdExtraArgs);
+        }
       }
       const res = spawnSync(cmd, options);
       if (res.error) {
