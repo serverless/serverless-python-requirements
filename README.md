@@ -90,6 +90,17 @@ behind to speed things up on subsequent deploys. To clean them up, run
 `sls requirements clean`. You can also create them (and `unzip_requirements` if
 using zip support) manually with `sls requirements install`.
 
+## Invalidate requirements caches on package
+
+If you are using your own Python library, you have to cleanup
+`.requirements` on any update. You can use the following option to cleanup
+`.requirements` everytime you package.
+
+```
+custom:
+  pythonRequirements:
+    invalidateCaches: true
+```
 
 ## Updating to python 3.6
 
