@@ -195,6 +195,7 @@ class ServerlessPythonRequirements {
     return Object.assign({
       zip: false,
       cleanupZipHelper: true,
+      invalidateCaches: false,
     }, this.serverless.service.custom &&
     this.serverless.service.custom.pythonRequirements || {});
   }
@@ -244,8 +245,19 @@ class ServerlessPythonRequirements {
     let after = () => BbPromise.bind(this)
         .then(this.removeVendorHelper)
         .then(this.unlinkRequirements);
+    
+    let invalidateCaches = () => {
+      if (this.custom().invalidateCaches) {
+        return BbPromise.bind(this)
+          .then(this.cleanup)
+          .then(this.removeVendorHelper)
+      } else {
+        return BbPromise.resolve()
+      }
+    }
 
     this.hooks = {
+      'after:package:cleanup': invalidateCaches,
       'before:package:createDeploymentArtifacts': before,
       'after:package:createDeploymentArtifacts': after,
       'before:deploy:function:packageFunction': before,
