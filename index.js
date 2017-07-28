@@ -149,24 +149,25 @@ class ServerlessPythonRequirements {
     if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
       const runtime = this.serverless.service.provider.runtime;
-      fse.readdirSync(`.serverless/venv/lib/${runtime}/site-packages`).map((file) => {
-          this.serverless.service.package.include.push(file);
-          this.serverless.service.package.include.push(`${file}/**`);
-        try {
-          fse.symlinkSync(
-            `.serverless/venv/lib/${runtime}/site-packages/${file}`,
-            `./${file}`);
-        } catch (exception) {
-          let linkDest = null;
+      fse.readdirSync(`.serverless/venv/lib/${runtime}/site-packages`)
+        .map((file) => {
+            this.serverless.service.package.include.push(file);
+            this.serverless.service.package.include.push(`${file}/**`);
+          const filePath =
+						`.serverless/venv/lib/${runtime}/site-packages/${file}`;
           try {
-            linkDest = fse.readlinkSync(`./${file}`);
-          } catch (e) {}
-          if (linkDest !== `.serverless/venv/lib/${runtime}/site-packages/${file}`)
-            throw new Error(`Unable to link dependency '${file}' because a file
-                             by the same name exists in this service`);
-        }
-      }
-        );
+            fse.symlinkSync(filePath, `./${file}`);
+          } catch (exception) {
+            let linkDest = null;
+            try {
+              linkDest = fse.readlinkSync(`./${file}`);
+            } catch (e) {}
+            if (linkDest !== filePath)
+              throw new Error(
+                `Unable to link dependency '${file}' because a file
+                 by the same name exists in this service`);
+          }
+        });
     }
   }
 
@@ -188,7 +189,6 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   cleanup() {
-    const runtime = this.serverless.service.provider.runtime;
     const artifacts = ['.serverless/venv'];
     if (this.custom().zip) {
       artifacts.push('.requirements.zip');
