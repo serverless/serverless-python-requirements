@@ -134,8 +134,10 @@ class ServerlessPythonRequirements {
       if (this.custom().zip) {
         this.serverless.cli.log('Zipping required Python packages...');
         const runtime = this.serverless.service.provider.runtime;
-        return zipDirectory(`.serverless/venv/lib/${runtime}/site-packages`,
-                            '.requirements.zip');
+        const pkgDir = this.custom().dockerizePip
+          ? '.serverless/requirements'
+          : `.serverless/venv/lib/${runtime}/site-packages`;
+        return zipDirectory(pkgDir, '.requirements.zip');
       }
     });
   }
@@ -148,12 +150,14 @@ class ServerlessPythonRequirements {
     if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
       const runtime = this.serverless.service.provider.runtime;
-      fse.readdirSync(`.serverless/venv/lib/${runtime}/site-packages`)
+      const pkgDir = this.custom().dockerizePip
+        ? '.serverless/requirements'
+        : `.serverless/venv/lib/${runtime}/site-packages`;
+      fse.readdirSync(pkgDir)
         .map((file) => {
             this.serverless.service.package.include.push(file);
             this.serverless.service.package.include.push(`${file}/**`);
-          const filePath =
-						`.serverless/venv/lib/${runtime}/site-packages/${file}`;
+          const filePath = `${pkgDir}/${file}`;
           try {
             fse.symlinkSync(filePath, `./${file}`);
           } catch (exception) {
@@ -178,8 +182,10 @@ class ServerlessPythonRequirements {
     if (!this.custom().zip) {
       this.serverless.cli.log('Unlinking required Python packages...');
       const runtime = this.serverless.service.provider.runtime;
-      fse.readdirSync(`.serverless/venv/lib/${runtime}/site-packages`)
-        .map((file) => fse.unlinkSync(file));
+      const pkgDir = this.custom().dockerizePip
+        ? '.serverless/requirements'
+        : `.serverless/venv/lib/${runtime}/site-packages`;
+      fse.readdirSync(pkgDir).map((file) => fse.unlinkSync(file));
     }
   }
 
