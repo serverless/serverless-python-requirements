@@ -84,10 +84,10 @@ class ServerlessPythonRequirements {
     return new BbPromise((resolve, reject) => {
       let cmd;
       let options;
+      spawnSync('virtualenv', ['-p', runtime, '.serverless/venv']);
       const pipCmd = [
-        runtime, '-m', 'pip', '--isolated', 'install',
-        '--prefix=', '--install-option="--prefix="',
-        '-t', '.requirements', '-r', '.serverless/requirements.txt',
+        '.serverless/venv/bin/python', '-m', 'pip', 'install',
+        '-r', '.serverless/requirements.txt',
       ];
       if (this.custom().pipCmdExtraArgs) {
         pipCmd.push(...this.custom().pipCmdExtraArgs);
@@ -134,7 +134,9 @@ class ServerlessPythonRequirements {
     return this.installRequirements().then(() => {
       if (this.custom().zip) {
         this.serverless.cli.log('Zipping required Python packages...');
-        return zipDirectory('.requirements', '.requirements.zip');
+        const runtime = this.serverless.service.provider.runtime;
+        return zipDirectory(`.serverless/venv/lib/${runtime}/site-packages`,
+                            '.requirements.zip');
       }
     });
   }
@@ -146,17 +148,20 @@ class ServerlessPythonRequirements {
   linkRequirements() {
     if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
-      fse.readdirSync('.requirements').map((file) => {
+      const runtime = this.serverless.service.provider.runtime;
+      fse.readdirSync(`.serverless/venv/lib/${runtime}/site-packages`).map((file) => {
           this.serverless.service.package.include.push(file);
           this.serverless.service.package.include.push(`${file}/**`);
         try {
-          fse.symlinkSync(`.requirements/${file}`, `./${file}`);
+          fse.symlinkSync(
+            `.serverless/venv/lib/${runtime}/site-packages/${file}`,
+            `./${file}`);
         } catch (exception) {
           let linkDest = null;
           try {
             linkDest = fse.readlinkSync(`./${file}`);
           } catch (e) {}
-          if (linkDest !== `.requirements/${file}`)
+          if (linkDest !== `.serverless/venv/lib/${runtime}/site-packages/${file}`)
             throw new Error(`Unable to link dependency '${file}' because a file
                              by the same name exists in this service`);
         }
@@ -172,7 +177,9 @@ class ServerlessPythonRequirements {
   unlinkRequirements() {
     if (!this.custom().zip) {
       this.serverless.cli.log('Unlinking required Python packages...');
-      fse.readdirSync('.requirements').map((file) => fse.unlinkSync(file));
+      const runtime = this.serverless.service.provider.runtime;
+      fse.readdirSync(`.serverless/venv/lib/${runtime}/site-packages`)
+        .map((file) => fse.unlinkSync(file));
     }
   }
 
@@ -181,7 +188,8 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   cleanup() {
-    const artifacts = ['.requirements'];
+    const runtime = this.serverless.service.provider.runtime;
+    const artifacts = ['.serverless/venv'];
     if (this.custom().zip) {
       artifacts.push('.requirements.zip');
       artifacts.push('unzip_requirements.py');
