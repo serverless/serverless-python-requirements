@@ -85,7 +85,7 @@ class ServerlessPythonRequirements {
       let cmd;
       let options;
       const pipCmd = [
-        runtime, '-m', 'pip', '--isolated', 'install',
+        runtime, '-m', 'pip', '--isolated', 'install', '--prefix=',
         '-t', '.requirements', '-r', '.serverless/requirements.txt',
       ];
       if (this.custom().pipCmdExtraArgs) {
