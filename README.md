@@ -83,6 +83,17 @@ s3transfer #no-deploy
 six #no-deploy
 ```
 
+## extra pip arguments
+You can specify extra arguments to be passed to pip like this:
+```yaml
+custom:
+  pythonRequirements:
+      dockerizePip: true
+      pipCmdExtraArgs:
+          - --cache-dir
+          - .requirements-cache
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left
