@@ -29,6 +29,15 @@ teardown() {
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
 
+@test "py3.6 can package requests with zip & dockerizePip option" {
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' -e 's/zip: *false/zip: true/' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/.requirements.zip puck/unzip_requirements.py
+}
+
 @test "py3.6 can package requests with dockerizePip option" {
     [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
@@ -47,6 +56,15 @@ teardown() {
 
 @test "py2.7 can package requests with zip option" {
     sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/zip: *false/zip: true/' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/.requirements.zip puck/unzip_requirements.py
+}
+
+@test "py2.7 can package requests with zip & dockerizePip option" {
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/zip: *false/zip: true/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py

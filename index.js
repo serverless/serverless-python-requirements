@@ -22,6 +22,8 @@ class ServerlessPythonRequirements {
     if (this.custom().zip) {
       this.serverless.cli.log('Adding Python requirements helper...');
 
+      this.serverless.service.package.include.push('unzip_requirements.py');
+
       return fse.copyAsync(
         path.resolve(__dirname, 'unzip_requirements.py'),
         path.join(this.serverless.config.servicePath, 'unzip_requirements.py'));
@@ -133,6 +135,7 @@ class ServerlessPythonRequirements {
     return this.installRequirements().then(() => {
       if (this.custom().zip) {
         this.serverless.cli.log('Zipping required Python packages...');
+        this.serverless.service.package.include.push('.requirements.zip');
         return zipDirectory('.requirements', '.requirements.zip');
       }
     });

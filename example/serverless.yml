@@ -12,6 +12,10 @@ custom:
     cleanupZipHelper: true
     dockerizePip: false
 
+package:
+  exclude:
+    - '**/*'
+
 functions:
   hello:
     handler: handler.hello
