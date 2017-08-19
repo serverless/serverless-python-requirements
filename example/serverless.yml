@@ -11,6 +11,7 @@ custom:
     zip: false
     cleanupZipHelper: true
     dockerizePip: false
+    noDeploy: []
 
 package:
   exclude:

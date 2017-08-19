@@ -42,40 +42,12 @@ class ServerlessPythonRequirements {
   };
 
   /**
-   * parse requirements.txt into .requirements.txt, leaving out #no-deploy lines
-   * @return {true}
-   */
-  parseRequirements() {
-    if (!fse.existsSync(path.join(this.serverless.config.servicePath,
-                                  'requirements.txt'))) {
-      return true;
-    }
-
-    this.serverless.cli.log(
-      `Parsing Python requirements.txt`);
-
-    const reqs = fse.readFileSync('requirements.txt').toString().split('\n');
-
-    let newReqs = '';
-    for (const req of reqs) {
-      if (req.indexOf('#no-deploy') === -1) {
-          newReqs += `${req}\n`;
-        }
-    }
-    if (!fse.existsSync('.serverless'))
-      fse.mkdirSync('.serverless');
-    fse.writeFileSync('.serverless/requirements.txt', newReqs, 'utf8');
-
-    return true;
-  };
-
-  /**
    * pip install the requirements to the .requirements directory
    * @return {Promise}
    */
   installRequirements() {
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
-                                  '.serverless/requirements.txt'))) {
+                                  'requirements.txt'))) {
       return BbPromise.resolve();
     }
 
@@ -88,7 +60,7 @@ class ServerlessPythonRequirements {
       let options;
       const pipCmd = [
         runtime, '-m', 'pip', '--isolated', 'install',
-        '-t', '.requirements', '-r', '.serverless/requirements.txt',
+        '-t', '.requirements', '-r', 'requirements.txt',
       ];
       if (this.custom().pipCmdExtraArgs) {
         pipCmd.push(...this.custom().pipCmdExtraArgs);
@@ -148,9 +120,12 @@ class ServerlessPythonRequirements {
   linkRequirements() {
     if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
+      const noDeploy = new Set(this.custom().noDeploy || []);
       fse.readdirSync('.requirements').map((file) => {
-          this.serverless.service.package.include.push(file);
-          this.serverless.service.package.include.push(`${file}/**`);
+        if (noDeploy.has(file))
+          return;
+        this.serverless.service.package.include.push(file);
+        this.serverless.service.package.include.push(`${file}/**`);
         try {
           fse.symlinkSync(`.requirements/${file}`, `./${file}`);
         } catch (exception) {
@@ -159,11 +134,10 @@ class ServerlessPythonRequirements {
             linkDest = fse.readlinkSync(`./${file}`);
           } catch (e) {}
           if (linkDest !== `.requirements/${file}`)
-            throw new Error(`Unable to link dependency '${file}' because a file
-                             by the same name exists in this service`);
+          throw new Error(`Unable to link dependency '${file}' because a file
+                          by the same name exists in this service`);
         }
-      }
-        );
+      });
     }
   }
 
@@ -244,7 +218,6 @@ class ServerlessPythonRequirements {
 
     let before = () => BbPromise.bind(this)
         .then(this.addVendorHelper)
-        .then(this.parseRequirements)
         .then(this.packRequirements)
         .then(this.linkRequirements);
 
@@ -270,7 +243,6 @@ class ServerlessPythonRequirements {
       'after:deploy:function:packageFunction': after,
       'requirements:install:install': () => BbPromise.bind(this)
         .then(this.addVendorHelper)
-        .then(this.parseRequirements)
         .then(this.packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
