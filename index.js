@@ -148,7 +148,7 @@ class ServerlessPythonRequirements {
   linkRequirements() {
     if (!this.custom().zip) {
       this.serverless.cli.log('Linking required Python packages...');
-      fse.readdirSync('.requirements').map((file) => {
+      fse.readdirSync('.requirements').forEach((file) => {
         this.serverless.service.package.include.push(file);
         this.serverless.service.package.include.push(`${file}/**`);
         try {
