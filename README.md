@@ -69,18 +69,21 @@ custom:
 ```
 
 ## Omitting Packages 
-You can omit a package from deployment by adding `#no-deploy` to the
-requirement's line in `requirements.txt`. For example, this will not install
-the AWS SDKs that are already installed on Lambda, but will install numpy:
-```
-numpy
-boto3 #no-deploy
-botocore #no-deploy
-docutils #no-deploy
-jmespath #no-deploy
-python-dateutil #no-deploy
-s3transfer #no-deploy
-six #no-deploy
+You can omit a package from deployment with the `noDeploy` option. Note that
+dependencies of omitted packages must explicitly be omitted too.
+For example, this will not install the AWS SDKs that are already installed on
+Lambda:
+```yaml
+custom:
+  pythonRequirements:
+    noDeploy:
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - python-dateutil
+      - s3transfer
+      - six
 ```
 
 ## extra pip arguments
@@ -94,11 +97,21 @@ custom:
           - .requirements-cache
 ```
 
+## Customize requirements file name
+[Some `pip` workflows involve using requirements files not named
+`requirements.txt`](https://www.kennethreitz.org/essays/a-better-pip-workflow).
+To support these, this plugin has the following option:
+
+```yaml
+custom:
+  pythonRequirements:
+    fileName: requirements-prod.txt
+```
+
 ## Customize Python executable
 Sometimes your Python executable isn't available on your `$PATH` as `python2.7`
 or `python3.6` (for example, windows or using pyenv).
 To support this, this plugin has the following option:
-
 ```yaml
 custom:
   pythonRequirements:
