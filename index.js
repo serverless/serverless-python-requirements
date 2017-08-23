@@ -46,8 +46,9 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   installRequirements() {
+    const fileName = this.custom().fileName || 'requirements.txt';
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
-                                  'requirements.txt'))) {
+                                  fileName))) {
       return BbPromise.resolve();
     }
 
@@ -60,7 +61,7 @@ class ServerlessPythonRequirements {
       let options;
       const pipCmd = [
         runtime, '-m', 'pip', '--isolated', 'install',
-        '-t', '.requirements', '-r', 'requirements.txt',
+        '-t', '.requirements', '-r', fileName,
       ];
       if (this.custom().pipCmdExtraArgs) {
         pipCmd.push(...this.custom().pipCmdExtraArgs);

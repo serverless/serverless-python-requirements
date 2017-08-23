@@ -97,6 +97,17 @@ custom:
           - .requirements-cache
 ```
 
+## Customize requirements file name
+[Some `pip` workflows involve using requirements files not named
+`requirements.txt`](https://www.kennethreitz.org/essays/a-better-pip-workflow).
+To support these, this plugin has the following option:
+
+```yaml
+custom:
+  pythonRequirements:
+    fileName: requirements-prod.txt
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left
