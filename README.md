@@ -69,18 +69,21 @@ custom:
 ```
 
 ## Omitting Packages 
-You can omit a package from deployment by adding `#no-deploy` to the
-requirement's line in `requirements.txt`. For example, this will not install
-the AWS SDKs that are already installed on Lambda, but will install numpy:
-```
-numpy
-boto3 #no-deploy
-botocore #no-deploy
-docutils #no-deploy
-jmespath #no-deploy
-python-dateutil #no-deploy
-s3transfer #no-deploy
-six #no-deploy
+You can omit a package from deployment with the `noDeploy` option. Note that
+dependencies of omitted packages must explicitly be omitted too.
+For example, this will not install the AWS SDKs that are already installed on
+Lambda:
+```yaml
+custom:
+  pythonRequirements:
+    noDeploy:
+      - boto3
+      - botocore
+      - docutils
+      - jmespath
+      - python-dateutil
+      - s3transfer
+      - six
 ```
 
 ## extra pip arguments
