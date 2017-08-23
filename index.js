@@ -53,6 +53,7 @@ class ServerlessPythonRequirements {
     }
 
     const runtime = this.serverless.service.provider.runtime;
+    const pythonBin = this.custom().pythonBin || runtime;
     this.serverless.cli.log(
       `Installing required Python packages for runtime ${runtime}...`);
 
@@ -60,14 +61,15 @@ class ServerlessPythonRequirements {
       let cmd;
       let options;
       const pipCmd = [
-        runtime, '-m', 'pip', '--isolated', 'install',
+        pythonBin, '-m', 'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', fileName,
       ];
       if (this.custom().pipCmdExtraArgs) {
         pipCmd.push(...this.custom().pipCmdExtraArgs);
       }
       if (!this.custom().dockerizePip) {
-        const pipTestRes = spawnSync(runtime, ['-m', 'pip', 'help', 'install']);
+        const pipTestRes = spawnSync(
+          pythonBin, ['-m', 'pip', 'help', 'install']);
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
           pipCmd.push('--system');
       }

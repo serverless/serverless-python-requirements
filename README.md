@@ -108,6 +108,16 @@ custom:
     fileName: requirements-prod.txt
 ```
 
+## Customize Python executable
+Sometimes your Python executable isn't available on your `$PATH` as `python2.7`
+or `python3.6` (for example, windows or using pyenv).
+To support this, this plugin has the following option:
+```yaml
+custom:
+  pythonRequirements:
+    pythonBin: /opt/python3.6/bin/python
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left
