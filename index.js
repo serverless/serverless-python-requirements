@@ -82,10 +82,11 @@ class ServerlessPythonRequirements {
 
         options = [
           'run', '--rm',
-          '-u', process.getuid() + ':' + process.getgid(),
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
           `${image}`,
         ];
+        if (process.platform === 'linux')
+          options.push('-u', `${process.getuid()}:${process.getgid()}`);
         options.push(...pipCmd);
       } else {
         cmd = pipCmd[0];
