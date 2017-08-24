@@ -210,15 +210,15 @@ class ServerlessPythonRequirements {
       _.set(this.serverless.service, ['package', 'include'], []);
 
     this.commands = {
-      'requirements': {
+      requirements: {
         commands: {
-          'clean': {
+          clean: {
             usage: 'Remove .requirements and requirements.zip',
             lifecycleEvents: [
               'clean',
             ],
           },
-          'install': {
+          install: {
             usage: 'install requirements manually',
             lifecycleEvents: [
               'install',
@@ -228,23 +228,22 @@ class ServerlessPythonRequirements {
       },
     };
 
-    let before = () => BbPromise.bind(this)
-        .then(this.addVendorHelper)
-        .then(this.packRequirements)
-        .then(this.linkRequirements);
+    const before = () => BbPromise.bind(this)
+      .then(this.addVendorHelper)
+      .then(this.packRequirements)
+      .then(this.linkRequirements);
 
-    let after = () => BbPromise.bind(this)
-        .then(this.removeVendorHelper)
-        .then(this.unlinkRequirements);
+    const after = () => BbPromise.bind(this)
+      .then(this.removeVendorHelper)
+      .then(this.unlinkRequirements);
 
-    let invalidateCaches = () => {
+    const invalidateCaches = () => {
       if (this.custom().invalidateCaches) {
         return BbPromise.bind(this)
           .then(this.cleanup)
           .then(this.removeVendorHelper);
-      } else {
-        return BbPromise.resolve();
       }
+      return BbPromise.resolve();
     };
 
     this.hooks = {
