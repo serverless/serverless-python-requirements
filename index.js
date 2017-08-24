@@ -210,15 +210,15 @@ class ServerlessPythonRequirements {
       _.set(this.serverless.service, ['package', 'include'], []);
 
     this.commands = {
-      'requirements': {
+      requirements: {
         commands: {
-          'clean': {
+          clean: {
             usage: 'Remove .requirements and requirements.zip',
             lifecycleEvents: [
               'clean',
             ],
           },
-          'install': {
+          install: {
             usage: 'install requirements manually',
             lifecycleEvents: [
               'install',
