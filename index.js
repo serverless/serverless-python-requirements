@@ -242,9 +242,8 @@ class ServerlessPythonRequirements {
         return BbPromise.bind(this)
           .then(this.cleanup)
           .then(this.removeVendorHelper);
-      } else {
-        return BbPromise.resolve();
       }
+      return BbPromise.resolve();
     };
 
     this.hooks = {
