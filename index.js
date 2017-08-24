@@ -228,16 +228,16 @@ class ServerlessPythonRequirements {
       },
     };
 
-    let before = () => BbPromise.bind(this)
+    const before = () => BbPromise.bind(this)
         .then(this.addVendorHelper)
         .then(this.packRequirements)
         .then(this.linkRequirements);
 
-    let after = () => BbPromise.bind(this)
+    const after = () => BbPromise.bind(this)
         .then(this.removeVendorHelper)
         .then(this.unlinkRequirements);
 
-    let invalidateCaches = () => {
+    const invalidateCaches = () => {
       if (this.custom().invalidateCaches) {
         return BbPromise.bind(this)
           .then(this.cleanup)
