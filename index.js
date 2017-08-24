@@ -122,7 +122,7 @@ class ServerlessPythonRequirements {
    * @return {undefined}
    */
   linkRequirements() {
-    if (!this.custom().zip) {
+    if (!this.custom().zip && fse.existsSync('.requirements')) {
       this.serverless.cli.log('Linking required Python packages...');
       const noDeploy = new Set(this.custom().noDeploy || []);
       fse.readdirSync('.requirements').map((file) => {
@@ -150,7 +150,7 @@ class ServerlessPythonRequirements {
    * @return {undefined}
    */
   unlinkRequirements() {
-    if (!this.custom().zip) {
+    if (!this.custom().zip && fse.existsSync('.requirements')) {
       this.serverless.cli.log('Unlinking required Python packages...');
       fse.readdirSync('.requirements').map((file) => fse.unlinkSync(file));
     }
