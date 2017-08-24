@@ -68,8 +68,15 @@ class ServerlessPythonRequirements {
         pipCmd.push(...this.custom().pipCmdExtraArgs);
       }
       if (!this.custom().dockerizePip) {
+        // Check if pip has Debian's --system option and set it if so
         const pipTestRes = spawnSync(
           pythonBin, ['-m', 'pip', 'help', 'install']);
+          if (pipTestRes.error) {
+            if (pipTestRes.error.code === 'ENOENT')
+              return reject(`${pythonBin} not found! ` +
+                            'Try the pythonBin option.');
+            return reject(pipTestRes.error);
+          }
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
           pipCmd.push('--system');
       }
@@ -94,11 +101,12 @@ class ServerlessPythonRequirements {
       }
       const res = spawnSync(cmd, options);
       if (res.error) {
+        if (res.error.code === 'ENOENT')
+          return reject(`${pythonBin} not found! Try the pythonBin option.`);
         return reject(res.error);
       }
-      if (res.status != 0) {
+      if (res.status != 0)
         return reject(res.stderr);
-      }
       resolve();
     });
   };

@@ -12,6 +12,7 @@ custom:
     cleanupZipHelper: true
     dockerizePip: false
     noDeploy: []
+    pythonBin: python4
 
 package:
   exclude:
