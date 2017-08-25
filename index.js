@@ -146,8 +146,8 @@ class ServerlessPythonRequirements {
             linkDest = fse.readlinkSync(`./${file}`);
           } catch (e) {}
           if (linkDest !== `.requirements/${file}`) {
-            const errorMessage = `Unable to link dependency '${file}' because a file ` +
-              'by the same name exists in this service';
+            const errorMessage = `Unable to link dependency '${file}' ` +
+              'because a file by the same name exists in this service';
             throw new Error(errorMessage);
           }
         }
