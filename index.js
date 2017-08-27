@@ -162,7 +162,12 @@ class ServerlessPythonRequirements {
   unlinkRequirements() {
     if (!this.custom().zip && fse.existsSync('.requirements')) {
       this.serverless.cli.log('Unlinking required Python packages...');
-      fse.readdirSync('.requirements').map((file) => fse.unlinkSync(file));
+      const noDeploy = new Set(this.custom().noDeploy || []);
+      fse.readdirSync('.requirements').map((file) => {
+        if (noDeploy.has(file))
+          return;
+        fse.unlinkSync(file);
+      });
     }
   }
 
