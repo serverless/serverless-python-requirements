@@ -93,7 +93,7 @@ class ServerlessPythonRequirements {
           `${image}`,
         ];
         if (process.platform === 'linux')
-          options.push('-u', `${process.getuid()}:${process.getgid()}`);
+          options.push('-u', '0');
         options.push(...pipCmd);
       } else {
         cmd = pipCmd[0];
