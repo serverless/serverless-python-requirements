@@ -71,12 +71,12 @@ class ServerlessPythonRequirements {
         // Check if pip has Debian's --system option and set it if so
         const pipTestRes = spawnSync(
           pythonBin, ['-m', 'pip', 'help', 'install']);
-          if (pipTestRes.error) {
-            if (pipTestRes.error.code === 'ENOENT')
-              return reject(`${pythonBin} not found! ` +
-                            'Try the pythonBin option.');
-            return reject(pipTestRes.error);
-          }
+        if (pipTestRes.error) {
+          if (pipTestRes.error.code === 'ENOENT')
+            return reject(`${pythonBin} not found! ` +
+                          'Try the pythonBin option.');
+          return reject(pipTestRes.error);
+        }
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
           pipCmd.push('--system');
       }
