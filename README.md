@@ -8,7 +8,8 @@ A Serverless v1.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
 **Requires Serverless >= v1.12**
-**NOTE: ** This the documentation of the v3 beta. For stable 2.5.0 docs see:
+
+**NOTE:** This the documentation of the v3 beta. For stable 2.5.0 docs see:
 https://github.com/UnitedIncome/serverless-python-requirements/tree/v2.5.0
 
 ## Install
