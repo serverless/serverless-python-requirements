@@ -137,6 +137,12 @@ custom:
     invalidateCaches: true
 ```
 
+## Experimental (master/3-beta.3) Pipenv support :sparkles::cake::sparkles:
+If you include a `Pipfile` and have `pipenv` installed instead of a
+`requirements.txt` this will use `pipenv` to install your requirements and link
+them. It doesn't currently work with either the `zip` or `dockerizePip`
+options.
+
 ## Updating to python 3.6
 
 This requires an update to your serverless.yml:
