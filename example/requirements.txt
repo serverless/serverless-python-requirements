@@ -1,2 +1,3 @@
-requests
-six
+flask
+hug
+boto3
