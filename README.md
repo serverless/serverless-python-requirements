@@ -9,13 +9,14 @@ A Serverless v1.x plugin to automatically bundle dependencies from
 
 **Requires Serverless >= v1.12**
 
-**NOTE:** This the documentation of the v3 beta. For stable 2.5.0 docs see:
-https://github.com/UnitedIncome/serverless-python-requirements/tree/v2.5.0
+**NOTE:** This the documentation of the v3 beta. For stable 2.5.0 docs see the
+[2.5.0 docs](https://github.com/UnitedIncome/serverless-python-requirements/tree/v2.5.0)
+or install the beta: `npm i serverless-python-requirements@beta`
 
 ## Install
 
 ```
-npm install --save serverless-python-requirements
+npm install serverless-python-requirements
 ```
 
 Add the plugin to your `serverless.yml`:
