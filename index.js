@@ -280,6 +280,17 @@ class ServerlessPythonRequirements {
       zip: false,
       cleanupZipHelper: true,
       invalidateCaches: false,
+      noDeploy: [
+        'boto3',
+        'botocore',
+        'docutils',
+        'jmespath',
+        'python-dateutil',
+        's3transfer',
+        'six',
+        'pip',
+        'setuptools',
+      ],
     }, this.serverless.service.custom &&
     this.serverless.service.custom.pythonRequirements || {});
   }

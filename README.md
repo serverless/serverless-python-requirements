@@ -78,7 +78,7 @@ custom:
 ## Omitting Packages 
 You can omit a package from deployment with the `noDeploy` option. Note that
 dependencies of omitted packages must explicitly be omitted too.
-For example, this will not install the AWS SDKs that are already installed on
+By default, this will not install the AWS SDKs that are already installed on
 Lambda:
 ```yaml
 custom:
@@ -91,6 +91,8 @@ custom:
       - python-dateutil
       - s3transfer
       - six
+      - pip
+      - setuptools
 ```
 
 ## extra pip arguments
