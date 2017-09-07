@@ -1,0 +1,80 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "039ff31f86064e74d67f54564f5ca30af03869ff98333056949f638d1571c565"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "boto3": {
+            "version": "==1.4.7"
+        },
+        "botocore": {
+            "version": "==1.7.5"
+        },
+        "certifi": {
+            "version": "==2017.7.27.1"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "click": {
+            "version": "==6.7"
+        },
+        "docutils": {
+            "version": "==0.14"
+        },
+        "falcon": {
+            "version": "==1.2.0"
+        },
+        "flask": {
+            "version": "==0.12.2"
+        },
+        "hug": {
+            "version": "==2.3.1"
+        },
+        "idna": {
+            "version": "==2.6"
+        },
+        "itsdangerous": {
+            "version": "==0.24"
+        },
+        "jinja2": {
+            "version": "==2.9.6"
+        },
+        "jmespath": {
+            "version": "==0.9.3"
+        },
+        "markupsafe": {
+            "version": "==1.0"
+        },
+        "python-dateutil": {
+            "version": "==2.6.1"
+        },
+        "python-mimeparse": {
+            "version": "==1.6.0"
+        },
+        "requests": {
+            "version": "==2.18.4"
+        },
+        "s3transfer": {
+            "version": "==0.1.11"
+        },
+        "six": {
+            "version": "==1.10.0"
+        },
+        "urllib3": {
+            "version": "==1.22"
+        },
+        "werkzeug": {
+            "version": "==0.12.2"
+        }
+    },
+    "develop": {}
+}
