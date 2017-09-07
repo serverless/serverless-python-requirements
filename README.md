@@ -23,6 +23,10 @@ Add the plugin to your `serverless.yml`:
 ```yaml
 plugins:
   - serverless-python-requirements
+package: # this section is optional, but suggested. It reduces deploy size
+  exclude:
+    - node_modules/**  # Omit JavaScript dependencies, you're using Python!!
+    - venv/**  # Omit your virtualenv if you've created one locally for development
 ```
 
 
