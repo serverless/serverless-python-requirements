@@ -107,6 +107,7 @@ teardown() {
 
 @test "pipenv py3.6 can package flask with default options" {
     cd ../pipenv-example
+    npm i ..
     cp serverless.yml serverless.yml.bak  # fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -115,6 +116,7 @@ teardown() {
 
 @test "pipenv py3.6 can package flask with zip option" {
     cd ../pipenv-example
+    npm i ..
     sed -i'.bak' -e 's/zip: *false/zip: true/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -123,6 +125,7 @@ teardown() {
 
 @test "pipenv py3.6 doesn't package boto3 by default" {
     cd ../pipenv-example
+    npm i ..
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/boto3
@@ -130,6 +133,7 @@ teardown() {
 
 @test "pipenv py3.6 doesn't package hug with noDeploy option" {
     cd ../pipenv-example
+    npm i ..
     sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [hug]/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
