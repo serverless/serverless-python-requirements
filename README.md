@@ -16,19 +16,10 @@ or install the beta: `npm i serverless-python-requirements@beta`
 ## Install
 
 ```
-npm install serverless-python-requirements
+sls plugin install -n serverless-python-requirements
 ```
 
-Add the plugin to your `serverless.yml`:
-
-```yaml
-plugins:
-  - serverless-python-requirements
-package: # this section is optional, but suggested. It reduces deploy size
-  exclude:
-    - node_modules/**  # Omit JavaScript dependencies, you're using Python!!
-    - venv/**  # Omit your virtualenv if you've created one locally for development
-```
+If using sls < 1.22 see [the old instructions](https://github.com/UnitedIncome/serverless-python-requirements/tree/v3.0.0-beta.4)
 
 
 ## Cross compiling!
