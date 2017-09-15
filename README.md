@@ -11,12 +11,10 @@ A Serverless v1.x plugin to automatically bundle dependencies from
 
 **NOTE:** This the documentation of the v3 beta. For stable 2.5.0 docs see the
 [2.5.0 docs](https://github.com/UnitedIncome/serverless-python-requirements/tree/v2.5.0)
-or install the beta: `npm i serverless-python-requirements@beta`
-
 ## Install
 
 ```
-sls plugin install -n serverless-python-requirements
+sls plugin install -n serverless-python-requirements@beta
 ```
 
 If using sls < 1.22 see [the old instructions](https://github.com/UnitedIncome/serverless-python-requirements/tree/v3.0.0-beta.4)
