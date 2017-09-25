@@ -117,10 +117,10 @@ class ServerlessPythonRequirements {
         options = [
           'run', '--rm',
           '-v', `${this.serverless.config.servicePath}:/var/task:z`,
-          `${image}`,
         ];
         if (process.platform === 'linux')
           options.push('-u', `${process.getuid()}:${process.getgid()}`);
+        options.push(`${image}`);
         options.push(...pipCmd);
       } else {
         cmd = pipCmd[0];
