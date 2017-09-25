@@ -133,3 +133,4 @@ custom:
  * @rmax - the extra pip args option
  * @bsamuel-ui - Python 3 support
  * @suxor42 - fixing permission issues with Docker on Linux
+ * @mbeltran213 - fixing docker linux -u option bug
