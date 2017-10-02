@@ -45,18 +45,16 @@ class ServerlessPythonRequirements {
    * pipenv install
    * @return {Promise}
    */
-  installPipfile() {
+  pipfileToRequirements() {
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
                                   'Pipfile'))) {
       return BbPromise.resolve();
     }
 
-    const runtime = this.serverless.service.provider.runtime;
-    this.serverless.cli.log(
-      `Installing Pipfile Python packages for runtime ${runtime}...`);
+    this.serverless.cli.log('Generating requirements.txt from Pipfile...');
 
     return new BbPromise((resolve, reject) => {
-      const res = spawnSync('pipenv', ['--python', runtime, 'install']);
+      const res = spawnSync('pipenv', ['lock', '--requirements']);
       if (res.error) {
         if (res.error.code === 'ENOENT')
           return reject(
@@ -65,6 +63,7 @@ class ServerlessPythonRequirements {
       }
       if (res.status != 0)
         return reject(res.stderr);
+      fse.writeFileSync('.serverless/requirements.txt', res.stdout);
       resolve();
     });
   };
@@ -73,7 +72,14 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   installRequirements() {
-    const fileName = this.custom().fileName || 'requirements.txt';
+    let fileName = 'requirements.txt';
+    if (fse.existsSync(path.join(this.serverless.config.servicePath,
+                                  'Pipfile'))) {
+      fileName = '.serverless/requirements.txt';
+    } else if (this.custom().fileName) {
+      fileName = this.custom().fileName;
+    }
+
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
                                   fileName))) {
       return BbPromise.resolve();
@@ -153,41 +159,6 @@ class ServerlessPythonRequirements {
   }
 
   /**
-   * link all the files in pipenv's site-packages to the service directory root
-   * @return {undefined}
-   */
-  linkPipenv() {
-    if (fse.existsSync(path.join(this.serverless.config.servicePath,
-                                  'Pipfile'))) {
-      const runtime = this.serverless.service.provider.runtime;
-      this.serverless.cli.log('Linking pipenv Python packages...');
-      const noDeploy = new Set(this.custom().noDeploy || []);
-      const res = spawnSync('pipenv', ['--python', runtime, '--venv']);
-      const sitePackages =
-        `${res.stdout.toString().slice(0, -1)}/lib/${runtime}/site-packages`;
-      fse.readdirSync(sitePackages).map((file) => {
-        if (noDeploy.has(file))
-          return;
-        this.serverless.service.package.include.push(file);
-        this.serverless.service.package.include.push(`${file}/**`);
-        try {
-          fse.symlinkSync(`${sitePackages}/${file}`, `./${file}`);
-        } catch (exception) {
-          let linkDest = null;
-          try {
-            linkDest = fse.readlinkSync(`./${file}`);
-          } catch (e) {
-            if (linkDest !== `${sitePackages}/${file}`) {
-              const errorMessage = `Unable to link dependency '${file}' ` +
-                'because a file by the same name exists in this service';
-              throw new Error(errorMessage);
-            }
-          }
-        }
-      });
-    }
-  }
-  /**
    * link all the files in .requirements to the service directory root
    * @return {undefined}
    */
@@ -214,28 +185,6 @@ class ServerlessPythonRequirements {
             }
           }
         }
-      });
-    }
-  }
-
-  /**
-   * unlink all the files in pipenv's site-packages from the service
-   * directory root
-   * @return {undefined}
-   */
-  unlinkPipenv() {
-    if (fse.existsSync(path.join(this.serverless.config.servicePath,
-                                  'Pipfile'))) {
-      const runtime = this.serverless.service.provider.runtime;
-      this.serverless.cli.log('Unlinking pipenv Python packages...');
-      const noDeploy = new Set(this.custom().noDeploy || []);
-      const res = spawnSync('pipenv', ['--python', runtime, '--venv']);
-      const sitePackages =
-        `${res.stdout.toString().slice(0, -1)}/lib/${runtime}/site-packages`;
-      fse.readdirSync(sitePackages).map((file) => {
-        if (noDeploy.has(file))
-          return;
-        fse.unlinkSync(file);
       });
     }
   }
@@ -329,28 +278,16 @@ class ServerlessPythonRequirements {
           },
         },
       },
-      pipenv: {
-        commands: {
-          install: {
-            usage: 'install pipenv manually',
-            lifecycleEvents: [
-              'install',
-            ],
-          },
-        },
-      },
     };
 
     const before = () => BbPromise.bind(this)
+      .then(this.pipfileToRequirements)
       .then(this.addVendorHelper)
       .then(this.packRequirements)
-      .then(this.installPipfile)
-      .then(this.linkPipenv)
       .then(this.linkRequirements);
 
     const after = () => BbPromise.bind(this)
       .then(this.removeVendorHelper)
-      .then(this.unlinkPipenv)
       .then(this.unlinkRequirements);
 
     const invalidateCaches = () => {
@@ -374,8 +311,6 @@ class ServerlessPythonRequirements {
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
         .then(this.removeVendorHelper),
-      'pipenv:install:install': () => BbPromise.bind(this)
-        .then(this.installPipfile),
     };
   }
 }
