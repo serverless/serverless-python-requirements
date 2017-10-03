@@ -125,12 +125,12 @@ custom:
 ```
 
 ## Contributors
- * @dschep - Lead developer & maintainer
- * @azurelogic - logging & documentation fixes
- * @abetomo - style & linting
- * @angstwad - `deploy --function` support
- * @mather - the cache invalidation option
- * @rmax - the extra pip args option
- * @bsamuel-ui - Python 3 support
- * @suxor42 - fixing permission issues with Docker on Linux
- * @mbeltran213 - fixing docker linux -u option bug
+ * [@dschep](https://github.com/dschep) - Lead developer & maintainer
+ * [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
+ * [@abetomo](https://github.com/abetomo) - style & linting
+ * [@angstwad](https://github.com/angstwad) - `deploy --function` support
+ * [@mather](https://github.com/mather) - the cache invalidation option
+ * [@rmax](https://github.com/rmax) - the extra pip args option
+ * [@bsamuel-ui](https://github.com/bsamuel) - Python 3 support
+ * [@suxor42](https://github.com/suxor42) - fixing permission issues with Docker on Linux
+ * [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
