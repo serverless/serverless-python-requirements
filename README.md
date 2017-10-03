@@ -131,6 +131,6 @@ custom:
  * [@angstwad](https://github.com/angstwad) - `deploy --function` support
  * [@mather](https://github.com/mather) - the cache invalidation option
  * [@rmax](https://github.com/rmax) - the extra pip args option
- * [@bsamuel-ui](https://github.com/bsamuel) - Python 3 support
+ * [@bsamuel-ui](https://github.com/bsamuel-ui) - Python 3 support
  * [@suxor42](https://github.com/suxor42) - fixing permission issues with Docker on Linux
  * [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
