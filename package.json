@@ -29,7 +29,7 @@
   ],
   "files": [
     "index.js",
-    "zipService.js",
+    "lib/*.js",
     "LICENSE",
     "package.json",
     "unzip_requirements.py",
