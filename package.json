@@ -50,6 +50,7 @@
     "bluebird": "^3.0.6",
     "fs-extra": "^3.0.1",
     "glob-all": "^3.1.0",
+    "graceful-fs": "^4.1.11",
     "lodash": "^4.13.1"
   }
 }

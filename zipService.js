@@ -5,7 +5,7 @@
 const archiver = require('archiver');
 const BbPromise = require('bluebird');
 const path = require('path');
-const fs = require('fs');
+const fs = require('graceful-fs');
 const glob = require('glob-all');
 
 module.exports = {
