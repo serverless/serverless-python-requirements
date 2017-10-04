@@ -19,7 +19,7 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   addVendorHelper() {
-    if (this.custom().zip) {
+    if (this.options.zip) {
       this.serverless.cli.log('Adding Python requirements helper...');
 
       this.serverless.service.package.include.push('unzip_requirements.py');
@@ -35,7 +35,7 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   removeVendorHelper() {
-    if (this.custom().zip && this.custom().cleanupZipHelper) {
+    if (this.options.zip && this.options.cleanupZipHelper) {
       this.serverless.cli.log('Removing Python requirements helper...');
       return fse.removeAsync('unzip_requirements.py');
     }
@@ -72,12 +72,10 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   installRequirements() {
-    let fileName = 'requirements.txt';
+    let fileName = this.options.fileName;
     if (fse.existsSync(path.join(this.serverless.config.servicePath,
                                   'Pipfile'))) {
       fileName = '.serverless/requirements.txt';
-    } else if (this.custom().fileName) {
-      fileName = this.custom().fileName;
     }
 
     if (!fse.existsSync(path.join(this.serverless.config.servicePath,
@@ -85,40 +83,34 @@ class ServerlessPythonRequirements {
       return BbPromise.resolve();
     }
 
-    const runtime = this.serverless.service.provider.runtime;
-    const pythonBin = this.custom().pythonBin || runtime;
     this.serverless.cli.log(
-      `Installing required Python packages for runtime ${runtime}...`);
+      `Installing required Python packages with ${this.options.pythonBin}...`);
 
     return new BbPromise((resolve, reject) => {
       let cmd;
       let options;
       const pipCmd = [
-        pythonBin, '-m', 'pip', '--isolated', 'install',
+        this.options.pythonBin, '-m', 'pip', '--isolated', 'install',
         '-t', '.requirements', '-r', fileName,
+        ...this.options.pipCmdExtraArgs,
       ];
-      if (this.custom().pipCmdExtraArgs) {
-        pipCmd.push(...this.custom().pipCmdExtraArgs);
-      }
-      if (!this.custom().dockerizePip) {
+      if (!this.options.dockerizePip) {
         // Check if pip has Debian's --system option and set it if so
         const pipTestRes = spawnSync(
-          pythonBin, ['-m', 'pip', 'help', 'install']);
+          this.options.pythonBin, ['-m', 'pip', 'help', 'install']);
         if (pipTestRes.error) {
           if (pipTestRes.error.code === 'ENOENT')
-            return reject(`${pythonBin} not found! ` +
+            return reject(`${this.options.pythonBin} not found! ` +
                           'Try the pythonBin option.');
           return reject(pipTestRes.error);
         }
         if (pipTestRes.stdout.toString().indexOf('--system') >= 0)
           pipCmd.push('--system');
       }
-      if (this.custom().dockerizePip) {
+      if (this.options.dockerizePip) {
         cmd = 'docker';
 
-        const image = this.custom().dockerImage
-         || `lambci/lambda:build-${runtime}`;
-        this.serverless.cli.log(`Docker Image: ${image}`);
+        this.serverless.cli.log(`Docker Image: ${this.options.dockerImage}`);
 
         options = [
           'run', '--rm',
@@ -126,7 +118,7 @@ class ServerlessPythonRequirements {
         ];
         if (process.platform === 'linux')
           options.push('-u', `${process.getuid()}:${process.getgid()}`);
-        options.push(`${image}`);
+        options.push(this.options.dockerImage);
         options.push(...pipCmd);
       } else {
         cmd = pipCmd[0];
@@ -135,7 +127,7 @@ class ServerlessPythonRequirements {
       const res = spawnSync(cmd, options);
       if (res.error) {
         if (res.error.code === 'ENOENT')
-          return reject(`${pythonBin} not found! Try the pythonBin option.`);
+          return reject(`${this.options.pythonBin} not found! Try the pythonBin option.`);
         return reject(res.error);
       }
       if (res.status != 0)
@@ -150,7 +142,7 @@ class ServerlessPythonRequirements {
    */
   packRequirements() {
     return this.installRequirements().then(() => {
-      if (this.custom().zip) {
+      if (this.options.zip) {
         this.serverless.cli.log('Zipping required Python packages...');
         this.serverless.service.package.include.push('.requirements.zip');
         return zipDirectory('.requirements', '.requirements.zip');
@@ -163,9 +155,9 @@ class ServerlessPythonRequirements {
    * @return {undefined}
    */
   linkRequirements() {
-    if (!this.custom().zip && fse.existsSync('.requirements')) {
+    if (!this.options.zip && fse.existsSync('.requirements')) {
       this.serverless.cli.log('Linking required Python packages...');
-      const noDeploy = new Set(this.custom().noDeploy || []);
+      const noDeploy = new Set(this.options.noDeploy || []);
       fse.readdirSync('.requirements').map((file) => {
         if (noDeploy.has(file))
           return;
@@ -194,9 +186,9 @@ class ServerlessPythonRequirements {
    * @return {undefined}
    */
   unlinkRequirements() {
-    if (!this.custom().zip && fse.existsSync('.requirements')) {
+    if (!this.options.zip && fse.existsSync('.requirements')) {
       this.serverless.cli.log('Unlinking required Python packages...');
-      const noDeploy = new Set(this.custom().noDeploy || []);
+      const noDeploy = new Set(this.options.noDeploy || []);
       fse.readdirSync('.requirements').map((file) => {
         if (noDeploy.has(file))
           return;
@@ -211,7 +203,7 @@ class ServerlessPythonRequirements {
    */
   cleanup() {
     const artifacts = ['.requirements'];
-    if (this.custom().zip) {
+    if (this.options.zip) {
       artifacts.push('.requirements.zip');
       artifacts.push('unzip_requirements.py');
     }
@@ -224,11 +216,15 @@ class ServerlessPythonRequirements {
    * get the custom.pythonRequirements contents, with defaults set
    * @return {Object}
    */
-  custom() {
+  get options() {
     return Object.assign({
       zip: false,
       cleanupZipHelper: true,
       invalidateCaches: false,
+      fileName: 'requirements.txt',
+      pythonBin: this.serverless.service.provider.runtime,
+      dockerImage: `lambci/lambda:build-${this.serverless.service.provider.runtime}`,
+      pipCmdExtraArgs: [],
       noDeploy: [
         'boto3',
         'botocore',
@@ -248,12 +244,10 @@ class ServerlessPythonRequirements {
    * The plugin constructor
    * @param {Object} serverless
    * @param {Object} options
-   * makes
    * @return {undefined}
    */
   constructor(serverless, options) {
     this.serverless = serverless;
-    this.options = options;
 
     if (!_.get(this.serverless.service, 'package.exclude'))
       _.set(this.serverless.service, ['package', 'exclude'], []);
@@ -291,7 +285,7 @@ class ServerlessPythonRequirements {
       .then(this.unlinkRequirements);
 
     const invalidateCaches = () => {
-      if (this.custom().invalidateCaches) {
+      if (this.options.invalidateCaches) {
         return BbPromise.bind(this)
           .then(this.cleanup)
           .then(this.removeVendorHelper);
