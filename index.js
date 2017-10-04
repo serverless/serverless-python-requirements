@@ -141,13 +141,11 @@ class ServerlessPythonRequirements {
    * @return {Promise}
    */
   packRequirements() {
-    return this.installRequirements().then(() => {
-      if (this.options.zip) {
-        this.serverless.cli.log('Zipping required Python packages...');
-        this.serverless.service.package.include.push('.requirements.zip');
-        return zipDirectory('.requirements', '.requirements.zip');
-      }
-    });
+    if (this.options.zip) {
+      this.serverless.cli.log('Zipping required Python packages...');
+      this.serverless.service.package.include.push('.requirements.zip');
+      return zipDirectory('.requirements', '.requirements.zip');
+    }
   }
 
   /**
@@ -277,6 +275,7 @@ class ServerlessPythonRequirements {
     const before = () => BbPromise.bind(this)
       .then(this.pipfileToRequirements)
       .then(this.addVendorHelper)
+      .then(this.installRequirements)
       .then(this.packRequirements)
       .then(this.linkRequirements);
 
@@ -301,6 +300,7 @@ class ServerlessPythonRequirements {
       'after:deploy:function:packageFunction': after,
       'requirements:install:install': () => BbPromise.bind(this)
         .then(this.addVendorHelper)
+        .then(this.installRequirements)
         .then(this.packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(this.cleanup)
