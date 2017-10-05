@@ -52,6 +52,7 @@ class ServerlessPythonRequirements {
    */
   constructor(serverless, options) {
     this.serverless = serverless;
+    this.servicePath = this.serverless.config.servicePath;
 
     if (!_.get(this.serverless.service, 'package.exclude'))
       _.set(this.serverless.service, ['package', 'exclude'], []);
