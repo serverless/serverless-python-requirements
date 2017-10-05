@@ -80,21 +80,21 @@ class ServerlessPythonRequirements {
     };
 
     const before = () => BbPromise.bind(this)
-      .then(pipfileToRequirements.bind(this))
-      .then(addVendorHelper.bind(this))
-      .then(installRequirements.bind(this))
-      .then(packRequirements.bind(this))
-      .then(linkRequirements.bind(this));
+      .then(pipfileToRequirements)
+      .then(addVendorHelper)
+      .then(installRequirements)
+      .then(packRequirements)
+      .then(linkRequirements);
 
     const after = () => BbPromise.bind(this)
-      .then(removeVendorHelper.bind(this))
-      .then(unlinkRequirements.bind(this));
+      .then(removeVendorHelper)
+      .then(unlinkRequirements);
 
     const invalidateCaches = () => {
       if (this.options.invalidateCaches) {
         return BbPromise.bind(this)
-          .then(cleanup.bind(this))
-          .then(removeVendorHelper.bind(this));
+          .then(cleanup)
+          .then(removeVendorHelper);
       }
       return BbPromise.resolve();
     };
@@ -106,13 +106,13 @@ class ServerlessPythonRequirements {
       'before:deploy:function:packageFunction': before,
       'after:deploy:function:packageFunction': after,
       'requirements:install:install': () => BbPromise.bind(this)
-        .then(pipfileToRequirements.bind(this))
-        .then(addVendorHelper.bind(this))
-        .then(installRequirements.bind(this))
-        .then(packRequirements.bind(this)),
+        .then(pipfileToRequirements)
+        .then(addVendorHelper)
+        .then(installRequirements)
+        .then(packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
-        .then(cleanup.bind(this))
-        .then(removeVendorHelper.bind(this)),
+        .then(cleanup)
+        .then(removeVendorHelper),
     };
   }
 }
