@@ -272,6 +272,17 @@ class ServerlessPythonRequirements {
   };
 
   /**
+   * Inject '.requirements' folder into serverless package exclude list.
+   */
+  excludeRequirementsFolder() {
+    if (!_.get(this.serverless.service, 'package.exclude'))
+      _.set(this.serverless.service, ['package', 'exclude'], []);
+    this.serverless.service.package.exclude.push('.requirements/**');
+    if (!_.get(this.serverless.service, 'package.include'))
+      _.set(this.serverless.service, ['package', 'include'], []);
+  }
+
+  /**
    * get the custom.pythonRequirements contents, with defaults set
    * @return {Object}
    */
@@ -306,12 +317,6 @@ class ServerlessPythonRequirements {
     this.serverless = serverless;
     this.options = options;
 
-    if (!_.get(this.serverless.service, 'package.exclude'))
-      _.set(this.serverless.service, ['package', 'exclude'], []);
-    this.serverless.service.package.exclude.push('.requirements/**');
-    if (!_.get(this.serverless.service, 'package.include'))
-      _.set(this.serverless.service, ['package', 'include'], []);
-
     this.commands = {
       requirements: {
         commands: {
@@ -342,6 +347,7 @@ class ServerlessPythonRequirements {
     };
 
     const before = () => BbPromise.bind(this)
+      .then(this.excludeRequirementsFolder)
       .then(this.addVendorHelper)
       .then(this.packRequirements)
       .then(this.installPipfile)
