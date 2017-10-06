@@ -10,4 +10,5 @@ tempdir = '/tmp/sls-py-req'
 
 sys.path.append(tempdir)
 
-zipfile.ZipFile(zip_requirements, 'r').extractall(tempdir)
+if not os.path.exists(tempdir):
+    zipfile.ZipFile(zip_requirements, 'r').extractall(tempdir)
