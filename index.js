@@ -8,7 +8,6 @@ const {installRequirements} = require('./lib/pip');
 const {pipfileToRequirements} = require('./lib/pipenv');
 const {linkRequirements, unlinkRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
-const {excludeRequirementsFolder} = require('./lib/excludeRequirementsFolder');
 
 BbPromise.promisifyAll(fse);
 
@@ -74,7 +73,6 @@ class ServerlessPythonRequirements {
     };
 
     const before = () => BbPromise.bind(this)
-      .then(excludeRequirementsFolder)
       .then(pipfileToRequirements)
       .then(addVendorHelper)
       .then(installRequirements)
