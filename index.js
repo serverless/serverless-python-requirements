@@ -2,13 +2,13 @@
 'use strict';
 
 const BbPromise = require('bluebird');
-const _ = require('lodash');
 const fse = require('fs-extra');
 const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
 const {installRequirements} = require('./lib/pip');
 const {pipfileToRequirements} = require('./lib/pipenv');
 const {linkRequirements, unlinkRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
+const {excludeRequirementsFolder} = require('./lib/excludeRequirementsFolder');
 
 BbPromise.promisifyAll(fse);
 
@@ -54,12 +54,6 @@ class ServerlessPythonRequirements {
     this.serverless = serverless;
     this.servicePath = this.serverless.config.servicePath;
 
-    if (!_.get(this.serverless.service, 'package.exclude'))
-      _.set(this.serverless.service, ['package', 'exclude'], []);
-    this.serverless.service.package.exclude.push('.requirements/**');
-    if (!_.get(this.serverless.service, 'package.include'))
-      _.set(this.serverless.service, ['package', 'include'], []);
-
     this.commands = {
       requirements: {
         commands: {
@@ -80,6 +74,7 @@ class ServerlessPythonRequirements {
     };
 
     const before = () => BbPromise.bind(this)
+      .then(excludeRequirementsFolder)
       .then(pipfileToRequirements)
       .then(addVendorHelper)
       .then(installRequirements)
