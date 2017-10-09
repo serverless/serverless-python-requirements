@@ -8,7 +8,7 @@ plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
-    zip: true
+    zip: false
     cleanupZipHelper: true
     dockerizePip: false
 
