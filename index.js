@@ -20,13 +20,14 @@ class ServerlessPythonRequirements {
    * @return {Object}
    */
   get options() {
-    return Object.assign({
+    const options = Object.assign({
       zip: false,
       cleanupZipHelper: true,
       invalidateCaches: false,
       fileName: 'requirements.txt',
       usePipenv: true,
       pythonBin: this.serverless.service.provider.runtime,
+      dockerizePip: false,
       dockerImage: `lambci/lambda:build-${this.serverless.service.provider.runtime}`,
       pipCmdExtraArgs: [],
       noDeploy: [
@@ -40,8 +41,10 @@ class ServerlessPythonRequirements {
         'pip',
         'setuptools',
       ],
-    }, this.serverless.service.custom &&
-    this.serverless.service.custom.pythonRequirements || {});
+    }, this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {});
+    if (options.dockerizePip === 'non-linux')
+      options.dockerizePip = process.platform !== 'linux';
+    return options;
   }
 
   /**

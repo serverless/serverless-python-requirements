@@ -26,6 +26,10 @@ custom:
   pythonRequirements:
     dockerizePip: true
 ```
+The dockerizePip option supports a special case in addition to booleans of `'non-linux'` which makes
+it dockerize only on non-linux environments.
+
+
 To utilize your own Docker container instead of the default, add the following to your `serverless.yml`:
 ```yaml
 custom:
