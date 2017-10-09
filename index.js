@@ -25,6 +25,7 @@ class ServerlessPythonRequirements {
       cleanupZipHelper: true,
       invalidateCaches: false,
       fileName: 'requirements.txt',
+      usePipenv: true,
       pythonBin: this.serverless.service.provider.runtime,
       dockerImage: `lambci/lambda:build-${this.serverless.service.provider.runtime}`,
       pipCmdExtraArgs: [],
