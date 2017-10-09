@@ -35,9 +35,14 @@ custom:
 This must be the full image name and tag to use, including the runtime specific tag if applicable.
 
 ## Pipenv support :sparkles::cake::sparkles:
-If you include a `Pipfile` and have `pipenv` installed instead of a
-`requirements.txt` this will use `pipenv lock --r` to generate
-them. It is fully compatible with all options such as `zip` and `dockerizePip`.
+If you include a `Pipfile` and have `pipenv` installed instead of a `requirements.txt` this will use
+`pipenv lock --r` to generate them. It is fully compatible with all options such as `zip` and
+`dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
+```yaml
+custom:
+  pythonRequirements:
+    usePipenv: false
+```
 
 
 ## Dealing with Lambda's size limitations
