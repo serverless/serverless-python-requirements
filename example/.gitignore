@@ -19,3 +19,7 @@ var/
 # Serverless directories
 .serverless
 .requirements
+
+# Project ignores
+puck/
+serverless.yml.bak
