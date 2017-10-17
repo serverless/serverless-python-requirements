@@ -141,3 +141,10 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/hug
 }
+
+@test "py3.6 can package flask with zip option and no explicit include" {
+    sed -i'.bak' -e 's/zip: *false/zip: true/' -e 's/include://' -e 's/^.*handler.py//' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/.requirements.zip puck/unzip_requirements.py
+}
