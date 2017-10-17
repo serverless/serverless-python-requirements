@@ -143,3 +143,4 @@ custom:
  * [@suxor42](https://github.com/suxor42) - fixing permission issues with Docker on Linux
  * [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
  * [@Tethik](https://github.com/Tethik) - adding usePipenv option
+ * [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
