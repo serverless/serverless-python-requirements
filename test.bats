@@ -62,6 +62,13 @@ teardown() {
     ls puck/flask
 }
 
+@test "py3.6 works with deploymentBucket option" {
+    sed -i'.bak' -re 's/#deploymentBucket/deploymentBucket/' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+}
+
 @test "py2.7 can package flask with default options" {
     sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' serverless.yml
     sls package
@@ -107,6 +114,13 @@ teardown() {
     ls puck/flask
 }
 
+@test "py2.7 works with deploymentBucket option" {
+    sed -i'.bak' -re 's/#deploymentBucket/deploymentBucket/' -e 's/runtime: *python3.6/runtime: python2.7/'  serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+}
+
 @test "pipenv py3.6 can package flask with default options" {
     cd ../pipenv-example
     npm i ..
@@ -147,4 +161,13 @@ teardown() {
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
+}
+
+@test "pipenv py3.6 works with deploymentBucket option" {
+    cd ../pipenv-example
+    npm i ..
+    sed -i'.bak' -re 's/#deploymentBucket/deploymentBucket/' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
 }

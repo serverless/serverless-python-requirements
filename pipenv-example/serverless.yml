@@ -3,6 +3,7 @@ service: sls-py-req-test
 provider:
   name: aws
   runtime: python3.6
+  #deploymentBucket: sls-py-req-test
 
 plugins:
   - serverless-python-requirements
