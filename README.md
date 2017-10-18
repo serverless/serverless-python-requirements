@@ -144,3 +144,4 @@ custom:
  * [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
  * [@Tethik](https://github.com/Tethik) - adding usePipenv option
  * [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
+ * [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
