@@ -4,7 +4,7 @@ import zipfile
 
 
 zip_requirements = os.path.join(
-    os.path.split(__file__)[0], '.requirements.zip')
+    os.getcwd(), '.requirements.zip')
 
 tempdir = '/tmp/sls-py-req'
 
