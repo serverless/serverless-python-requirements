@@ -14,6 +14,7 @@ setup() {
 teardown() {
     sls requirements clean
     rm -rf puck node_modules
+    rm -f foobar
     if [ -f serverless.yml.bak ]; then mv serverless.yml.bak serverless.yml; fi
 }
 
@@ -147,4 +148,11 @@ teardown() {
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
+}
+
+@test "py3.6 runs prereq script" {
+    sed -i'.bak' -e 's;prereqCmd: *null;prereqCmd: ./prereq;' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls foobar
 }

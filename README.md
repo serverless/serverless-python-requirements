@@ -113,6 +113,16 @@ custom:
     pythonBin: /opt/python3.6/bin/python
 ```
 
+### Run Custom extra packaging scripts
+As a convenience method for if you need to install system dependencies for your python package you
+can specify a command to do so. It honors the `dockerizePip` command so you can `yum install`
+anything available in Amazon Linux if using that option. Example config:
+```yaml
+custom:
+  pythonRequirements:
+    prereqCmd: bash -c "yum install mysql-devel && cp /usr/lib64/mysql/libmysqlclient.so.18.0.0 ./libmysqlclient.so.18"
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left
