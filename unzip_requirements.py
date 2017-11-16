@@ -4,7 +4,7 @@ import zipfile
 
 
 zip_requirements = os.path.join(
-    os.getcwd(), '.requirements.zip')
+    os.environ.get('LAMBDA_TASK_ROOT', os.getcwd()), '.requirements.zip')
 
 tempdir = '/tmp/sls-py-req'
 
