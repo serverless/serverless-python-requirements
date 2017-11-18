@@ -156,3 +156,10 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls foobar
 }
+
+@test "py3.6 runs prereq command" {
+    sed -i'.bak' -e 's;prereqCmd: *null;prereqCmd: touch foobar;' serverless.yml
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls foobar
+}
