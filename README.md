@@ -132,6 +132,13 @@ custom:
     invalidateCaches: true
 ```
 
+## Windows `dockerizePip` notes
+For usage of `dockerizePip` on Windows do Step 1 only if running serverless on windows, or do both Step 1 & 2 if running serverless inside WSL.
+
+1. [Enabling shared volume in Windows Docker Taskbar settings](https://forums.docker.com/t/docker-data-volumes-and-windows-mounts/31499/2)
+1. [Installing the Docker client on Windows Subsystem for Linux (Ubuntu)](https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4)
+
+
 ## Contributors
  * [@dschep](https://github.com/dschep) - Lead developer & maintainer
  * [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
@@ -145,3 +152,4 @@ custom:
  * [@Tethik](https://github.com/Tethik) - adding usePipenv option
  * [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
  * [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
+ * [@heri16](https://github.com/heri16) - fixing Docker support in Windows.
