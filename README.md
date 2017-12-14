@@ -132,6 +132,15 @@ custom:
     invalidateCaches: true
 ```
 
+## Mac Brew installed Python notes
+[Brew wilfully breaks the `--target` option with no seeming intention to fix it](https://github.com/Homebrew/brew/pull/821)
+which causes issues since this uses that option. There are 2 easy workarounds for this:
+* Install Python from [python.org](https://wwwpython.org/downloads/) and specify it with the
+[`pythonBin` option](#customize-python-executable).
+OR
+* Create a virtualenv and activate it while using serverless.
+
+
 ## Windows `dockerizePip` notes
 For usage of `dockerizePip` on Windows do Step 1 only if running serverless on windows, or do both Step 1 & 2 if running serverless inside WSL.
 
