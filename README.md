@@ -134,11 +134,17 @@ custom:
 
 ## Mac Brew installed Python notes
 [Brew wilfully breaks the `--target` option with no seeming intention to fix it](https://github.com/Homebrew/brew/pull/821)
-which causes issues since this uses that option. There are 2 easy workarounds for this:
+which causes issues since this uses that option. There are a few easy workarounds for this:
 * Install Python from [python.org](https://wwwpython.org/downloads/) and specify it with the
 [`pythonBin` option](#customize-python-executable).
+
 OR
+
 * Create a virtualenv and activate it while using serverless.
+
+OR
+
+* [Install Docker](https://docs.docker.com/docker-for-mac/install/) and use the [`dockerizePip` option](#cross-compiling).
 
 
 ## Windows `dockerizePip` notes
