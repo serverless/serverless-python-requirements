@@ -1,0 +1,32 @@
+service: sls-py-req-test
+
+provider:
+  name: aws
+  runtime: python3.6
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    # call `pip install` inside a container - useful for packages that have native dependencies (scipy et-al)
+    dockerizePip: true
+
+    # aws lambda has an after-extraction size limit - with native dependencies we pass the limit quickly
+    # zip the requirements and extract them on the fly (see handler.py)
+    zip: true
+
+package:
+  # exclude everything...
+  exclude:
+    - '**/*'
+
+  # include - we have to explicitly list packages with native dependencies.
+  include:
+    - '*.py'
+    - 'numpy'
+    - 'scipy'
+
+functions:
+  hello:
+    handler: handler.hello
