@@ -37,7 +37,7 @@ custom:
 ```
 This must be the full image name and tag to use, including the runtime specific tag if applicable.
 
-[:checkered_flag: Windows notes](windows-dockerizepip-notes)
+[:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
 
 ## Pipenv support :sparkles::cake::sparkles:
 If you include a `Pipfile` and have `pipenv` installed instead of a `requirements.txt` this will use
