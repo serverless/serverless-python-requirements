@@ -15,7 +15,6 @@ A Serverless v1.x plugin to automatically bundle dependencies from
 sls plugin install -n serverless-python-requirements
 ```
 
-
 ## Cross compiling!
 Compiling non-pure-Python modules or fetching their manylinux wheels is
 supported on non-linux OSs via the use of Docker and the
@@ -37,6 +36,8 @@ custom:
     dockerImage: <image name>:tag
 ```
 This must be the full image name and tag to use, including the runtime specific tag if applicable.
+
+[:checkered_flag: Windows notes](windows-dockerizepip-notes)
 
 ## Pipenv support :sparkles::cake::sparkles:
 If you include a `Pipfile` and have `pipenv` installed instead of a `requirements.txt` this will use
@@ -132,7 +133,7 @@ custom:
     invalidateCaches: true
 ```
 
-## Mac Brew installed Python notes
+## :apple::beer::snake: Mac Brew installed Python notes
 [Brew wilfully breaks the `--target` option with no seeming intention to fix it](https://github.com/Homebrew/brew/pull/821)
 which causes issues since this uses that option. There are a few easy workarounds for this:
 * Install Python from [python.org](https://wwwpython.org/downloads/) and specify it with the
@@ -147,7 +148,7 @@ OR
 * [Install Docker](https://docs.docker.com/docker-for-mac/install/) and use the [`dockerizePip` option](#cross-compiling).
 
 
-## Windows `dockerizePip` notes
+## :checkered_flag: Windows `dockerizePip` notes
 For usage of `dockerizePip` on Windows do Step 1 only if running serverless on windows, or do both Step 1 & 2 if running serverless inside WSL.
 
 1. [Enabling shared volume in Windows Docker Taskbar settings](https://forums.docker.com/t/docker-data-volumes-and-windows-mounts/31499/2)
