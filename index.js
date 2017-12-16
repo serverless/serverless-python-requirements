@@ -5,6 +5,7 @@ const BbPromise = require('bluebird');
 const fse = require('fs-extra');
 const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
 const {installRequirements} = require('./lib/pip');
+const {runPrereqCmd} = require('./lib/prereqCmd');
 const {pipfileToRequirements} = require('./lib/pipenv');
 const {linkRequirements, unlinkRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
@@ -30,6 +31,7 @@ class ServerlessPythonRequirements {
       dockerizePip: false,
       dockerImage: `lambci/lambda:build-${this.serverless.service.provider.runtime}`,
       pipCmdExtraArgs: [],
+      prereqCmd: null,
       noDeploy: [
         'boto3',
         'botocore',
@@ -80,6 +82,7 @@ class ServerlessPythonRequirements {
       .then(pipfileToRequirements)
       .then(addVendorHelper)
       .then(installRequirements)
+      .then(runPrereqCmd)
       .then(packRequirements)
       .then(linkRequirements);
 
@@ -105,6 +108,7 @@ class ServerlessPythonRequirements {
       'requirements:install:install': () => BbPromise.bind(this)
         .then(pipfileToRequirements)
         .then(addVendorHelper)
+        .then(runPrereqCmd)
         .then(installRequirements)
         .then(packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
