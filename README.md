@@ -15,6 +15,8 @@ A Serverless v1.x plugin to automatically bundle dependencies from
 sls plugin install -n serverless-python-requirements
 ```
 
+[:apple::beer::snake: Mac Brew installed Python notes](#applebeersnake-mac-brew-installed-python-notes)
+
 ## Cross compiling!
 Compiling non-pure-Python modules or fetching their manylinux wheels is
 supported on non-linux OSs via the use of Docker and the
