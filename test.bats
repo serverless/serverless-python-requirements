@@ -148,3 +148,14 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
+
+@test "py2.7 can package flask with package individually option" {
+    sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/individually: *false/individually: true/' serverless.yml
+    sls package
+    unzip .serverless/hello.zip -d puck
+    unzip .serverless/hello2.zip -d puck2
+    unzip .serverless/hello3.zip -d puck3
+    ls puck/flask
+    ls puck2/flask
+    ! ls puck3/flask
+}

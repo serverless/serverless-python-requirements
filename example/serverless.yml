@@ -13,6 +13,7 @@ custom:
     dockerizePip: false
 
 package:
+  individually: false
   exclude:
     - '**/*'
   include:
@@ -21,3 +22,8 @@ package:
 functions:
   hello:
     handler: handler.hello
+  hello2:
+    handler: handler.hello
+  hello3:
+    handler: handler.hello
+    runtime: nodejs6.10
