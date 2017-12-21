@@ -1,6 +1,6 @@
 {
   "name": "serverless-python-requirements",
-  "version": "3.1",
+  "version": "3.1.0",
   "engines": {
     "node": ">=6.0"
   },
