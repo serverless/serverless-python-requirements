@@ -170,4 +170,5 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
  * [@Tethik](https://github.com/Tethik) - adding usePipenv option
  * [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
  * [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
- * [@heri16](https://github.com/heri16) - fixing Docker support in Windows.
+ * [@heri16](https://github.com/heri16) - fixing Docker support in Windows
+ * [@ryansb](https://github.com/ryansb) - package individually support
