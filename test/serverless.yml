@@ -8,6 +8,8 @@ plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
+    zip: false
+    cleanupZipHelper: true
     dockerizePip: false
 
 package:
@@ -20,3 +22,8 @@ package:
 functions:
   hello:
     handler: handler.hello
+  hello2:
+    handler: handler.hello
+  hello3:
+    handler: handler.hello
+    runtime: nodejs6.10
