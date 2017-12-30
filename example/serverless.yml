@@ -9,6 +9,7 @@ plugins:
 custom:
   pythonRequirements:
     dockerizePip: false
+    pythonBin: ${opt:pythonBin, self:provider.runtime}
 
 package:
   individually: false
