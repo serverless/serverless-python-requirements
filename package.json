@@ -52,7 +52,9 @@
     "glob-all": "^3.1.0",
     "graceful-fs": "^4.1.11",
     "is-wsl": "^1.1.0",
-    "lodash": "^4.13.1",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "lodash.values": "^4.3.0",
     "rimraf": "^2.6.2"
   }
 }
