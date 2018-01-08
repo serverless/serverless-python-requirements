@@ -40,6 +40,18 @@ custom:
 ```
 This must be the full image name and tag to use, including the runtime specific tag if applicable.
 
+
+To install requirements from private git repositories, add the following to your `serverless.yml`:
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerSsh: true
+```
+The `dockerSsh` option will mount your `$HOME/.ssh` as a volume in the docker
+container. If your SSH key is password protected, you can use `ssh-agent`
+because `$SSH_AUTH_SOCK` is also mounted & the env var set.
+
 [:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
 
 ## Pipenv support :sparkles::cake::sparkles:
@@ -173,3 +185,4 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
  * [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
  * [@heri16](https://github.com/heri16) - fixing Docker support in Windows
  * [@ryansb](https://github.com/ryansb) - package individually support
+ * [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker
