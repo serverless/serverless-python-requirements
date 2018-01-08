@@ -46,10 +46,10 @@ To use private repositories, add the following to your `serverless.yml`:
 custom:
   pythonRequirements:
     dockerizePip: true
-    dockerSshSymlink: /path/to/.ssh
+    dockerSsh: true
 ```
-This must be the path to your folder (usually `~/.ssh`) containing your ssh public and private keys.
-**Caution:** please note, it will only work if you have an empty passphrase!
+The dockerSsh option will set a volume in the docker container to be able to use your ssh keys.
+**Caution:** This option will only work if you are using ssh to pull your repos (git+ssh for instance) and this option assumes your `.ssh` folder is located in your home folder (located via the `$HOME` environment variable).
 
 
 [:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
