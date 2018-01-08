@@ -40,6 +40,18 @@ custom:
 ```
 This must be the full image name and tag to use, including the runtime specific tag if applicable.
 
+
+To use private repositories, add the following to your `serverless.yml`:
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerSshSymlink: /path/to/.ssh
+```
+This must be the path to your folder (usually `~/.ssh`) containing your ssh public and private keys.
+**Caution:** please note, it will only work if you have an empty passphrase!
+
+
 [:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
 
 ## Pipenv support :sparkles::cake::sparkles:
