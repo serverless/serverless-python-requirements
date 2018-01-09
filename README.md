@@ -1,7 +1,7 @@
 # Serverless Python Requirements
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![CircleCI](https://circleci.com/gh/UnitedIncome/serverless-python-requirements.svg?style=svg)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
+[![CircleCI](https://circleci.com/gh/UnitedIncome/serverless-python-requirements.svg?style=shield)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
 [![appveyor](https://ci.appveyor.com/api/projects/status/biel93xc535nxvi2?svg=true)](https://ci.appveyor.com/project/dschep/serverless-python-requirements)
 [![npm](https://nodei.co/npm/serverless-python-requirements.png?mini=true)](https://www.npmjs.com/package/serverless-python-requirements)
 
