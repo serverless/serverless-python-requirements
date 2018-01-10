@@ -48,9 +48,12 @@ custom:
     dockerizePip: true
     dockerSsh: true
 ```
-The `dockerSsh` option will mount your `$HOME/.ssh` as a volume in the docker
-container. If your SSH key is password protected, you can use `ssh-agent`
+The `dockerSsh` option will mount your `$HOME/.ssh/id_rsa` and `$HOME/.ssh/known_hosts` as a
+volume in the docker container. If your SSH key is password protected, you can use `ssh-agent`
 because `$SSH_AUTH_SOCK` is also mounted & the env var set.
+It is important that the host of your private repositories has already been added in your
+`$HOME/.ssh/known_hosts` file, as the install process will fail otherwise due to host authenticity
+failure.
 
 [:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
 

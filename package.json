@@ -55,6 +55,7 @@
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.values": "^4.3.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "shell-quote": "^1.6.1"
   }
 }
