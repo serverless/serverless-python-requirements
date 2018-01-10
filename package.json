@@ -39,7 +39,7 @@
   "bin": {},
   "scripts": {
     "test": "bats test.bats",
-    "lint": "eslint *.js"
+    "lint": "eslint *.js lib/*.js"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
