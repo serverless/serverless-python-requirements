@@ -165,6 +165,8 @@ OR
 
 * [Install Docker](https://docs.docker.com/docker-for-mac/install/) and use the [`dockerizePip` option](#cross-compiling).
 
+Also, [brew seems to cause issues with pipenv](https://github.com/dschep/lambda-decorators/issues/4#event-1418928080),
+so make sure you install pipenv using pip.
 
 ## :checkered_flag: Windows `dockerizePip` notes
 For usage of `dockerizePip` on Windows do Step 1 only if running serverless on windows, or do both Step 1 & 2 if running serverless inside WSL.
