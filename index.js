@@ -28,7 +28,9 @@ class ServerlessPythonRequirements {
       usePipenv: true,
       pythonBin: this.serverless.service.provider.runtime || 'python',
       dockerizePip: false,
-      dockerImage: `lambci/lambda:build-${this.serverless.service.provider.runtime}`,
+      dockerSsh: false,
+      dockerImage: null,
+      dockerFile: null,
       pipCmdExtraArgs: [],
       noDeploy: [
         'boto3',
@@ -44,6 +46,13 @@ class ServerlessPythonRequirements {
     }, this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {});
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
+    }
+    if (options.dockerImage && options.dockerFile) {
+      throw new Error('You can provide a dockerImage or a dockerFile option, not both.');
+    } else if (!options.dockerFile) {
+      // If no dockerFile is provided, use default image
+      const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
+      options.dockerImage = options.dockerImage || defaultImage;
     }
     return options;
   }
