@@ -44,9 +44,9 @@ Alternatively, you can define your Docker image in your own Dockerfile and add t
 ```yaml
 custom:
   pythonRequirements:
-    dockerFile: Dockerfile
+    dockerFile: ./path/to/Dockerfile
 ```
-With `Dockerfile` the name of the Dockerfile that MUST be in your current directory.
+With `Dockerfile` the path to the Dockerfile that must be in the current folder (or a subfolder).
 Please note the `dockerImage` and the `dockerFile` are mutually exclusive.
 
 To install requirements from private git repositories, add the following to your `serverless.yml`:
