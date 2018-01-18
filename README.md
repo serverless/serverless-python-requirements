@@ -198,4 +198,5 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
  * [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
  * [@heri16](https://github.com/heri16) - fixing Docker support in Windows
  * [@ryansb](https://github.com/ryansb) - package individually support
- * [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker
+ * [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker & `dockerFile` option
+  to build a custom docker image.
