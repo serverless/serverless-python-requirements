@@ -56,7 +56,7 @@ class ServerlessPythonRequirements {
       const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
       options.dockerImage = options.dockerImage || defaultImage;
     }
-    if (!options.dockerizePip && (options.dockerSsh || options.dockerImage || options.dockerFile)) {
+    if (!options.dockerizePip && (options.dockerSsh||options.dockerImage||options.dockerFile)) {
       if (!this.warningLogged) {
           this.serverless.cli.log(
             'WARNING: You provided a docker related option but dockerizePip is set to false.'
