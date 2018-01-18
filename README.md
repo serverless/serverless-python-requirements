@@ -40,6 +40,14 @@ custom:
 ```
 This must be the full image name and tag to use, including the runtime specific tag if applicable.
 
+Alternatively, you can define your Docker image in your own Dockerfile and add the following to your `serverless.yml`:
+```yaml
+custom:
+  pythonRequirements:
+    dockerFile: ./path/to/Dockerfile
+```
+With `Dockerfile` the path to the Dockerfile that must be in the current folder (or a subfolder).
+Please note the `dockerImage` and the `dockerFile` are mutually exclusive.
 
 To install requirements from private git repositories, add the following to your `serverless.yml`:
 ```yaml
