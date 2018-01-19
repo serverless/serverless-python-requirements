@@ -5,3 +5,6 @@ rules:
   no-console: 2
   max-len: [1, 100, 2, {ignoreComments: true}]
   curly: error
+  indent:
+    - warn
+    - 2
