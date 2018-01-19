@@ -4,9 +4,9 @@
 const BbPromise = require('bluebird');
 const fse = require('fs-extra');
 const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
-const {installRequirements} = require('./lib/pip');
+const {installAllRequirements} = require('./lib/pip');
 const {pipfileToRequirements} = require('./lib/pipenv');
-const {linkRequirements, unlinkRequirements} = require('./lib/link');
+const {linkAllRequirements, unlinkRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
 
 BbPromise.promisifyAll(fse);
@@ -47,7 +47,7 @@ class ServerlessPythonRequirements {
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }
-    if (!options.dockerizePip && (options.dockerSsh||options.dockerImage||options.dockerFile)) {
+    if (!options.dockerizePip && (options.dockerSsh || options.dockerImage || options.dockerFile)) {
       if (!this.warningLogged) {
         this.serverless.cli.log(
           'WARNING: You provided a docker related option but dockerizePip is set to false.'
@@ -100,9 +100,9 @@ class ServerlessPythonRequirements {
     const before = () => BbPromise.bind(this)
       .then(pipfileToRequirements)
       .then(addVendorHelper)
-      .then(installRequirements)
+      .then(installAllRequirements)
       .then(packRequirements)
-      .then(linkRequirements);
+      .then(linkAllRequirements);
 
     const after = () => BbPromise.bind(this)
       .then(removeVendorHelper)
@@ -126,7 +126,7 @@ class ServerlessPythonRequirements {
       'requirements:install:install': () => BbPromise.bind(this)
         .then(pipfileToRequirements)
         .then(addVendorHelper)
-        .then(installRequirements)
+        .then(installAllRequirements)
         .then(packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(cleanup)
