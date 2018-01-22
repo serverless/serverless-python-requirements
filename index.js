@@ -6,7 +6,7 @@ const fse = require('fs-extra');
 const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
 const {installAllRequirements} = require('./lib/pip');
 const {pipfileToRequirements} = require('./lib/pipenv');
-const {linkAllRequirements, unlinkRequirements} = require('./lib/link');
+const {linkAllRequirements, unlinkAllRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
 
 BbPromise.promisifyAll(fse);
@@ -106,7 +106,7 @@ class ServerlessPythonRequirements {
 
     const after = () => BbPromise.bind(this)
       .then(removeVendorHelper)
-      .then(unlinkRequirements);
+      .then(unlinkAllRequirements);
 
     const invalidateCaches = () => {
       if (this.options.invalidateCaches) {
