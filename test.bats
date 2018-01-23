@@ -18,15 +18,13 @@ teardown() {
 }
 
 @test "py3.6 can package flask with default options" {
-    cp serverless.yml serverless.yml.bak  # fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
 }
 
 @test "py3.6 can package flask with zip option" {
-    sed -i'.bak' -e 's/zip: *false/zip: true/' serverless.yml
-    sls package
+    sls --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
@@ -47,8 +45,7 @@ teardown() {
 @test "py3.6 can package flask with zip & dockerizePip option" {
     [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-    sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' -e 's/zip: *false/zip: true/' serverless.yml
-    sls package
+    sls --dockerizePip=true --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
@@ -56,22 +53,19 @@ teardown() {
 @test "py3.6 can package flask with dockerizePip option" {
     [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-    sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' serverless.yml
-    sls package
+    sls --dockerizePip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
 }
 
 @test "py2.7 can package flask with default options" {
-    sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' serverless.yml
-    sls package
+    sls --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
 }
 
 @test "py2.7 can package flask with zip option" {
-    sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/zip: *false/zip: true/' serverless.yml
-    sls package
+    sls --runtime=python2.7 --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
@@ -83,8 +77,8 @@ teardown() {
 }
 
 @test "py2.7 doesn't package hug with noDeploy option" {
-    sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [hug]/' serverless.yml
-    sls package
+    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [hug]/' serverless.yml
+    sls --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/hug
 }
@@ -92,8 +86,7 @@ teardown() {
 @test "py2.7 can package flask with zip & dockerizePip option" {
     [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-    sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/zip: *false/zip: true/' serverless.yml
-    sls package
+    sls --dockerizePip=true --runtime=python2.7 --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
@@ -101,8 +94,7 @@ teardown() {
 @test "py2.7 can package flask with dockerizePip option" {
     [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-    sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/dockerizePip: *false/dockerizePip: true/' serverless.yml
-    sls package
+    sls --dockerizePip=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
 }
@@ -110,7 +102,6 @@ teardown() {
 @test "pipenv py3.6 can package flask with default options" {
     cd ../pipenv-example
     npm i ..
-    cp serverless.yml serverless.yml.bak  # fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
@@ -119,8 +110,7 @@ teardown() {
 @test "pipenv py3.6 can package flask with zip option" {
     cd ../pipenv-example
     npm i ..
-    sed -i'.bak' -e 's/zip: *false/zip: true/' serverless.yml
-    sls package
+    sls --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
@@ -143,15 +133,14 @@ teardown() {
 }
 
 @test "py3.6 can package flask with zip option and no explicit include" {
-    sed -i'.bak' -e 's/zip: *false/zip: true/' -e 's/include://' -e 's/^.*handler.py//' serverless.yml
-    sls package
+    sed -i'.bak' -e 's/include://' -e 's/^.*handler.py//' serverless.yml
+    sls --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
 
 @test "py3.6 can package flask with package individually option" {
-    sed -i'.bak' -e 's/individually: *false/individually: true/' serverless.yml
-    sls package
+    sls --individually=true package
     unzip .serverless/hello.zip -d puck
     unzip .serverless/hello2.zip -d puck2
     unzip .serverless/hello3.zip -d puck3
@@ -161,8 +150,7 @@ teardown() {
 }
 #
 @test "py2.7 can package flask with package individually option" {
-    sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/individually: *false/individually: true/' serverless.yml
-    sls package
+    sls --individually=true --runtime=python2.7 package
     unzip .serverless/hello.zip -d puck
     unzip .serverless/hello2.zip -d puck2
     unzip .serverless/hello3.zip -d puck3
