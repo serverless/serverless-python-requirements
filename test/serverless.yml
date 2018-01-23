@@ -9,13 +9,14 @@ plugins:
 custom:
   pythonRequirements:
     zip: ${opt:zip, self:custom.defaults.zip}
-    cleanupZipHelper: true
-    dockerizePip: false
+    dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
   defaults:
     zip: false
+    dockerizePip: false
+    individually: false
 
 package:
-  individually: false
+  individually: ${opt:individually, self:custom.defaults.individually}
   exclude:
     - '**/*'
   include:
