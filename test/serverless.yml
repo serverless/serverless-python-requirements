@@ -2,13 +2,13 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: ${opt:runtime, 'python3.6'}
 
 plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
-    zip: false
+    zip: ${opt:zip, false}
     cleanupZipHelper: true
     dockerizePip: false
 
