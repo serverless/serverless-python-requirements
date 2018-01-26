@@ -151,13 +151,9 @@ functions:
   func1:
     handler: index.handler
     module: function1
-    package:
-        artifact: .serverless/function1.zip
   func2:
     handler: index.handler
     module: function2
-    package:
-        artifact: .serverless/function2.zip
 ```
 The result is 2 zip archives, with only the requirements for function1 in the first one, and only
 the requirements for function2 in the second one.
@@ -167,9 +163,6 @@ Quick notes on the config file:
 each function.
  * The `handler` field must not be prefixed by the folder name (already known through `module`) as
 the root of the zip artifact is already the path to your function.
- * The `artifact` field tells Serverless where to find the zip artifact. This plugin creates the zip
-artifact at `.serverless/[function.module].zip` and it prevents Serverless to create the zip
-artifact afterwards.
 
 ### Customize Python executable
 Sometimes your Python executable isn't available on your `$PATH` as `python2.7`
