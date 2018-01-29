@@ -18,7 +18,6 @@ teardown() {
 }
 
 @test "py3.6 can package flask with default options" {
-    cp serverless.yml serverless.yml.bak   fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
@@ -110,7 +109,6 @@ teardown() {
 @test "pipenv py3.6 can package flask with default options" {
     cd ../pipenv-example
     npm i ..
-    cp serverless.yml serverless.yml.bak   fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
