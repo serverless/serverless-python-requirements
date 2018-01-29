@@ -18,7 +18,7 @@ teardown() {
 }
 
 @test "py3.6 can package flask with default options" {
-    cp serverless.yml serverless.yml.bak  # fake backup since we don't sed
+    cp serverless.yml serverless.yml.bak   fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
@@ -45,7 +45,7 @@ teardown() {
 }
 
 @test "py3.6 can package flask with zip & dockerizePip option" {
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' -e 's/zip: *false/zip: true/' serverless.yml
     sls package
@@ -54,7 +54,7 @@ teardown() {
 }
 
 @test "py3.6 can package flask with dockerizePip option" {
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' serverless.yml
     sls package
@@ -90,7 +90,7 @@ teardown() {
 }
 
 @test "py2.7 can package flask with zip & dockerizePip option" {
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sed -i'.bak' -e 's/dockerizePip: *false/dockerizePip: true/' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/zip: *false/zip: true/' serverless.yml
     sls package
@@ -99,7 +99,7 @@ teardown() {
 }
 
 @test "py2.7 can package flask with dockerizePip option" {
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/dockerizePip: *false/dockerizePip: true/' serverless.yml
     sls package
@@ -110,7 +110,7 @@ teardown() {
 @test "pipenv py3.6 can package flask with default options" {
     cd ../pipenv-example
     npm i ..
-    cp serverless.yml serverless.yml.bak  # fake backup since we don't sed
+    cp serverless.yml serverless.yml.bak   fake backup since we don't sed
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
@@ -159,7 +159,7 @@ teardown() {
     ls puck2/flask
     ! ls puck3/flask
 }
-#
+
 @test "py2.7 can package flask with package individually option" {
     sed -i'.bak' -e 's/runtime: *python3.6/runtime: python2.7/' -e 's/individually: *false/individually: true/' serverless.yml
     sls package
@@ -169,4 +169,20 @@ teardown() {
     ls puck/flask
     ls puck2/flask
     ! ls puck3/flask
+}
+
+@test "py3.6 can package only requirements of module" {
+    cd ../test-indiv
+    npm i ..
+    sls package
+    unzip .serverless/module1.zip -d puck
+    unzip .serverless/module2.zip -d puck2
+    ls puck/handler1.py
+    ls puck2/handler2.py
+    ls puck/pyaml
+    ls puck2/flask
+    ! ls puck/handler2.py
+    ! ls puck2/handler1.py
+    ! ls puck/flask
+    ! ls puck2/pyaml
 }

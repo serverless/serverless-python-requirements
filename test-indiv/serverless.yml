@@ -1,0 +1,19 @@
+service: sls-py-req-test-indiv
+
+provider:
+  name: aws
+  runtime: python3.6
+
+package:
+  individually: true
+
+functions:
+  hello1:
+    handler: handler1.hello
+    module: module1
+  hello2:
+    handler: handler2.hello
+    module: module2
+
+plugins:
+  - serverless-python-requirements
