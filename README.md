@@ -130,6 +130,40 @@ custom:
     fileName: requirements-prod.txt
 ```
 
+### Per-function requirements
+If you have different python functions, with different sets of requirements, you can avoid
+including all the unecessary dependencies of your functions by using the following structure:
+```
+├── serverless.yml
+├── function1
+│      ├── requirements.txt
+│      └── index.py
+└── function2
+       ├── requirements.txt
+       └── index.py
+```
+With the content of your `serverless.yml` containing:
+```yml
+package:
+  individually: true
+
+functions:
+  func1:
+    handler: index.handler
+    module: function1
+  func2:
+    handler: index.handler
+    module: function2
+```
+The result is 2 zip archives, with only the requirements for function1 in the first one, and only
+the requirements for function2 in the second one.
+
+Quick notes on the config file:
+ * The `module` field must be used to tell the plugin where to find the `requirements.txt` file for
+each function.
+ * The `handler` field must not be prefixed by the folder name (already known through `module`) as
+the root of the zip artifact is already the path to your function.
+
 ### Customize Python executable
 Sometimes your Python executable isn't available on your `$PATH` as `python2.7`
 or `python3.6` (for example, windows or using pyenv).

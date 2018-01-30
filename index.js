@@ -4,9 +4,9 @@
 const BbPromise = require('bluebird');
 const fse = require('fs-extra');
 const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
-const {installRequirements} = require('./lib/pip');
+const {installAllRequirements} = require('./lib/pip');
 const {pipfileToRequirements} = require('./lib/pipenv');
-const {linkRequirements, unlinkRequirements} = require('./lib/link');
+const {linkAllRequirements, unlinkAllRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
 
 BbPromise.promisifyAll(fse);
@@ -47,6 +47,14 @@ class ServerlessPythonRequirements {
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }
+    if (!options.dockerizePip && (options.dockerSsh || options.dockerImage || options.dockerFile)) {
+      if (!this.warningLogged) {
+        this.serverless.cli.log(
+          'WARNING: You provided a docker related option but dockerizePip is set to false.'
+        );
+        this.warningLogged = true;
+      }
+    }
     if (options.dockerImage && options.dockerFile) {
       throw new Error(
         'Python Requirements: you can provide a dockerImage or a dockerFile option, not both.'
@@ -55,14 +63,6 @@ class ServerlessPythonRequirements {
       // If no dockerFile is provided, use default image
       const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
       options.dockerImage = options.dockerImage || defaultImage;
-    }
-    if (!options.dockerizePip && (options.dockerSsh||options.dockerImage||options.dockerFile)) {
-      if (!this.warningLogged) {
-        this.serverless.cli.log(
-          'WARNING: You provided a docker related option but dockerizePip is set to false.'
-        );
-        this.warningLogged = true;
-      }
     }
     return options;
   }
@@ -100,13 +100,13 @@ class ServerlessPythonRequirements {
     const before = () => BbPromise.bind(this)
       .then(pipfileToRequirements)
       .then(addVendorHelper)
-      .then(installRequirements)
+      .then(installAllRequirements)
       .then(packRequirements)
-      .then(linkRequirements);
+      .then(linkAllRequirements);
 
     const after = () => BbPromise.bind(this)
       .then(removeVendorHelper)
-      .then(unlinkRequirements);
+      .then(unlinkAllRequirements);
 
     const invalidateCaches = () => {
       if (this.options.invalidateCaches) {
@@ -126,7 +126,7 @@ class ServerlessPythonRequirements {
       'requirements:install:install': () => BbPromise.bind(this)
         .then(pipfileToRequirements)
         .then(addVendorHelper)
-        .then(installRequirements)
+        .then(installAllRequirements)
         .then(packRequirements),
       'requirements:clean:clean': () => BbPromise.bind(this)
         .then(cleanup)

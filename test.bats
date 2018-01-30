@@ -148,7 +148,7 @@ teardown() {
     ls puck2/flask
     ! ls puck3/flask
 }
-#
+
 @test "py2.7 can package flask with package individually option" {
     sls --individually=true --runtime=python2.7 package
     unzip .serverless/hello.zip -d puck
@@ -157,4 +157,20 @@ teardown() {
     ls puck/flask
     ls puck2/flask
     ! ls puck3/flask
+}
+
+@test "py3.6 can package only requirements of module" {
+    cd ../test-indiv
+    npm i ..
+    sls package
+    unzip .serverless/module1.zip -d puck
+    unzip .serverless/module2.zip -d puck2
+    ls puck/handler1.py
+    ls puck2/handler2.py
+    ls puck/pyaml
+    ls puck2/flask
+    ! ls puck/handler2.py
+    ! ls puck2/handler1.py
+    ! ls puck/flask
+    ! ls puck2/pyaml
 }
