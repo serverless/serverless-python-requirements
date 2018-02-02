@@ -35,11 +35,11 @@ teardown() {
     ! ls puck/boto3
 }
 
-@test "py3.6 doesn't package hug with noDeploy option" {
-    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [hug]/' serverless.yml
+@test "py3.6 doesn't package bottle with noDeploy option" {
+    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
-    ! ls puck/hug
+    ! ls puck/bottle.py
 }
 
 @test "py3.6 can package flask with zip & dockerizePip option" {
@@ -76,11 +76,11 @@ teardown() {
     ! ls puck/boto3
 }
 
-@test "py2.7 doesn't package hug with noDeploy option" {
-    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [hug]/' serverless.yml
+@test "py2.7 doesn't package bottle with noDeploy option" {
+    sed -i'.bak'-re 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
-    ! ls puck/hug
+    ! ls puck/bottle.py
 }
 
 @test "py2.7 can package flask with zip & dockerizePip option" {
@@ -123,13 +123,13 @@ teardown() {
     ! ls puck/boto3
 }
 
-@test "pipenv py3.6 doesn't package hug with noDeploy option" {
+@test "pipenv py3.6 doesn't package bottle with noDeploy option" {
     cd ../pipenv-example
     npm i ..
-    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [hug]/' serverless.yml
+    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
-    ! ls puck/hug
+    ! ls puck/bottle.py
 }
 
 @test "py3.6 can package flask with zip option and no explicit include" {
