@@ -8,8 +8,10 @@ plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
+    zip: ${opt:zip, self:custom.defaults.zip}
+    dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
+  defaults:
     zip: false
-    cleanupZipHelper: true
     dockerizePip: false
 
 package:
