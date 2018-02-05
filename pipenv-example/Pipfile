@@ -4,5 +4,5 @@ verify_ssl = true
 
 [packages]
 Flask = "*"
-hug = "*"
+bottle = "*"
 boto3 = "*"
