@@ -47,6 +47,14 @@ class ServerlessPythonRequirements {
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }
+    if (!options.dockerizePip && (options.dockerSsh||options.dockerImage||options.dockerFile)) {
+      if (!this.warningLogged) {
+        this.serverless.cli.log(
+          'WARNING: You provided a docker related option but dockerizePip is set to false.'
+        );
+        this.warningLogged = true;
+      }
+    }
     if (options.dockerImage && options.dockerFile) {
       throw new Error(
         'Python Requirements: you can provide a dockerImage or a dockerFile option, not both.'
@@ -55,14 +63,6 @@ class ServerlessPythonRequirements {
       // If no dockerFile is provided, use default image
       const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
       options.dockerImage = options.dockerImage || defaultImage;
-    }
-    if (!options.dockerizePip && (options.dockerSsh||options.dockerImage||options.dockerFile)) {
-      if (!this.warningLogged) {
-        this.serverless.cli.log(
-          'WARNING: You provided a docker related option but dockerizePip is set to false.'
-        );
-        this.warningLogged = true;
-      }
     }
     return options;
   }
