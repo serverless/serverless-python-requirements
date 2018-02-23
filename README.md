@@ -130,7 +130,7 @@ custom:
     fileName: requirements-prod.txt
 ```
 
-### Per-function requirements
+### Per-function requirements
 If you have different python functions, with different sets of requirements, you can avoid
 including all the unecessary dependencies of your functions by using the following structure:
 ```
