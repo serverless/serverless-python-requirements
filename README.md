@@ -119,6 +119,14 @@ custom:
           - .requirements-cache
 ```
 
+When using `--cache-dir` don't forget to also exclude it from the package.
+
+```yaml
+package:
+  exclude:
+    - .requirements-cache/**
+```
+
 ### Customize requirements file name
 [Some `pip` workflows involve using requirements files not named
 `requirements.txt`](https://www.kennethreitz.org/essays/a-better-pip-workflow).
