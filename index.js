@@ -4,9 +4,9 @@
 const BbPromise = require('bluebird');
 const fse = require('fs-extra');
 const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
+const {injectAllRequirements} = require('./lib/inject');
 const {installAllRequirements} = require('./lib/pip');
 const {pipfileToRequirements} = require('./lib/pipenv');
-const {linkAllRequirements, unlinkAllRequirements} = require('./lib/link');
 const {cleanup} = require('./lib/clean');
 
 BbPromise.promisifyAll(fse);
@@ -101,12 +101,11 @@ class ServerlessPythonRequirements {
       .then(pipfileToRequirements)
       .then(addVendorHelper)
       .then(installAllRequirements)
-      .then(packRequirements)
-      .then(linkAllRequirements);
+      .then(packRequirements);
 
     const after = () => BbPromise.bind(this)
       .then(removeVendorHelper)
-      .then(unlinkAllRequirements);
+      .then(injectAllRequirements);
 
     const invalidateCaches = () => {
       if (this.options.invalidateCaches) {
