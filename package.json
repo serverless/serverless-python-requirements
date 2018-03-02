@@ -56,7 +56,6 @@
     "lodash.set": "^4.3.2",
     "lodash.values": "^4.3.0",
     "rimraf": "^2.6.2",
-    "shell-quote": "^1.6.1",
     "zip-local": "^0.3.4"
   }
 }
