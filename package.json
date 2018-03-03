@@ -48,7 +48,6 @@
   "dependencies": {
     "bluebird": "^3.0.6",
     "fs-extra": "^3.0.1",
-    "glob-all": "^3.1.0",
     "is-wsl": "^1.1.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
