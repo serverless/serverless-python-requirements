@@ -13,10 +13,12 @@ jobs:
       - run: python3.6 -m pip install pipenv
       # install nodejs
       - run: curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt -y install nodejs
-      # install serverless
-      - run: npm install -g serverless
+      # install serverless & depcheck
+      - run: npm install -g serverless depcheck
       # install deps
       - run: npm i
+      # depcheck
+      - run: depcheck .
       # lint:
       - run: npm run lint
       # test!
