@@ -27,6 +27,7 @@ teardown() {
     sls --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
+    ! ls puck/flask
 }
 
 @test "py3.6 doesn't package boto3 by default" {
@@ -40,6 +41,7 @@ teardown() {
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/bottle.py
+    ! ls puck/__pycache__/bottle.cpython-36.pyc
 }
 
 @test "py3.6 can package flask with zip & dockerizePip option" {

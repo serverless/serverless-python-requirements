@@ -48,11 +48,12 @@
   "dependencies": {
     "bluebird": "^3.0.6",
     "fs-extra": "^3.0.1",
+    "glob-all": "^3.1.0",
     "is-wsl": "^1.1.0",
+    "jszip": "^2.5.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.values": "^4.3.0",
-    "rimraf": "^2.6.2",
     "shell-quote": "^1.6.1",
     "zip-local": "^0.3.4"
   }
