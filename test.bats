@@ -3,8 +3,6 @@
 
 setup() {
     export SLS_DEBUG=t
-    export LC_ALL=C.UTF-8
-    export LANG=C.UTF-8
 
     cd test
 
@@ -37,7 +35,7 @@ teardown() {
 }
 
 @test "py3.6 doesn't package bottle with noDeploy option" {
-    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
+    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/bottle.py
@@ -79,7 +77,7 @@ teardown() {
 }
 
 @test "py2.7 doesn't package bottle with noDeploy option" {
-    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
+    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/bottle.py
@@ -128,7 +126,7 @@ teardown() {
 @test "pipenv py3.6 doesn't package bottle with noDeploy option" {
     cd ../pipenv-example
     npm i ..
-    sed -i'.bak' -re 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
+    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/bottle.py
