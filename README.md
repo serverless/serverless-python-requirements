@@ -182,6 +182,19 @@ custom:
     pythonBin: /opt/python3.6/bin/python
 ```
 
+### Vendor library directory
+For certain libraries, default packaging produces too large an installation,
+even when zipping. In those cases it may be necessary to tailor make a version
+of the module. In that case you can store them in a directory and use the
+`vendor` option, and the plugin will copy them along with all the other
+dependencies to install:
+```yaml
+custom:
+  pythonRequirements:
+    vendor: ./vendored-libraries
+```
+
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left

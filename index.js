@@ -43,6 +43,7 @@ class ServerlessPythonRequirements {
         'pip',
         'setuptools',
       ],
+      vendor: '',
     }, this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {});
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
