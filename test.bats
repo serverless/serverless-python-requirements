@@ -3,6 +3,10 @@
 
 setup() {
     export SLS_DEBUG=t
+    if ! [ -z "$CI" ]; then
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
+    fi
 
     cd test
 
@@ -11,7 +15,7 @@ setup() {
 
 teardown() {
     sls requirements clean
-    rm -rf puck puck2 puck3 node_modules .serverless
+    rm -rf puck puck2 puck3 node_modules .serverless .requirements.zip .requirements-cache
     if [ -f serverless.yml.bak ]; then mv serverless.yml.bak serverless.yml; fi
 }
 
@@ -56,6 +60,14 @@ teardown() {
     sls --dockerizePip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+}
+
+@test "py3.6 uses cache with dockerizePip option" {
+    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    pipCmdExtraArgs: ["--cache-dir", ".requirements-cache"]/' serverless.yml
+    sls --dockerizePip=true package
+    ls .requirements-cache/http
 }
 
 @test "py2.7 can package flask with default options" {
