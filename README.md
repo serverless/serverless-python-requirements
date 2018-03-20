@@ -253,5 +253,9 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
  * [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
  * [@heri16](https://github.com/heri16) - fixing Docker support in Windows
  * [@ryansb](https://github.com/ryansb) - package individually support
- * [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker & `dockerFile` option
-  to build a custom docker image.
+ * [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker, `dockerFile` option
+  to build a custom docker image, real per-function requirements, and the
+  `vendor` option
+ * [@kichik](https://github.com/kichik) - Imposed windows & `noDeploy` support,
+   switched to adding files straight to zip instead of creating symlinks, and
+   improved pip chache support when using docker.
