@@ -3,7 +3,7 @@
 
 setup() {
     export SLS_DEBUG=t
-    if [ -z "$CI" ]; then
+    if ! [ -z "$CI" ]; then
         export LC_ALL=C.UTF-8
         export LANG=C.UTF-8
     fi
