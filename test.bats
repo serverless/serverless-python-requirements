@@ -186,3 +186,10 @@ teardown() {
     ! ls puck/flask
     ! ls puck2/pyaml
 }
+
+@test "py3.6 can package lambda-decorators using vendor option" {
+    sls --vendor=./vendor package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    ls puck/lambda-decorators.py
+}
