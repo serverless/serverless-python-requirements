@@ -191,5 +191,5 @@ teardown() {
     sls --vendor=./vendor package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
-    ls puck/lambda-decorators.py
+    ls puck/lambda_decorators.py
 }
