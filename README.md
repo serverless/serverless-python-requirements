@@ -192,7 +192,13 @@ dependencies to install:
 custom:
   pythonRequirements:
     vendor: ./vendored-libraries
+functions:
+  hello:
+    handler: hello.handler
+    vendor: ./hello-vendor # The option is also available at the function level
 ```
+
+
 
 
 ## Manual invocations
