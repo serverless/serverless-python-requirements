@@ -1,18 +1,32 @@
 version: 2
 jobs:
   build:
-    working_directory: /sls-py-req
-    docker:
-      - image: ubuntu:rolling
+    working_directory: ~/sls-py-req
+    machine:
+      image: circleci/classic
     steps:
       - checkout
-      - setup_remote_docker
-      # Apt deps
-      - run: apt -y update && apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker
+      # Build python3.6. gross. (based on my gist here: https://git.io/vxMFG )
+      - run: |
+          sudo apt-get update
+          sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+          wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
+          tar xf Python-3.6.5.tar.xz
+          cd Python-3.6.5
+          ./configure
+          make
+          sudo make altinstall
+      # install bats
+      - run: |
+          git clone https://github.com/sstephenson/bats.git
+          cd bats
+          sudo ./install.sh /usr/local
+      # other deps
+      - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip
       # instal pipenv
-      - run: python3.6 -m pip install pipenv
+      - run: sudo python3.6 -m pip install pipenv
       # install nodejs
-      - run: curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt -y install nodejs
+      - run: curl -sL https://deb.nodesource.com/setup_6.x | sudo bash - && sudo apt -y install nodejs
       # install serverless & depcheck
       - run: npm install -g serverless depcheck
       # install deps
@@ -23,9 +37,3 @@ jobs:
       - run: npm run lint
       # test!
       - run: npm run test
-      # create a user
-      - run: useradd -m tester
-      # give this dir to the test user
-      - run: chown -R tester .
-      # test as user!
-      - run: su -c "npm run test" tester
