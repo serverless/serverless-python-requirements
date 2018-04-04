@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: /sls-py-req
     machine:
-      - image: circleci/classic
+      image: circleci/classic
     steps:
       - checkout
       # Apt deps
