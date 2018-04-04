@@ -52,7 +52,6 @@ teardown() {
 @test "py3.6 can package flask with zip & dockerizePip option" {
     cd tests/base
     npm i ../..
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -62,7 +61,6 @@ teardown() {
 @test "py3.6 can package flask with dockerizePip option" {
     cd tests/base
     npm i ../..
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -72,7 +70,6 @@ teardown() {
 @test "py3.6 uses cache with dockerizePip option" {
     cd tests/base
     npm i ../..
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    pipCmdExtraArgs: ["--cache-dir", ".requirements-cache"]/' serverless.yml
     sls --dockerizePip=true package
@@ -115,7 +112,6 @@ teardown() {
 @test "py2.7 can package flask with zip & dockerizePip option" {
     cd tests/base
     npm i ../..
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --runtime=python2.7 --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -125,7 +121,6 @@ teardown() {
 @test "py2.7 can package flask with dockerizePip option" {
     cd tests/base
     npm i ../..
-    [ -z "$CIRCLE_BRANCH" ] || skip "Volumes are weird in CircleCI https://circleci.com/docs/2.0/building-docker-images/#mounting-folders"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck

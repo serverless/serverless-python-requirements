@@ -2,11 +2,10 @@ version: 2
 jobs:
   build:
     working_directory: /sls-py-req
-    docker:
-      - image: ubuntu:rolling
+    machine:
+      - image: circleci/classic
     steps:
       - checkout
-      - setup_remote_docker
       # Apt deps
       - run: apt -y update && apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker
       # instal pipenv
