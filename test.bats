@@ -134,7 +134,7 @@ teardown() {
 
 @test "pipenv py3.6 can package flask with default options" {
     cd tests/pipenv
-    npm i ..
+    npm i ../..
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
@@ -142,7 +142,7 @@ teardown() {
 
 @test "pipenv py3.6 can package flask with zip option" {
     cd tests/pipenv
-    npm i ..
+    npm i ../..
     sls --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
@@ -150,7 +150,7 @@ teardown() {
 
 @test "pipenv py3.6 doesn't package boto3 by default" {
     cd tests/pipenv
-    npm i ..
+    npm i ../..
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ! ls puck/boto3
@@ -158,7 +158,7 @@ teardown() {
 
 @test "pipenv py3.6 doesn't package bottle with noDeploy option" {
     cd tests/pipenv
-    npm i ..
+    npm i ../..
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    noDeploy: [bottle]/' serverless.yml
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -194,7 +194,7 @@ teardown() {
 
 @test "py3.6 can package only requirements of module" {
     cd tests/individually
-    npm i ..
+    npm i ../..
     sls package
     unzip .serverless/module1.zip -d puck
     unzip .serverless/module2.zip -d puck2
