@@ -6,8 +6,17 @@ jobs:
       image: circleci/classic
     steps:
       - checkout
-      # Apt deps
-      - run: sudo apt -y update && sudo apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker
+      # Build python3.6. gross. (based on my gist here: https://git.io/vxMFG )
+      - run: |
+          sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
+          wget https://www.python.org/ftp/python/3.6.5/Python-3.6.5.tar.xz
+          tar xf Python-3.6.5.tar.xz
+          cd Python-3.6.5
+          ./configure
+          make
+          sudo make altinstall
+      # other deps
+      - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip bats
       # instal pipenv
       - run: python3.6 -m pip install pipenv
       # install nodejs
