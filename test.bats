@@ -204,6 +204,8 @@ teardown() {
 }
 
 @test "py3.6 can package lambda-decorators using vendor option" {
+    cd tests/base
+    npm i ../..
     sls --vendor=./vendor package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
