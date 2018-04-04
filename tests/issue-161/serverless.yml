@@ -1,0 +1,17 @@
+# serverless.yml
+service: myService
+
+provider:
+  name: aws
+  runtime: python2.7
+
+plugins:
+  - serverless-python-requirements
+
+custom: 
+  pythonRequirements:
+    dockerizePip: true
+
+functions:
+  hello:
+    handler: handler.hello

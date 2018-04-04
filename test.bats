@@ -217,3 +217,11 @@ teardown() {
     ls puck/flask
     ls puck/lambda_decorators.py
 }
+
+@test "issue 161 doesn't happen" {
+    cd tests/issue-161
+    npm i $(npm pack ../..)
+    sls package
+    unzip .serverless/myService.zip -d puck
+    ls puck/flask
+}
