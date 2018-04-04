@@ -7,11 +7,11 @@ jobs:
     steps:
       - checkout
       # Apt deps
-      - run: apt -y update && apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker
+      - run: sudo apt -y update && sudo apt -y install python3-pip python3.6 python-pip python2.7 curl unzip bats docker
       # instal pipenv
       - run: python3.6 -m pip install pipenv
       # install nodejs
-      - run: curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt -y install nodejs
+      - run: curl -sL https://deb.nodesource.com/setup_6.x | sudo bash - && sudo apt -y install nodejs
       # install serverless & depcheck
       - run: npm install -g serverless depcheck
       # install deps
