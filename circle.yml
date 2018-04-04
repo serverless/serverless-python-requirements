@@ -16,8 +16,13 @@ jobs:
           ./configure
           make
           sudo make altinstall
+      # install bats
+      - run: |
+          git clone https://github.com/sstephenson/bats.git
+          cd bats
+          sudo ./install.sh /usr/local
       # other deps
-      - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip bats
+      - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip
       # instal pipenv
       - run: python3.6 -m pip install pipenv
       # install nodejs
