@@ -18,6 +18,40 @@ sls plugin install -n serverless-python-requirements
 
 [:apple::beer::snake: Mac Brew installed Python notes](#applebeersnake-mac-brew-installed-python-notes)
 
+## Used by
+* [![](https://avatars0.githubusercontent.com/u/19732939?s=20) UnitedIncome](https://github.com/UnitedIncome)
+* <details>
+  <summary><img src="https://avatars3.githubusercontent.com/u/913567?s=20"/> Netflix</summary>
+  <ul>
+   <li><a href="https://github.com/Netflix-Skunkworks/swag-functions">Netflix-Skunkworks/swag-functions</a></li>
+   <li><a href="https://github.com/Netflix-Skunkworks/historical">Netflix-Skunkworks/historical</a></li>
+   <li><a href="https://github.com/Netflix-Skunkworks/scumblr-spillguard">Netflix-Skunkworks/scumblr-spillguard</a></li>
+  </details>
+* <details>
+  <summary><img src="https://avatars0.githubusercontent.com/u/26391798?s=20"/> HumanCellAtlas</summary>
+  <ul>
+   <li><a href="https://github.com/HumanCellAtlas/metadata-spreadsheet-tools">HumanCellAtlas/metadata-spreadsheet-tools</a></li>
+   <li><a href="https://github.com/HumanCellAtlas/metadata-schema-publisher">HumanCellAtlas/metadata-schema-publisher</a></li>
+   <li><a href="https://github.com/HumanCellAtlas/ingest-hca-to-ena">HumanCellAtlas/ingest-hca-to-ena</a></li>
+   <li><a href="https://github.com/HumanCellAtlas/ingest-broker-api">HumanCellAtlas/ingest-broker-api</a></li>
+  </details>
+* <details>
+  <summary><img src="https://avatars2.githubusercontent.com/u/131524?s=20"/> Mozilla</summary>
+  <ul>
+   <li><a href="https://github.com/mozilla-services/pushbox">mozilla-services/pushbox</a></li>
+  </details>
+* <details>
+  <summary><img src="https://avatars2.githubusercontent.com/u/31493481?s=20"/> Doctors Without Borders</summary>
+  <ul>
+   <li><a href="https://github.com/MSFREACH/msf-reach-chatbot">MSFREACH/msf-reach-chatbot</a></li>
+  </details>
+* <details>
+  <summary><img src="https://avatars1.githubusercontent.com/u/731685?s=20"/> DoSomething.org</summary>
+  <ul>
+   <li><a href="https://github.com/DoSomething/bertly">DoSomething/bertly</a></li>
+  </details>
+
+
 ## Cross compiling!
 Compiling non-pure-Python modules or fetching their manylinux wheels is
 supported on non-linux OSs via the use of Docker and the
