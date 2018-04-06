@@ -217,3 +217,16 @@ teardown() {
     ls puck/flask
     ls puck/lambda_decorators.py
 }
+
+@test "Don't nuke execute perms" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    touch foobar
+    chmod +x foobar
+    perl -p -i'.bak' -e 's/(handler.py$)/\1\n    - foobar/' serverless.yml
+    sls --vendor=./vendor package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    ls puck/lambda_decorators.py
+    ./puck/foobar
+}
