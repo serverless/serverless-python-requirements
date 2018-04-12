@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "eslint": "^4.19.1",
-    "eslint-config-google": "^0.7.1"
+    "eslint-config-google": "^0.9.1"
   },
   "dependencies": {
     "bluebird": "^3.0.6",
