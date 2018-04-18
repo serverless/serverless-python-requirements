@@ -3,11 +3,15 @@
 
 const BbPromise = require('bluebird');
 const fse = require('fs-extra');
-const {addVendorHelper, removeVendorHelper, packRequirements} = require('./lib/zip');
-const {injectAllRequirements} = require('./lib/inject');
-const {installAllRequirements} = require('./lib/pip');
-const {pipfileToRequirements} = require('./lib/pipenv');
-const {cleanup} = require('./lib/clean');
+const {
+  addVendorHelper,
+  removeVendorHelper,
+  packRequirements
+} = require('./lib/zip');
+const { injectAllRequirements } = require('./lib/inject');
+const { installAllRequirements } = require('./lib/pip');
+const { pipfileToRequirements } = require('./lib/pipenv');
+const { cleanup } = require('./lib/clean');
 
 BbPromise.promisifyAll(fse);
 
@@ -20,35 +24,43 @@ class ServerlessPythonRequirements {
    * @return {Object}
    */
   get options() {
-    const options = Object.assign({
-      zip: false,
-      cleanupZipHelper: true,
-      invalidateCaches: false,
-      fileName: 'requirements.txt',
-      usePipenv: true,
-      pythonBin: this.serverless.service.provider.runtime || 'python',
-      dockerizePip: false,
-      dockerSsh: false,
-      dockerImage: null,
-      dockerFile: null,
-      pipCmdExtraArgs: [],
-      noDeploy: [
-        'boto3',
-        'botocore',
-        'docutils',
-        'jmespath',
-        'python-dateutil',
-        's3transfer',
-        'six',
-        'pip',
-        'setuptools',
-      ],
-      vendor: '',
-    }, this.serverless.service.custom && this.serverless.service.custom.pythonRequirements || {});
+    const options = Object.assign(
+      {
+        zip: false,
+        cleanupZipHelper: true,
+        invalidateCaches: false,
+        fileName: 'requirements.txt',
+        usePipenv: true,
+        pythonBin: this.serverless.service.provider.runtime || 'python',
+        dockerizePip: false,
+        dockerSsh: false,
+        dockerImage: null,
+        dockerFile: null,
+        pipCmdExtraArgs: [],
+        noDeploy: [
+          'boto3',
+          'botocore',
+          'docutils',
+          'jmespath',
+          'python-dateutil',
+          's3transfer',
+          'six',
+          'pip',
+          'setuptools'
+        ],
+        vendor: ''
+      },
+      (this.serverless.service.custom &&
+        this.serverless.service.custom.pythonRequirements) ||
+        {}
+    );
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }
-    if (!options.dockerizePip && (options.dockerSsh || options.dockerImage || options.dockerFile)) {
+    if (
+      !options.dockerizePip &&
+      (options.dockerSsh || options.dockerImage || options.dockerFile)
+    ) {
       if (!this.warningLogged) {
         this.serverless.cli.log(
           'WARNING: You provided a docker related option but dockerizePip is set to false.'
@@ -62,7 +74,9 @@ class ServerlessPythonRequirements {
       );
     } else if (!options.dockerFile) {
       // If no dockerFile is provided, use default image
-      const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
+      const defaultImage = `lambci/lambda:build-${
+        this.serverless.service.provider.runtime
+      }`;
       options.dockerImage = options.dockerImage || defaultImage;
     }
     return options;
@@ -74,7 +88,7 @@ class ServerlessPythonRequirements {
    * @param {Object} options
    * @return {undefined}
    */
-  constructor(serverless, options) {
+  constructor(serverless) {
     this.serverless = serverless;
     this.servicePath = this.serverless.config.servicePath;
     this.warningLogged = false;
@@ -84,29 +98,27 @@ class ServerlessPythonRequirements {
         commands: {
           clean: {
             usage: 'Remove .requirements and requirements.zip',
-            lifecycleEvents: [
-              'clean',
-            ],
+            lifecycleEvents: ['clean']
           },
           install: {
             usage: 'install requirements manually',
-            lifecycleEvents: [
-              'install',
-            ],
-          },
-        },
-      },
+            lifecycleEvents: ['install']
+          }
+        }
+      }
     };
 
-    const before = () => BbPromise.bind(this)
-      .then(pipfileToRequirements)
-      .then(addVendorHelper)
-      .then(installAllRequirements)
-      .then(packRequirements);
+    const before = () =>
+      BbPromise.bind(this)
+        .then(pipfileToRequirements)
+        .then(addVendorHelper)
+        .then(installAllRequirements)
+        .then(packRequirements);
 
-    const after = () => BbPromise.bind(this)
-      .then(removeVendorHelper)
-      .then(injectAllRequirements);
+    const after = () =>
+      BbPromise.bind(this)
+        .then(removeVendorHelper)
+        .then(injectAllRequirements);
 
     const invalidateCaches = () => {
       if (this.options.invalidateCaches) {
@@ -123,14 +135,16 @@ class ServerlessPythonRequirements {
       'after:package:createDeploymentArtifacts': after,
       'before:deploy:function:packageFunction': before,
       'after:deploy:function:packageFunction': after,
-      'requirements:install:install': () => BbPromise.bind(this)
-        .then(pipfileToRequirements)
-        .then(addVendorHelper)
-        .then(installAllRequirements)
-        .then(packRequirements),
-      'requirements:clean:clean': () => BbPromise.bind(this)
-        .then(cleanup)
-        .then(removeVendorHelper),
+      'requirements:install:install': () =>
+        BbPromise.bind(this)
+          .then(pipfileToRequirements)
+          .then(addVendorHelper)
+          .then(installAllRequirements)
+          .then(packRequirements),
+      'requirements:clean:clean': () =>
+        BbPromise.bind(this)
+          .then(cleanup)
+          .then(removeVendorHelper)
     };
   }
 }
