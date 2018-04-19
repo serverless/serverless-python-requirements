@@ -1,6 +1,6 @@
 {
   "name": "serverless-python-requirements",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "engines": {
     "node": ">=6.0"
   },
@@ -39,11 +39,12 @@
   "bin": {},
   "scripts": {
     "test": "bats test.bats",
-    "lint": "eslint *.js lib/*.js"
+    "lint": "eslint *.js lib/*.js && prettier -l index.js lib/*.js || (echo need formatting ; exit 1)",
+    "format": "prettier --write index.js lib/*.js"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1"
+    "eslint": "*",
+    "prettier": "*"
   },
   "dependencies": {
     "bluebird": "^3.0.6",
@@ -56,5 +57,16 @@
     "lodash.values": "^4.3.0",
     "lodash.uniqby": "^4.0.0",
     "rimraf": "^2.6.2"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "node": true,
+      "es6": true
+    }
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true
   }
 }
