@@ -46,6 +46,15 @@ sls plugin install -n serverless-python-requirements
    <li><a href="https://github.com/MSFREACH/msf-reach-chatbot">MSFREACH/msf-reach-chatbot</a></li>
   </details>
 * <details>
+  <summary><img src="https://avatars0.githubusercontent.com/u/30102552?s=20"/> Teralytic</summary>
+  <ul>
+   <li><a href="https://github.com/Teralytic/cropID">Teralytic/cropID</a></li>
+   <li><a href="https://github.com/Teralytic/predictiveForecasting">Teralytic/predictiveForecasting</a></li>
+   <li><a href="https://github.com/Teralytic/weather">Teralytic/weather</a></li>
+   <li><a href="https://github.com/Teralytic/evapotranspiration">Teralytic/evapotranspiration</a></li>
+   <li><a href="https://github.com/Teralytic/irrigation">Teralytic/irrigation</a></li>
+  </details>
+* <details>
   <summary><img src="https://avatars1.githubusercontent.com/u/731685?s=20"/> DoSomething.org</summary>
   <ul>
    <li><a href="https://github.com/DoSomething/bertly">DoSomething/bertly</a></li>
