@@ -118,7 +118,7 @@ class ServerlessPythonRequirements {
         .then(packRequirements);
     }
 
-    const after = wat => {
+    const after = () => {
       if (arguments[1].functionObj && arguments[1].functionObj.runtime && !arguments[1].functionObj.runtime.startsWith('python'))
         return;
       return BbPromise.bind(this)
