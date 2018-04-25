@@ -109,17 +109,25 @@ class ServerlessPythonRequirements {
     };
 
     const before = () => {
-      if (arguments[1].functionObj && arguments[1].functionObj.runtime && !arguments[1].functionObj.runtime.startsWith('python'))
+      if (
+        arguments[1].functionObj &&
+        arguments[1].functionObj.runtime &&
+        !arguments[1].functionObj.runtime.startsWith('python')
+      )
         return;
       return BbPromise.bind(this)
         .then(pipfileToRequirements)
         .then(addVendorHelper)
         .then(installAllRequirements)
         .then(packRequirements);
-    }
+    };
 
     const after = () => {
-      if (arguments[1].functionObj && arguments[1].functionObj.runtime && !arguments[1].functionObj.runtime.startsWith('python'))
+      if (
+        arguments[1].functionObj &&
+        arguments[1].functionObj.runtime &&
+        !arguments[1].functionObj.runtime.startsWith('python')
+      )
         return;
       return BbPromise.bind(this)
         .then(removeVendorHelper)
