@@ -197,8 +197,8 @@ teardown() {
     cd tests/individually
     npm i $(npm pack ../..)
     sls package
-    unzip .serverless/module1.zip -d puck
-    unzip .serverless/module2.zip -d puck2
+    unzip .serverless/module1-sls-py-req-test-indiv-dev-hello1.zip -d puck
+    unzip .serverless/module2-sls-py-req-test-indiv-dev-hello2.zip -d puck2
     ls puck/handler1.py
     ls puck2/handler2.py
     ls puck/pyaml
