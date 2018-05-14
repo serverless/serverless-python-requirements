@@ -95,6 +95,15 @@ try:
 except ImportError:
   pass
 ```
+### Slimmen Package
+To remove the tests, information and caches from the installed packages, 
+enable the `slim` option. This will: 1. `strip` the `.so` files, remove `__pycache__` 
+directories, remove `tests` directories remove `dist-info` directories.
+```yaml
+custom:
+  pythonRequirements:
+    slim: true
+```
 
 ## Omitting Packages 
 You can omit a package from deployment with the `noDeploy` option. Note that
