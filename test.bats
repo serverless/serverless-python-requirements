@@ -58,6 +58,15 @@ teardown() {
     ls puck/.requirements.zip puck/unzip_requirements.py
 }
 
+@test "py3.6 can package flask with zip & slim & dockerizePip option" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sls --dockerizePip=true --zip=true --slim=true package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/.requirements.zip puck/unzip_requirements.py
+}
+
 @test "py3.6 can package flask with dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
