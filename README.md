@@ -97,7 +97,7 @@ except ImportError:
 ```
 ### Slimmen Package
 To remove the tests, information and caches from the installed packages, 
-enable the `slim` option. This will: 1. `strip` the `.so` files, remove `__pycache__` 
+enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__` 
 directories, remove `tests` directories remove `dist-info` directories.
 ```yaml
 custom:
