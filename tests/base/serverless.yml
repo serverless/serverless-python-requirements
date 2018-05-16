@@ -10,9 +10,10 @@ custom:
   pythonRequirements:
     zip: ${opt:zip, self:custom.defaults.zip}
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
-    slim: ${opt:slim}
+    slim: ${opt:slim, self:custom.defaults.slim}
     vendor: ${opt:vendor, ''}
   defaults:
+    slim: false
     zip: false
     dockerizePip: false
     individually: false

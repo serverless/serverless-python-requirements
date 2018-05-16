@@ -83,6 +83,7 @@ teardown() {
     sls --dockerizePip=true --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+    test $(find puck -name *.pyc | wc -l) -eq 0
 }
 
 @test "py3.6 uses cache with dockerizePip option" {
@@ -101,6 +102,7 @@ teardown() {
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    pipCmdExtraArgs: ["--cache-dir", ".requirements-cache"]/' serverless.yml
     sls --dockerizePip=true --slim=true package
     ls .requirements-cache/http
+    test $(find puck -name *.pyc | wc -l) -eq 0
 }
 
 
@@ -171,6 +173,7 @@ teardown() {
     sls --dockerizePip=true --slim=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+    test $(find puck -name *.pyc | wc -l) -eq 0
 }
 
 
