@@ -95,7 +95,7 @@ try:
 except ImportError:
   pass
 ```
-### Slimmen Package
+### Slim Package
 To remove the tests, information and caches from the installed packages, 
 enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__` 
 directories, remove `tests` directories remove `dist-info` directories.
@@ -275,3 +275,5 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
  * [@kichik](https://github.com/kichik) - Imposed windows & `noDeploy` support,
    switched to adding files straight to zip instead of creating symlinks, and
    improved pip chache support when using docker.
+ * [@dee-me-tree-or-love](https://github.com/dee-me-tree-or-love) - the `slim` package option
+
