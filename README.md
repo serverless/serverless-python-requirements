@@ -98,7 +98,8 @@ except ImportError:
 ### Slim Package
 To remove the tests, information and caches from the installed packages, 
 enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__` 
-directories, remove `tests` directories remove `dist-info` directories.
+directories, remove `tests` and `dist-info` directories.  
+_Relies on `dockerizePip` being `true`_  
 ```yaml
 custom:
   pythonRequirements:
