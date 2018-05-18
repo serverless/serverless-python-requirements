@@ -9,9 +9,11 @@ plugins:
 custom:
   pythonRequirements:
     zip: ${opt:zip, self:custom.defaults.zip}
+    slim: ${opt:slim, self:custom.defaults.slim}
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
   defaults:
     zip: false
+    slim: false
     dockerizePip: false
 
 package:

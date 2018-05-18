@@ -269,7 +269,7 @@ teardown() {
     ls puck/flask
     ls puck2/flask
     ! ls puck3/flask
-    test $(find puck* -name "*.pyc" | wc -l) -eq 0
+    test $(find "puck*" -name "*.pyc" | wc -l) -eq 0
 }
 
 
