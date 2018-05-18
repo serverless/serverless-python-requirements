@@ -31,6 +31,16 @@ teardown() {
     ! ls puck/flask
 }
 
+@test "py3.6 can package flask with slim options" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    sls --slim=true package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
+}
+
+
 @test "py3.6 doesn't package boto3 by default" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -83,7 +93,7 @@ teardown() {
     sls --dockerizePip=true --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
-    test $(find puck -name *.pyc | wc -l) -eq 0
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
 @test "py3.6 uses cache with dockerizePip option" {
@@ -102,7 +112,7 @@ teardown() {
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    pipCmdExtraArgs: ["--cache-dir", ".requirements-cache"]/' serverless.yml
     sls --dockerizePip=true --slim=true package
     ls .requirements-cache/http
-    test $(find puck -name *.pyc | wc -l) -eq 0
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
 
@@ -112,6 +122,15 @@ teardown() {
     sls --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+}
+
+@test "py2.7 can package flask with slim option" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    sls --runtime=python2.7 --slim=true package 
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
 @test "py2.7 can package flask with zip option" {
@@ -173,7 +192,7 @@ teardown() {
     sls --dockerizePip=true --slim=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
-    test $(find puck -name *.pyc | wc -l) -eq 0
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
 
@@ -183,6 +202,15 @@ teardown() {
     sls package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+}
+
+@test "pipenv py3.6 can package flask with slim option" {
+    cd tests/pipenv
+    npm i $(npm pack ../..)
+    sls --slim=true package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
 @test "pipenv py3.6 can package flask with zip option" {
@@ -231,6 +259,20 @@ teardown() {
     ! ls puck3/flask
 }
 
+@test "py3.6 can package flask with package individually & slim option" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    sls --individually=true --slim=true package
+    unzip .serverless/hello.zip -d puck
+    unzip .serverless/hello2.zip -d puck2
+    unzip .serverless/hello3.zip -d puck3
+    ls puck/flask
+    ls puck2/flask
+    ! ls puck3/flask
+    test $(find puck* -name "*.pyc" | wc -l) -eq 0
+}
+
+
 @test "py2.7 can package flask with package individually option" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -242,6 +284,20 @@ teardown() {
     ls puck2/flask
     ! ls puck3/flask
 }
+
+@test "py2.7 can package flask with package individually & slim option" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    sls --individually=true --slim=true --runtime=python2.7 package
+    unzip .serverless/hello.zip -d puck
+    unzip .serverless/hello2.zip -d puck2
+    unzip .serverless/hello3.zip -d puck3
+    ls puck/flask
+    ls puck2/flask
+    ! ls puck3/flask
+    test $(find puck* -name "*.pyc" | wc -l) -eq 0
+}
+
 
 @test "py3.6 can package only requirements of module" {
     cd tests/individually
