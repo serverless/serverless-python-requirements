@@ -10,7 +10,8 @@ setup() {
 }
 
 teardown() {
-    rm -rf puck puck2 puck3 node_modules .serverless .requirements.zip .requirements-cache
+    rm -rf puck puck2 puck3 node_modules .serverless .requirements.zip .requirements-cache \
+        foobar package-lock.json serverless-python-requirements-*.tgz
     if [ -f serverless.yml.bak ]; then mv serverless.yml.bak serverless.yml; fi
 }
 
