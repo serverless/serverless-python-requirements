@@ -1,0 +1,3 @@
+slimPatterns:
+  - "*tests*"
+  - "*.egg-info*"
