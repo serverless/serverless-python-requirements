@@ -10,9 +10,11 @@ custom:
   pythonRequirements:
     zip: ${opt:zip, self:custom.defaults.zip}
     slim: ${opt:slim, self:custom.defaults.slim}
+    slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
   defaults:
     zip: false
+    slimPatterns: false
     slim: false
     dockerizePip: false
 

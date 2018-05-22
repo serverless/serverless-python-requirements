@@ -45,12 +45,11 @@ teardown() {
     mv _slimPatterns.yml slimPatterns.yml
     npm i $(npm pack ../..)
     sls --slim=true package
+    mv slimPatterns.yml _slimPatterns.yml    
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
-    mv slimPatterns.yml _slimPatterns.yml    
     test $(find puck -name "*.pyc" | wc -l) -eq 0
-    test $(find puck -name "*tests*" | wc -l) -eq 0
-    
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
 

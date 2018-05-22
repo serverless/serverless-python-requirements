@@ -40,6 +40,17 @@ teardown() {
     test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
+@test "py3.6 can package flask with slim & slimPatterns options" {
+    cd tests/base
+    mv _slimPatterns.yml slimPatterns.yml
+    npm i $(npm pack ../..)
+    sls --slim=true package
+    mv slimPatterns.yml _slimPatterns.yml    
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
 
 @test "py3.6 doesn't package boto3 by default" {
     cd tests/base
@@ -96,6 +107,19 @@ teardown() {
     test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
+@test "py3.6 can package flask with slim & dockerizePip & slimPatterns options" {
+    cd tests/base
+    mv _slimPatterns.yml slimPatterns.yml
+    npm i $(npm pack ../..)
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sls --dockerizePip=true --slim=true package
+    mv slimPatterns.yml _slimPatterns.yml    
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
+
 @test "py3.6 uses cache with dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -139,6 +163,18 @@ teardown() {
     sls --runtime=python2.7 --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
+}
+
+@test "py2.7 can package flask with slim & dockerizePip & slimPatterns options" {
+    cd tests/base
+    mv _slimPatterns.yml slimPatterns.yml
+    npm i $(npm pack ../..)
+    sls --runtime=python2.7 --slim=true packag
+    mv slimPatterns.yml _slimPatterns.yml    
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
 @test "py2.7 doesn't package boto3 by default" {
@@ -195,6 +231,18 @@ teardown() {
     test $(find puck -name "*.pyc" | wc -l) -eq 0
 }
 
+@test "py2.7 can package flask with slim & dockerizePip & slimPatterns options" {
+    cd tests/base
+    mv _slimPatterns.yml slimPatterns.yml
+    npm i $(npm pack ../..)
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sls --dockerizePip=true --slim=true --runtime=python2.7 package
+    mv slimPatterns.yml _slimPatterns.yml    
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
 
 @test "pipenv py3.6 can package flask with default options" {
     cd tests/pipenv
@@ -211,6 +259,18 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
+}
+
+@test "pipenv py3.6 can package flask with slim & slimPatterns option" {
+    cd tests/pipenv
+    npm i $(npm pack ../..)
+    mv _slimPatterns.yml slimPatterns.yml
+    sls --slim=true package
+    mv slimPatterns.yml _slimPatterns.yml    
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
 @test "pipenv py3.6 can package flask with zip option" {
