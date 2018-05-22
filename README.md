@@ -96,7 +96,7 @@ except ImportError:
   pass
 ```
 ### Slim Package
-_Works on non 'win32' environments: Docker, WSL are included_
+_Works on non 'win32' environments: Docker, WSL are included_  
 To remove the tests, information and caches from the installed packages, 
 enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__` 
 directories and `dist-info` directories.  
