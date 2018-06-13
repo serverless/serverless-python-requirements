@@ -67,6 +67,7 @@
   },
   "prettier": {
     "semi": true,
-    "singleQuote": true
+    "singleQuote": true,
+    "parser": "babylon"
   }
 }
