@@ -396,6 +396,20 @@ teardown() {
     ls puck2/.requirements.zip puck2/unzip_requirements.py
 }
 
+@test "py2.7 can package only python runtimes" {
+    cd tests/individually
+    npm i $(npm pack ../..)
+    sls --runtime=python2.7 package
+    unzip .serverless/module1-sls-py-req-test-indiv-dev-hello1.zip -d puck
+    unzip .serverless/module2-sls-py-req-test-indiv-dev-hello2.zip -d puck2
+    unzip .serverless/hello3.zip -d puck3
+    ls puck3/module3/handler3.js
+    ! ls puck/handler3.js
+    ! ls puck2/handler3.js
+    ! ls puck3/flask
+    ! ls puck3/pyaml
+}
+
 @test "py3.6 can package lambda-decorators using vendor option" {
     cd tests/base
     npm i $(npm pack ../..)

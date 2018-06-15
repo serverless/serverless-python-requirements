@@ -20,6 +20,14 @@ functions:
   hello2:
     handler: handler2.hello
     module: module2
+  hello3:
+    handler: module3/handler3.hello
+    runtime: node6.10
+    package:
+      exclude:
+        - '**/*'
+      include:
+        - 'module3/**/*'
 
 plugins:
   - serverless-python-requirements
