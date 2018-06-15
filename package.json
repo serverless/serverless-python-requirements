@@ -1,6 +1,6 @@
 {
   "name": "serverless-python-requirements",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "engines": {
     "node": ">=6.0"
   },
@@ -67,6 +67,7 @@
   },
   "prettier": {
     "semi": true,
-    "singleQuote": true
+    "singleQuote": true,
+    "parser": "babylon"
   }
 }
