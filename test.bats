@@ -410,6 +410,22 @@ teardown() {
     ! ls puck3/pyaml
 }
 
+@test "py2.7 can package only python runtimes with zip option" {
+    cd tests/individually
+    npm i $(npm pack ../..)
+    sls --zip=true --runtime=python2.7 package
+    unzip .serverless/hello3.zip -d puck3
+    ! ls puck3/.requirements.zip puck3/unzip_requirements.py
+}
+
+@test "py3.6 can package only python runtimes with zip option" {
+    cd tests/individually
+    npm i $(npm pack ../..)
+    sls --zip=true package
+    unzip .serverless/hello3.zip -d puck3
+    ! ls puck3/.requirements.zip puck3/unzip_requirements.py
+}
+
 @test "py3.6 can package lambda-decorators using vendor option" {
     cd tests/base
     npm i $(npm pack ../..)
