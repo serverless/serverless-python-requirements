@@ -2,10 +2,16 @@ service: sls-py-req-test-indiv
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: ${opt:runtime, 'python3.6'}
 
 package:
   individually: true
+
+custom:
+  pythonRequirements:
+    zip: ${opt:zip, self:custom.defaults.zip}
+  defaults:
+    zip: false
 
 functions:
   hello1:

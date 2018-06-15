@@ -376,6 +376,26 @@ teardown() {
     ! ls puck2/pyaml
 }
 
+@test "py2.7 can package module requirements with zip option" {
+    cd tests/individually
+    npm i $(npm pack ../..)
+    sls --zip=true --runtime=python2.7 package
+    unzip .serverless/hello1.zip -d puck
+    unzip .serverless/hello2.zip -d puck2
+    ls puck/.requirements.zip puck/unzip_requirements.py
+    ls puck2/.requirements.zip puck2/unzip_requirements.py
+}
+
+@test "py3.6 can package module requirements with zip option" {
+    cd tests/individually
+    npm i $(npm pack ../..)
+    sls --zip=true package
+    unzip .serverless/hello1.zip -d puck
+    unzip .serverless/hello2.zip -d puck2
+    ls puck/.requirements.zip puck/unzip_requirements.py
+    ls puck2/.requirements.zip puck2/unzip_requirements.py
+}
+
 @test "py3.6 can package lambda-decorators using vendor option" {
     cd tests/base
     npm i $(npm pack ../..)
