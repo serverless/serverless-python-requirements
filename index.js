@@ -109,13 +109,18 @@ class ServerlessPythonRequirements {
       }
     };
 
+    const isFunctionRuntimePython = args => {
+      // If functionObj.runtime is undefined, python.
+      if (!args[1].functionObj || !args[1].functionObj.runtime) {
+        return true;
+      }
+      return args[1].functionObj.runtime.startsWith('python');
+    };
+
     const before = () => {
-      if (
-        arguments[1].functionObj &&
-        arguments[1].functionObj.runtime &&
-        !arguments[1].functionObj.runtime.startsWith('python')
-      )
+      if (!isFunctionRuntimePython(arguments)) {
         return;
+      }
       return BbPromise.bind(this)
         .then(pipfileToRequirements)
         .then(addVendorHelper)
@@ -124,12 +129,9 @@ class ServerlessPythonRequirements {
     };
 
     const after = () => {
-      if (
-        arguments[1].functionObj &&
-        arguments[1].functionObj.runtime &&
-        !arguments[1].functionObj.runtime.startsWith('python')
-      )
+      if (!isFunctionRuntimePython(arguments)) {
         return;
+      }
       return BbPromise.bind(this)
         .then(removeVendorHelper)
         .then(() =>
