@@ -2,10 +2,16 @@ service: sls-py-req-test-indiv
 
 provider:
   name: aws
-  runtime: python3.6
+  runtime: ${opt:runtime, 'python3.6'}
 
 package:
   individually: true
+
+custom:
+  pythonRequirements:
+    zip: ${opt:zip, self:custom.defaults.zip}
+  defaults:
+    zip: false
 
 functions:
   hello1:
@@ -14,6 +20,14 @@ functions:
   hello2:
     handler: handler2.hello
     module: module2
+  hello3:
+    handler: module3/handler3.hello
+    runtime: node6.10
+    package:
+      exclude:
+        - '**/*'
+      include:
+        - 'module3/**/*'
 
 plugins:
   - serverless-python-requirements
