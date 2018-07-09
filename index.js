@@ -85,10 +85,10 @@ class ServerlessPythonRequirements {
   }
 
   get targetFuncs() {
-    let inputOpt = this.serverless.processedInput.options
+    let inputOpt = this.serverless.processedInput.options;
     return inputOpt.function
       ? [inputOpt.functionObj]
-      : values(this.serverless.service.functions)
+      : values(this.serverless.service.functions);
   }
 
   /**
