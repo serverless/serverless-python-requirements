@@ -3,6 +3,7 @@
 
 const BbPromise = require('bluebird');
 const fse = require('fs-extra');
+const values = require('lodash.values');
 const {
   addVendorHelper,
   removeVendorHelper,
@@ -81,6 +82,13 @@ class ServerlessPythonRequirements {
       options.dockerImage = options.dockerImage || defaultImage;
     }
     return options;
+  }
+
+  get targetFuncs() {
+    let inputOpt = this.serverless.processedInput.options;
+    return inputOpt.function
+      ? [inputOpt.functionObj]
+      : values(this.serverless.service.functions);
   }
 
   /**
