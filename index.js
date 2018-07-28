@@ -104,6 +104,8 @@ class ServerlessPythonRequirements {
 
     this.commands = {
       requirements: {
+        usage: 'Serverless plugin to bundle Python packages',
+        lifecycleEvents: ['requirements'],
         commands: {
           clean: {
             usage: 'Remove .requirements and requirements.zip',
@@ -165,6 +167,10 @@ class ServerlessPythonRequirements {
       'after:package:createDeploymentArtifacts': after,
       'before:deploy:function:packageFunction': before,
       'after:deploy:function:packageFunction': after,
+      'requirements:requirements': () => {
+        this.serverless.cli.generateCommandsHelp(['requirements']);
+        return BbPromise.resolve();
+      },
       'requirements:install:install': () =>
         BbPromise.bind(this)
           .then(pipfileToRequirements)
