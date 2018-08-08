@@ -1,2 +1,2 @@
 slimPatterns:
-  - "*.egg-info*"
+  - "**/*.egg-info*"
