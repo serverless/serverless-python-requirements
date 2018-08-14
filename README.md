@@ -266,6 +266,57 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 1. [Installing the Docker client on Windows Subsystem for Linux (Ubuntu)](https://medium.com/@sebagomez/installing-the-docker-client-on-ubuntus-windows-subsystem-for-linux-612b392a44c4)
 
 
+## Native Code Dependencies During Build
+
+Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image (`lambci/lambda:python3.6`) with a `Dockerfile` like:
+
+```dockerfile
+# AWS Lambda execution environment is based on Amazon Linux 1
+FROM amazonlinux:1
+
+# Install Python 3.6
+RUN yum -y install python36 python36-pip
+
+# Install your dependencies
+RUN curl -s https://bootstrap.pypa.io/get-pip.py | python3
+RUN yum -y install python3-devel mysql-devel gcc
+
+# Set the same WORKDIR as default image
+RUN mkdir /var/task
+WORKDIR /var/task
+```
+
+Then update your `serverless.yml`:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerFile: Dockerfile
+```
+
+## Native Code Dependencies During Runtime
+
+Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to commit the files to your repository:
+
+For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, you can extract this file from the builder Dockerfile:
+
+1. Extract the library:
+```bash
+docker run --rm -v "$(pwd):/var/task" sls-py-reqs-custom cp -v /usr/lib64/mysql57/libmysqlclient.so.1020 .
+```
+(If you get the error `Unable to find image 'sls-py-reqs-custom:latest' locally`, run `sls package` to build the image.)
+2. Commit to your repo:
+```bash
+git add libmysqlclient.so.1020
+git commit -m "Add libmysqlclient.so.1020"
+```
+3. Verify the library gets included in your package:
+```bash
+sls package
+zipinfo .serverless/xxx.zip
+```
+(If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.)
+
 ## Contributors
  * [@dschep](https://github.com/dschep) - Lead developer & maintainer
  * [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
