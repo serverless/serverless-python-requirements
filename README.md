@@ -339,4 +339,5 @@ zipinfo .serverless/xxx.zip
    switched to adding files straight to zip instead of creating symlinks, and
    improved pip chache support when using docker.
  * [@dee-me-tree-or-love](https://github.com/dee-me-tree-or-love) - the `slim` package option
+ * [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
 
