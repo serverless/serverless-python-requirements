@@ -107,13 +107,15 @@ custom:
 ```  
 #### Custom Removal Patterns  
 To specify additional directories to remove from the installed packages, 
-define the patterns using regex as a `slimPatterns` option in serverless config:  
+define a list of of patterns int he serverless config using the `slimPatterns`
+option and glob syntax. Note, it matches against whole paths, so to match a file in any
+directory, start your pattern with `**/`.
 ```yaml
 custom:
   pythonRequirements:
     slim: true
     slimPatterns:
-      - "*.egg-info*"
+      - "**/*.egg-info*"
 ```  
 This will remove all folders within the installed requirements that match 
 the names in `slimPatterns`  
