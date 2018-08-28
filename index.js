@@ -28,6 +28,7 @@ class ServerlessPythonRequirements {
     const options = Object.assign(
       {
         slim: false,
+        slimPatterns: false,
         zip: false,
         cleanupZipHelper: true,
         invalidateCaches: false,
