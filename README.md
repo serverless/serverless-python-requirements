@@ -21,10 +21,11 @@ This will automatically add the plugin to your project's `package.json` and the 
 `serverless.yml`. That's all that's needed for basic use! The plugin will now bundle your python
 dependencies specified in your `requirements.txt` or `Pipfile` when you run `sls deploy`.
 
-[:apple::beer::snake: Mac Brew installed Python notes](#applebeersnake-mac-brew-installed-python-notes)
+For a more in depth introduction on how to user this plugin, check out 
+[this post on the Serverless Blog](https://serverless.com/blog/serverless-python-packaging/)
 
-## Intro Guide
-For an introduction on how to user this plugin, check out [this post on the Serverless Blog](https://serverless.com/blog/serverless-python-packaging/)
+If you're on a mac, check out [these notes](#applebeersnake-mac-brew-installed-python-notes) about using python installed by brew.
+
 
 ## Cross compiling!
 Compiling non-pure-Python modules or fetching their manylinux wheels is
