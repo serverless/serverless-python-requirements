@@ -17,6 +17,10 @@ A Serverless v1.x plugin to automatically bundle dependencies from
 sls plugin install -n serverless-python-requirements
 ```
 
+This will automatically add the plugin to your project's `package.json` and the plugins section of its
+`serverless.yml`. That's all that's needed for basic use! The plugin will now bundle your python
+dependencies specified in your `requirements.txt` or `Pipfile` when you run `sls deploy`.
+
 [:apple::beer::snake: Mac Brew installed Python notes](#applebeersnake-mac-brew-installed-python-notes)
 
 ## Intro Guide
