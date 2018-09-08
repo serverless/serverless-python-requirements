@@ -6,6 +6,11 @@ provider:
 
 package:
   individually: true
+custom:
+  pythonRequirements:
+    dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
+  defaults:
+    dockerizePip: false
 
 functions:
   hello1:

@@ -560,3 +560,16 @@ teardown() {
     unzip .serverless/hello1.zip -d puck
     ./puck/module1/foobar
 }
+
+@test "Don't nuke execute perms when using individually w/docker" {
+    cd tests/individually
+    docker &> /dev/null || skip "docker not present"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    npm i $(npm pack ../..)
+    touch module1/foobar
+    chmod +x module1/foobar
+    perl -p -i'.bak' -e 's/(handler.py$)/\1\n    - foobar/' serverless.yml
+    sls package --dockerizePip=true
+    unzip .serverless/hello1.zip -d puck
+    ./puck/module1/foobar
+}
