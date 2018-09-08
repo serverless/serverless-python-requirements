@@ -30,6 +30,7 @@ teardown() {
 @test "py3.6 supports custom file name with fileName option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    fileName: puck/' serverless.yml
     echo "requests" > puck
@@ -96,6 +97,7 @@ teardown() {
 @test "py3.6 can package flask with zip & dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -105,6 +107,7 @@ teardown() {
 @test "py3.6 can package flask with zip & slim & dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --zip=true --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -114,6 +117,7 @@ teardown() {
 @test "py3.6 can package flask with dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -123,6 +127,7 @@ teardown() {
 @test "py3.6 can package flask with slim & dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -134,6 +139,7 @@ teardown() {
     cd tests/base
     cat _slimPatterns.yml > slimPatterns.yml
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -145,6 +151,7 @@ teardown() {
 @test "py3.6 uses download cache with useDownloadCache option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true/' serverless.yml
     sls package
@@ -155,6 +162,7 @@ teardown() {
 @test "py3.6 uses download cache with cacheLocation option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true\n    cacheLocation: .requirements-cache/' serverless.yml
     sls package
@@ -164,6 +172,7 @@ teardown() {
 @test "py3.6 uses download cache with dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true/' serverless.yml
     sls --dockerizePip=true package
@@ -174,6 +183,7 @@ teardown() {
 @test "py3.6 uses download cache with dockerizePip + cacheLocation option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true\n    cacheLocation: .requirements-cache/' serverless.yml
     sls --dockerizePip=true package
@@ -183,6 +193,7 @@ teardown() {
 @test "py3.6 uses static and download cache" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true\n    useStaticCache: true/' serverless.yml
     sls package
@@ -194,6 +205,7 @@ teardown() {
 @test "py3.6 uses static and download cache with dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true\n    useStaticCache: true/' serverless.yml
     sls --dockerizePip=true package
@@ -205,6 +217,7 @@ teardown() {
 @test "py3.6 uses static cache" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useStaticCache: true/' serverless.yml
     sls package
@@ -216,6 +229,7 @@ teardown() {
 @test "py3.6 uses static cache with cacheLocation option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useStaticCache: true\n    cacheLocation: .requirements-cache/' serverless.yml
     sls package
@@ -227,6 +241,7 @@ teardown() {
 @test "py3.6 checking that static cache actually pulls from cache (by poisoning it)" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useStaticCache: true/' serverless.yml
     sls package
@@ -240,6 +255,7 @@ teardown() {
 @test "py3.6 uses static cache with dockerizePip & slim option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useStaticCache: true/' serverless.yml
     sls --dockerizePip=true --slim=true package
@@ -251,6 +267,7 @@ teardown() {
 @test "py3.6 uses download cache with dockerizePip & slim option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    useDownloadCache: true/' serverless.yml
     sls --dockerizePip=true --slim=true package
@@ -315,6 +332,7 @@ teardown() {
 @test "py2.7 can package flask with zip & dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --runtime=python2.7 --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -324,6 +342,7 @@ teardown() {
 @test "py2.7 can package flask with zip & slim & dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --runtime=python2.7 --zip=true --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -333,6 +352,7 @@ teardown() {
 @test "py2.7 can package flask with dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -342,6 +362,7 @@ teardown() {
 @test "py2.7 can package flask with slim & dockerizePip option" {
     cd tests/base
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --slim=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
@@ -353,6 +374,7 @@ teardown() {
     cd tests/base
     cat _slimPatterns.yml > slimPatterns.yml
     npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
     ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     sls --dockerizePip=true --slim=true --runtime=python2.7 package
     unzip .serverless/sls-py-req-test.zip -d puck
