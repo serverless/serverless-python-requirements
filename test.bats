@@ -527,3 +527,14 @@ teardown() {
     ls puck/lambda_decorators.py
     ./puck/foobar
 }
+
+@test "Don't nuke execute perms when using individually" {
+    cd tests/individually
+    npm i $(npm pack ../..)
+    touch module1/foobar
+    chmod +x module1/foobar
+    perl -p -i'.bak' -e 's/(handler.py$)/\1\n    - foobar/' serverless.yml
+    sls package
+    unzip .serverless/hello1.zip -d puck
+    ./puck/module1/foobar
+}
