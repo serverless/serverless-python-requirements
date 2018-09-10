@@ -148,7 +148,7 @@ You can enable two kinds of caching with this plugin which are currently both DI
 custom:
   pythonRequirements:
     useDownloadCache: true
-      useStaticCache: true
+    useStaticCache: true
 ```
 _Additionally, In future versions of this plugin, both caching features will probably be enabled by default_
 
@@ -157,10 +157,10 @@ There are two additional options related to caching.  You can specify where in y
 ```yaml
 custom:
   pythonRequirements:
-      useStaticCache: true
-      useDownloadCache: true
-      cacheLocation: '/home/user/.my_cache_goes_here'
-      staticCacheMaxVersions: 10
+    useStaticCache: true
+    useDownloadCache: true
+    cacheLocation: '/home/user/.my_cache_goes_here'
+    staticCacheMaxVersions: 10
       
 ```
 
