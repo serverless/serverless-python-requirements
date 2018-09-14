@@ -24,6 +24,10 @@ teardown() {
     if [ -d "${USR_CACHE_DIR}" ] ; then
         rm -Rf "${USR_CACHE_DIR}"
     fi
+    cd ../..
+    if [ -d "tests/base with a space" ] ; then
+        rm -Rf "tests/base with a space"
+    fi
 }
 
 @test "py3.6 supports custom file name with fileName option" {
@@ -565,4 +569,13 @@ teardown() {
     sls package --dockerizePip=true
     unzip .serverless/hello1.zip -d puck
     ./puck/module1/foobar
+}
+
+@test "py3.6 can package flask in a project with a space in it" {
+    cp -a tests/base "tests/base with a space"
+    cd "tests/base with a space"
+    npm i $(npm pack ../..)
+    sls package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
 }
