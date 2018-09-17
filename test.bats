@@ -579,3 +579,12 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
 }
+
+@test "py3.6 can package flask in a project with a space in it with docker" {
+    cp -a tests/base "tests/base with a space"
+    cd "tests/base with a space"
+    npm i $(npm pack ../..)
+    sls --dockerizePip=true package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+}
