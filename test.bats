@@ -27,18 +27,6 @@ teardown() {
     fi
 }
 
-@test "py3.6 supports custom file name with fileName option" {
-    cd tests/base
-    npm i $(npm pack ../..)
-    docker &> /dev/null || skip "docker not present"
-    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    fileName: puck/' serverless.yml
-    echo "requests" > puck
-    sls package
-    ls .serverless/requirements/requests
-    ! ls .serverless/requirements/flask
-}
-
 @test "py3.6 can package flask with default options" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -587,4 +575,16 @@ teardown() {
     sls --dockerizePip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+}
+
+@test "py3.6 supports custom file name with fileName option" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    fileName: puck/' serverless.yml
+    echo "requests" > puck
+    sls package
+    ls .serverless/requirements/requests
+    ! ls .serverless/requirements/flask
 }
