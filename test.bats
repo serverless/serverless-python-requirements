@@ -18,12 +18,9 @@ setup() {
 
 teardown() {
     rm -rf puck puck2 puck3 node_modules .serverless .requirements.zip .requirements-cache \
-        foobar package-lock.json serverless-python-requirements-*.tgz
-    if [ -f serverless.yml.bak ]; then mv serverless.yml.bak serverless.yml; fi
-    if [ -f slimPatterns.yml ]; then rm -f slimPatterns.yml; fi
-    if [ -d "${USR_CACHE_DIR}" ] ; then
-        rm -Rf "${USR_CACHE_DIR}"
-    fi
+        foobar package-lock.json serverless.yml.bak slimPatterns.yml "${USR_CACHE_DIR}"
+        serverless-python-requirements-*.tgz
+    git checkout serverless.yml
     cd ../..
     if [ -d "tests/base with a space" ] ; then
         rm -Rf "tests/base with a space"
