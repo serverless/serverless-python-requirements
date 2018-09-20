@@ -34,7 +34,10 @@ class ServerlessPythonRequirements {
         invalidateCaches: false,
         fileName: 'requirements.txt',
         usePipenv: true,
-        pythonBin: this.serverless.service.provider.runtime || 'python',
+        pythonBin:
+          process.platform === 'win32'
+            ? 'python.exe'
+            : this.serverless.service.provider.runtime || 'python',
         dockerizePip: false,
         dockerSsh: false,
         dockerImage: null,
