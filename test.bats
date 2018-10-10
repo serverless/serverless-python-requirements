@@ -35,6 +35,15 @@ teardown() {
     ls puck/flask
 }
 
+@test "py3.6 can package flask with hashes" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    pip-compile --output-file requirements-w-hashes.txt --generate-hashes requirements.txt
+    sls package --fileName requirements-w-hashes.txt
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+}
+
 @test "py3.6 can package flask & bottle with zip option" {
     cd tests/base
     npm i $(npm pack ../..)

@@ -13,6 +13,7 @@ custom:
     slim: ${opt:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
     vendor: ${opt:vendor, ''}
+    fileName: ${opt:fileName, 'requirements.txt'}
   defaults:
     slim: false
     slimPatterns: false
