@@ -50,13 +50,14 @@ teardown() {
     ls puck/flask
 }
 
-@test "py3.6 can package flask with zip option" {
+@test "py3.6 can package flask & bottle with zip option" {
     cd tests/base
     npm i $(npm pack ../..)
     sls --zip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/.requirements.zip puck/unzip_requirements.py
     ! ls puck/flask
+    ! ls puck/bottle
 }
 
 @test "py3.6 can package flask with slim options" {
@@ -581,6 +582,8 @@ teardown() {
 }
 
 @test "py3.6 can package flask in a project with a space in it with docker" {
+    docker &> /dev/null || skip "docker not present"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
     cp -a tests/base "tests/base with a space"
     cd "tests/base with a space"
     npm i $(npm pack ../..)
