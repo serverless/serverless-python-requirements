@@ -38,13 +38,16 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
-    "test": "bats test.bats",
+    "test": "node test.js && bats test.bats",
     "lint": "eslint *.js lib/*.js && prettier -l index.js lib/*.js || (echo need formatting ; exit 1)",
-    "format": "prettier --write index.js lib/*.js"
+    "format": "prettier --write index.js lib/*.js test.js"
   },
   "devDependencies": {
     "eslint": "*",
-    "prettier": "*"
+    "prettier": "*",
+    "cross-spawn": "*",
+    "deasync-promise": "*",
+    "tape": "*"
   },
   "dependencies": {
     "appdirectory": "^0.1.0",

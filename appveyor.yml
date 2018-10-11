@@ -1,14 +1,9 @@
 version: '{build}'
 init:
-- ps: >-
-    Install-Product node 6
-
-    npm i -g serverless
+- ps: npm i -g serverless
 build: off
 test_script:
 - cmd: >-
-    cd example
-
     npm i
 
-    sls package --pythonBin=c:/python36/python.exe
+    node test.js

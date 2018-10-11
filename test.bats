@@ -18,28 +18,13 @@ setup() {
 
 teardown() {
     rm -rf puck puck2 puck3 node_modules .serverless .requirements.zip .requirements-cache \
-        foobar package-lock.json serverless-python-requirements-*.tgz
-    if [ -f serverless.yml.bak ]; then mv serverless.yml.bak serverless.yml; fi
-    if [ -f slimPatterns.yml ]; then rm -f slimPatterns.yml; fi
-    if [ -d "${USR_CACHE_DIR}" ] ; then
-        rm -Rf "${USR_CACHE_DIR}"
-    fi
+        foobar package-lock.json serverless.yml.bak slimPatterns.yml "${USR_CACHE_DIR}"
+        serverless-python-requirements-*.tgz
+    git checkout serverless.yml
     cd ../..
     if [ -d "tests/base with a space" ] ; then
         rm -Rf "tests/base with a space"
     fi
-}
-
-@test "py3.6 supports custom file name with fileName option" {
-    cd tests/base
-    npm i $(npm pack ../..)
-    docker &> /dev/null || skip "docker not present"
-    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    fileName: puck/' serverless.yml
-    echo "requests" > puck
-    sls package
-    ls .serverless/requirements/requests
-    ! ls .serverless/requirements/flask
 }
 
 @test "py3.6 can package flask with default options" {
@@ -590,4 +575,16 @@ teardown() {
     sls --dockerizePip=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
+}
+
+@test "py3.6 supports custom file name with fileName option" {
+    cd tests/base
+    npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    perl -p -i'.bak' -e 's/(pythonRequirements:$)/\1\n    fileName: puck/' serverless.yml
+    echo "requests" > puck
+    sls package
+    ls .serverless/requirements/requests
+    ! ls .serverless/requirements/flask
 }
