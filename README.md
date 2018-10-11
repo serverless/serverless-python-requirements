@@ -28,7 +28,7 @@ If you're on a mac, check out [these notes](#applebeersnake-mac-brew-installed-p
 
 
 ## Cross compiling!
-Compiling non-pure-Python modules or fetching their many linux wheels is
+Compiling non-pure-Python modules or fetching their manylinux wheels is
 supported on non-linux OSs via the use of Docker and the
 [docker-lambda](https://github.com/lambci/docker-lambda) image.
 To enable docker usage, add the following to your `serverless.yml`:
