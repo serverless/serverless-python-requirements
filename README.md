@@ -28,7 +28,7 @@ If you're on a mac, check out [these notes](#applebeersnake-mac-brew-installed-p
 
 
 ## Cross compiling!
-Compiling non-pure-Python modules or fetching their manylinux wheels is
+Compiling non-pure-Python modules or fetching their many linux wheels is
 supported on non-linux OSs via the use of Docker and the
 [docker-lambda](https://github.com/lambci/docker-lambda) image.
 To enable docker usage, add the following to your `serverless.yml`:
@@ -115,7 +115,7 @@ custom:
 ```  
 #### Custom Removal Patterns  
 To specify additional directories to remove from the installed packages, 
-define a list of of patterns int he serverless config using the `slimPatterns`
+define a list of patterns in the serverless config using the `slimPatterns`
 option and glob syntax. Note, it matches against whole paths, so to match a file in any
 directory, start your pattern with `**/`.
 ```yaml
