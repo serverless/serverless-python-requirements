@@ -115,7 +115,7 @@ custom:
 ```  
 #### Custom Removal Patterns  
 To specify additional directories to remove from the installed packages, 
-define a list of of patterns int he serverless config using the `slimPatterns`
+define a list of patterns in the serverless config using the `slimPatterns`
 option and glob syntax. Note, it matches against whole paths, so to match a file in any
 directory, start your pattern with `**/`.
 ```yaml
