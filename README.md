@@ -77,7 +77,8 @@ option:
 ```yaml
 custom:
   pythonRequirements:
-    dockerEnv: true
+    dockerEnv:
+      - https_proxy
 ```
 
 [:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
