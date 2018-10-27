@@ -72,7 +72,7 @@ It is important that the host of your private repositories has already been adde
 `$HOME/.ssh/known_hosts` file, as the install process will fail otherwise due to host authenticity
 failure.
 
-You can also pass all environment variables to the docker container by specifying the `dockerEnv`
+You can also pass environment variables to docker by specifying them in `dockerEnv`
 option:
 ```yaml
 custom:
