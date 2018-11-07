@@ -164,7 +164,7 @@ test("py3.6 doesn't package bottle with zip option", t => {
     zipfiles.includes(`flask${sep}__init__.py`),
     "flask isn't packaged on its own"
   );
-  t.true(zippedReqs.includes(`flask${sep}__init__.py`), 'flask is packaged in the .requirements.zip file');
+  t.true(zippedReqs.includes(`flask/__init__.py`), 'flask is packaged in the .requirements.zip file');
   t.false(zippedReqs.includes(`bottle.py`), 'bottle is not packaged in the .requirements.zip file');
   t.end();
 });
