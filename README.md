@@ -107,7 +107,7 @@ except ImportError:
 _Works on non 'win32' environments: Docker, WSL are included_  
 To remove the tests, information and caches from the installed packages, 
 enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__` 
-directories and `dist-info` directories.  
+and `dist-info` directories as well as `.pyc` and `.pyo` files.  
 ```yaml
 custom:
   pythonRequirements:
@@ -116,12 +116,22 @@ custom:
 #### Custom Removal Patterns  
 To specify additional directories to remove from the installed packages, 
 define a list of patterns in the serverless config using the `slimPatterns`
-option and glob syntax. Note, it matches against whole paths, so to match a file in any
+option and glob syntax. These paterns will be added to the default ones (`**/*.py[c|o]`, `**/__pycache__*`, `**/*.dist-info*`).
+Note, the glob syntax matches against whole paths, so to match a file in any
 directory, start your pattern with `**/`.
 ```yaml
 custom:
   pythonRequirements:
     slim: true
+    slimPatterns:
+      - "**/*.egg-info*"
+```  
+To overwrite the default patterns set the option `slimPatternsAppendDefaults` to `false` (`true` by default).
+```yaml
+custom:
+  pythonRequirements:
+    slim: true
+    slimPatternsAppendDefaults: false
     slimPatterns:
       - "**/*.egg-info*"
 ```  
