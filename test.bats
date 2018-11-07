@@ -74,6 +74,17 @@ teardown() {
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
+@test "py3.6 can package flask with slim, slimPatternsAppendDefaults=false & slimPatterns options" {
+    cd tests/base
+    cat _slimPatterns.yml > slimPatterns.yml
+    npm i $(npm pack ../..)
+    sls --slim=true --slimPatternsAppendDefaults false package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -ge 1
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
+
 @test "py3.6 doesn't package boto3 by default" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -143,6 +154,19 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
+
+@test "py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false  options" {
+    cd tests/base
+    cat _slimPatterns.yml > slimPatterns.yml
+    npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sls --dockerizePip=true --slim=true --slimPatternsAppendDefaults false package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -ge 1
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
@@ -297,10 +321,21 @@ teardown() {
     cd tests/base
     cat _slimPatterns.yml > slimPatterns.yml
     npm i $(npm pack ../..)
-    sls --runtime=python2.7 --slim=true packag
+    sls --runtime=python2.7 --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
+
+@test "py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false  options" {
+    cd tests/base
+    cat _slimPatterns.yml > slimPatterns.yml
+    npm i $(npm pack ../..)
+    sls --runtime=python2.7 --slim=true --slimPatternsAppendDefaults false package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -ge 1
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
@@ -375,6 +410,19 @@ teardown() {
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
+@test "py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false  options" {
+    cd tests/base
+    cat _slimPatterns.yml > slimPatterns.yml
+    npm i $(npm pack ../..)
+    docker &> /dev/null || skip "docker not present"
+    ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
+    sls --dockerizePip=true --slim=true --slimPatternsAppendDefaults false --runtime=python2.7 package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -ge 1
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
+
 @test "pipenv py3.6 can package flask with default options" {
     cd tests/pipenv
     npm i $(npm pack ../..)
@@ -400,6 +448,17 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+}
+
+@test "pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults false  option" {
+    cd tests/pipenv
+    npm i $(npm pack ../..)
+    cat _slimPatterns.yml > slimPatterns.yml
+    sls --slim=true --slimPatternsAppendDefaults false package
+    unzip .serverless/sls-py-req-test.zip -d puck
+    ls puck/flask
+    test $(find puck -name "*.pyc" | wc -l) -ge 1
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
