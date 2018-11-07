@@ -36,6 +36,7 @@ const mkCommand = cmd => (args, options = {}) => {
 const sls = mkCommand('sls');
 const git = mkCommand('git');
 const npm = mkCommand('npm');
+const perl = mkCommand('perl');
 
 const setup = () => {
   removeSync(getUserCachePath());
@@ -81,6 +82,12 @@ const getPythonBin = (version = 3) => {
 
 const listZipFiles = filename =>
   Object.keys(deasync(new JSZip().loadAsync(readFileSync(filename))).files);
+const listRequirementsZipFiles = filename => {
+  const zip = deasync(new JSZip().loadAsync(readFileSync(filename)));
+  const reqsBuffer = deasync(zip.file('.requirements.zip').async('nodebuffer'));
+  const reqsZip = deasync(new JSZip().loadAsync(reqsBuffer));
+  return Object.keys(reqsZip.files)
+};
 
 test('default pythonBin can package flask with default options', t => {
   process.chdir('tests/base');
@@ -132,5 +139,32 @@ test('py3.6 can package flask with slim option', t => {
     [],
     'no pyc files packaged'
   );
+  t.end();
+});
+
+
+/*
+ * News tests not in test.bats
+ */
+
+test("py3.6 doesn't package bottle with zip option", t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  perl(['-p', "-i'.bak'", '-e', 's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/', 'serverless.yml'])
+  sls([`--pythonBin=${getPythonBin(3)}`, '--zip=true', 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  const zippedReqs = listRequirementsZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(
+    zipfiles.includes('.requirements.zip'),
+    'zipped requirements are packaged'
+  );
+  t.true(zipfiles.includes(`unzip_requirements.py`), 'unzip util is packaged');
+  t.false(
+    zipfiles.includes(`flask${sep}__init__.py`),
+    "flask isn't packaged on its own"
+  );
+  t.true(zippedReqs.includes(`flask${sep}__init__.py`), 'flask is packaged in the .requirements.zip file');
+  t.false(zippedReqs.includes(`bottle.py`), 'bottle is not packaged in the .requirements.zip file');
   t.end();
 });
