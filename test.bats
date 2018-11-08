@@ -81,7 +81,7 @@ teardown() {
     sls --slim=true --slimPatternsAppendDefaults false package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
-    test $(find puck -name "*.pyc" | wc -l) -ge 1
+    test $(find puck -name "*.pyc" | wc -l) -lt 1
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
