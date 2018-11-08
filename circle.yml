@@ -24,7 +24,7 @@ jobs:
       # other deps
       - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip
       # instal pipenv
-      - run: sudo python3.6 -m pip install pipenv
+      - run: sudo python3.6 -m pip install pipenv pip-tools
       # install nodejs
       - run: curl -sL https://deb.nodesource.com/setup_6.x | sudo bash - && sudo apt -y install nodejs
       # install serverless & depcheck
