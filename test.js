@@ -182,7 +182,7 @@ test("py3.6 doesn't package bottle with zip option", t => {
   t.end();
 });
 
-test('py3.6 can package flask with slim, slimPatternsAppendDefaults=false & slimPatterns options', t => {
+test('py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaults=false options', t => {
   process.chdir('tests/base');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
@@ -193,7 +193,7 @@ test('py3.6 can package flask with slim, slimPatternsAppendDefaults=false & slim
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(
     zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'no pyc files are packaged'
+    'pyc files are packaged'
   );
   t.deepEqual(
     zipfiles.filter(filename => filename.includes('.egg-info')),
@@ -223,7 +223,7 @@ test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatt
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(
     zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'no pyc files are packaged'
+    'pyc files are packaged'
   );
   t.deepEqual(
     zipfiles.filter(filename => filename.includes('.egg-info')),
@@ -249,7 +249,7 @@ test('py2.7 can package flask with slim & slimPatterns & slimPatternsAppendDefau
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(
     zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'no pyc files are packaged'
+    'pyc files are packaged'
   );
   t.deepEqual(
     zipfiles.filter(filename => filename.includes('.egg-info')),
@@ -279,7 +279,7 @@ test('py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatt
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(
     zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'no pyc files are packaged'
+    'pyc files are packaged'
   );
   t.deepEqual(
     zipfiles.filter(filename => filename.includes('.egg-info')),
@@ -289,7 +289,7 @@ test('py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatt
   t.end();
 });
 
-test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults false  option', t => {
+test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', t => {
   process.chdir('tests/pipenv');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
@@ -300,7 +300,7 @@ test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppe
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(
     zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'no pyc files are packaged'
+    'pyc files are packaged'
   );
   t.deepEqual(
     zipfiles.filter(filename => filename.includes('.egg-info')),
