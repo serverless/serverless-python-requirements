@@ -72,6 +72,15 @@ It is important that the host of your private repositories has already been adde
 `$HOME/.ssh/known_hosts` file, as the install process will fail otherwise due to host authenticity
 failure.
 
+You can also pass environment variables to docker by specifying them in `dockerEnv`
+option:
+```yaml
+custom:
+  pythonRequirements:
+    dockerEnv:
+      - https_proxy
+```
+
 [:checkered_flag: Windows notes](#checkered_flag-windows-dockerizepip-notes)
 
 ## Pipenv support :sparkles::cake::sparkles:
