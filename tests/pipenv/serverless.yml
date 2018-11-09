@@ -11,10 +11,12 @@ custom:
     zip: ${opt:zip, self:custom.defaults.zip}
     slim: ${opt:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
+    slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
   defaults:
     zip: false
     slimPatterns: false
+    slimPatternsAppendDefaults: true
     slim: false
     dockerizePip: false
 
