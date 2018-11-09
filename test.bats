@@ -74,7 +74,6 @@ teardown() {
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
-
 @test "py3.6 doesn't package boto3 by default" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -146,7 +145,6 @@ teardown() {
     test $(find puck -name "*.pyc" | wc -l) -eq 0
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
-
 
 @test "py3.6 uses download cache with useDownloadCache option" {
     cd tests/base
@@ -306,7 +304,6 @@ teardown() {
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
-
 @test "py2.7 doesn't package boto3 by default" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -378,7 +375,6 @@ teardown() {
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
 
-
 @test "pipenv py3.6 can package flask with default options" {
     cd tests/pipenv
     npm i $(npm pack ../..)
@@ -406,7 +402,6 @@ teardown() {
     test $(find puck -name "*.pyc" | wc -l) -eq 0
     test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
 }
-
 
 @test "pipenv py3.6 can package flask with zip option" {
     cd tests/pipenv
@@ -467,7 +462,6 @@ teardown() {
     test $(find "puck*" -name "*.pyc" | wc -l) -eq 0
 }
 
-
 @test "py2.7 can package flask with package individually option" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -492,7 +486,6 @@ teardown() {
     ! ls puck3/flask
     test $(find puck* -name "*.pyc" | wc -l) -eq 0
 }
-
 
 @test "py3.6 can package only requirements of module" {
     cd tests/individually
