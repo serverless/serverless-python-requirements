@@ -36,7 +36,7 @@ class ServerlessPythonRequirements {
         usePipenv: true,
         pythonBin:
           process.platform === 'win32'
-            ? 'python'
+            ? 'python.exe'
             : this.serverless.service.provider.runtime || 'python',
         dockerizePip: false,
         dockerSsh: false,
@@ -66,6 +66,9 @@ class ServerlessPythonRequirements {
     );
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
+    }
+    if (options.dockerizePip && process.platform === 'win32') {
+      options.pythonBin = 'python';
     }
     if (
       !options.dockerizePip &&
