@@ -213,7 +213,7 @@ test('py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaul
   t.end();
 });
 
-test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options', t => {
+test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options', {skip: !canUseDocker()}, t => {
   process.chdir('tests/base');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
