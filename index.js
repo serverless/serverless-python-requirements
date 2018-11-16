@@ -67,6 +67,9 @@ class ServerlessPythonRequirements {
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }
+    if (options.dockerizePip && process.platform === 'win32') {
+      options.pythonBin = 'python';
+    }
     if (
       !options.dockerizePip &&
       (options.dockerSsh || options.dockerImage || options.dockerFile)
