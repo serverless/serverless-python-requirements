@@ -63,8 +63,8 @@ const teardown = () => {
   removeSync('tests/base with a space');
 };
 
-const test = (desc, func) =>
-  tape.test(desc, t => {
+const test = (desc, func, opts = {}) =>
+  tape.test(desc, opts, t => {
     setup();
     try {
       func(t);
@@ -213,15 +213,11 @@ test('py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaul
   t.end();
 });
 
-test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options', {skip: !canUseDocker()}, t => {
+test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options', t => {
   process.chdir('tests/base');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  /* TODO:
-  docker &> /dev/null || skip "docker not present"
-  ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-  */
   sls([
     '--dockerizePip=true',
     '--slim=true',
@@ -236,12 +232,12 @@ test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatt
     'pyc files are packaged'
   );
   t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
+    zipfiles.filter(filename => filename.includes('.egg-infooo')),
     [],
     '.egg-info folders are not packaged'
   );
   t.end();
-});
+}, { skip: !canUseDocker() });
 
 test('py2.7 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false options', t => {
   process.chdir('tests/base');
@@ -274,10 +270,6 @@ test('py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatt
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  /* TODO:
-  docker &> /dev/null || skip "docker not present"
-  ! uname -sm|grep Linux || groups|grep docker || id -u|egrep '^0$' || skip "can't dockerize on linux if not root & not in docker group"
-  */
   sls([
     '--dockerizePip=true',
     '--runtime=python2.7',
@@ -297,7 +289,7 @@ test('py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatt
     '.egg-info folders are not packaged'
   );
   t.end();
-});
+}, { skip: !canUseDocker() });
 
 test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', t => {
   process.chdir('tests/pipenv');
