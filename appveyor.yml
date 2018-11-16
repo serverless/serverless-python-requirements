@@ -1,9 +1,10 @@
 version: '{build}'
 init:
-- ps: npm i -g serverless
+    - ps: pip install pipenv
+    - ps: npm i -g serverless
 build: off
 test_script:
-- cmd: >-
-    npm i
+    - cmd: >-
+        npm i
 
-    node test.js
+        node test.js
