@@ -89,6 +89,16 @@ const listRequirementsZipFiles = filename => {
   return Object.keys(reqsZip.files);
 };
 
+const canUseDocker = () => {
+  let result
+  try {
+    result = crossSpawn.sync('docker', ['ps']);
+  } catch (e) {
+    return false;
+  }
+  return result.status === 0;
+}
+
 test('default pythonBin can package flask with default options', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
