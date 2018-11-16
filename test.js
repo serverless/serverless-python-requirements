@@ -90,14 +90,14 @@ const listRequirementsZipFiles = filename => {
 };
 
 const canUseDocker = () => {
-  let result
+  let result;
   try {
     result = crossSpawn.sync('docker', ['ps']);
   } catch (e) {
     return false;
   }
   return result.status === 0;
-}
+};
 
 test('default pythonBin can package flask with default options', t => {
   process.chdir('tests/base');
@@ -213,31 +213,35 @@ test('py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaul
   t.end();
 });
 
-test('py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options', t => {
-  process.chdir('tests/base');
-  copySync('_slimPatterns.yml', 'slimPatterns.yml');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
-  sls([
-    '--dockerizePip=true',
-    '--slim=true',
-    '--slimPatternsAppendDefaults=false',
-    'package'
-  ]);
+test(
+  'py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
+  t => {
+    process.chdir('tests/base');
+    copySync('_slimPatterns.yml', 'slimPatterns.yml');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      '--dockerizePip=true',
+      '--slim=true',
+      '--slimPatternsAppendDefaults=false',
+      'package'
+    ]);
 
-  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.true(
-    zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'pyc files are packaged'
-  );
-  t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-infooo')),
-    [],
-    '.egg-info folders are not packaged'
-  );
-  t.end();
-}, { skip: !canUseDocker() });
+    const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+    t.true(
+      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      'pyc files are packaged'
+    );
+    t.deepEqual(
+      zipfiles.filter(filename => filename.includes('.egg-infooo')),
+      [],
+      '.egg-info folders are not packaged'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
 
 test('py2.7 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false options', t => {
   process.chdir('tests/base');
@@ -265,31 +269,35 @@ test('py2.7 can package flask with slim & slimPatterns & slimPatternsAppendDefau
   t.end();
 });
 
-test('py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options', t => {
-  process.chdir('tests/base');
-  copySync('_slimPatterns.yml', 'slimPatterns.yml');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
-  sls([
-    '--dockerizePip=true',
-    '--runtime=python2.7',
-    '--slim=true',
-    '--slimPatternsAppendDefaults=false',
-    'package'
-  ]);
-  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.true(
-    zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
-    'pyc files are packaged'
-  );
-  t.deepEqual(
-    zipfiles.filter(filename => filename.includes('.egg-info')),
-    [],
-    '.egg-info folders are not packaged'
-  );
-  t.end();
-}, { skip: !canUseDocker() });
+test(
+  'py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
+  t => {
+    process.chdir('tests/base');
+    copySync('_slimPatterns.yml', 'slimPatterns.yml');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      '--dockerizePip=true',
+      '--runtime=python2.7',
+      '--slim=true',
+      '--slimPatternsAppendDefaults=false',
+      'package'
+    ]);
+    const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+    t.true(
+      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      'pyc files are packaged'
+    );
+    t.deepEqual(
+      zipfiles.filter(filename => filename.includes('.egg-info')),
+      [],
+      '.egg-info folders are not packaged'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
 
 test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', t => {
   process.chdir('tests/pipenv');
