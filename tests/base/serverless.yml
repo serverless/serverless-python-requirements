@@ -12,11 +12,13 @@ custom:
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
     slim: ${opt:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
+    slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     vendor: ${opt:vendor, ''}
     fileName: ${opt:fileName, 'requirements.txt'}
   defaults:
     slim: false
     slimPatterns: false
+    slimPatternsAppendDefaults: true
     zip: false
     dockerizePip: false
     individually: false

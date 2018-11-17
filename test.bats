@@ -297,7 +297,7 @@ teardown() {
     cd tests/base
     cat _slimPatterns.yml > slimPatterns.yml
     npm i $(npm pack ../..)
-    sls --runtime=python2.7 --slim=true packag
+    sls --runtime=python2.7 --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
@@ -462,7 +462,6 @@ teardown() {
     test $(find "puck*" -name "*.pyc" | wc -l) -eq 0
 }
 
-
 @test "py2.7 can package flask with package individually option" {
     cd tests/base
     npm i $(npm pack ../..)
@@ -487,7 +486,6 @@ teardown() {
     ! ls puck3/flask
     test $(find puck* -name "*.pyc" | wc -l) -eq 0
 }
-
 
 @test "py3.6 can package only requirements of module" {
     cd tests/individually

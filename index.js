@@ -29,6 +29,7 @@ class ServerlessPythonRequirements {
       {
         slim: false,
         slimPatterns: false,
+        slimPatternsAppendDefaults: true,
         zip: false,
         cleanupZipHelper: true,
         invalidateCaches: false,
