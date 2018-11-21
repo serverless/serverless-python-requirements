@@ -385,3 +385,4 @@ zipinfo .serverless/xxx.zip
  * [@dee-me-tree-or-love](https://github.com/dee-me-tree-or-love) - the `slim` package option
  * [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
  * [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
+ * [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements
