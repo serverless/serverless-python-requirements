@@ -21,7 +21,7 @@ This will automatically add the plugin to your project's `package.json` and the 
 `serverless.yml`. That's all that's needed for basic use! The plugin will now bundle your python
 dependencies specified in your `requirements.txt` or `Pipfile` when you run `sls deploy`.
 
-For a more in depth introduction on how to user this plugin, check out 
+For a more in depth introduction on how to user this plugin, check out
 [this post on the Serverless Blog](https://serverless.com/blog/serverless-python-packaging/)
 
 If you're on a mac, check out [these notes](#applebeersnake-mac-brew-installed-python-notes) about using python installed by brew.
@@ -113,17 +113,17 @@ except ImportError:
   pass
 ```
 ### Slim Package
-_Works on non 'win32' environments: Docker, WSL are included_  
-To remove the tests, information and caches from the installed packages, 
-enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__` 
-and `dist-info` directories as well as `.pyc` and `.pyo` files.  
+_Works on non 'win32' environments: Docker, WSL are included_
+To remove the tests, information and caches from the installed packages,
+enable the `slim` option. This will: `strip` the `.so` files, remove `__pycache__`
+and `dist-info` directories as well as `.pyc` and `.pyo` files.
 ```yaml
 custom:
   pythonRequirements:
     slim: true
-```  
-#### Custom Removal Patterns  
-To specify additional directories to remove from the installed packages, 
+```
+#### Custom Removal Patterns
+To specify additional directories to remove from the installed packages,
 define a list of patterns in the serverless config using the `slimPatterns`
 option and glob syntax. These paterns will be added to the default ones (`**/*.py[c|o]`, `**/__pycache__*`, `**/*.dist-info*`).
 Note, the glob syntax matches against whole paths, so to match a file in any
@@ -134,7 +134,7 @@ custom:
     slim: true
     slimPatterns:
       - "**/*.egg-info*"
-```  
+```
 To overwrite the default patterns set the option `slimPatternsAppendDefaults` to `false` (`true` by default).
 ```yaml
 custom:
@@ -143,10 +143,10 @@ custom:
     slimPatternsAppendDefaults: false
     slimPatterns:
       - "**/*.egg-info*"
-```  
-This will remove all folders within the installed requirements that match 
-the names in `slimPatterns`  
-## Omitting Packages 
+```
+This will remove all folders within the installed requirements that match
+the names in `slimPatterns`
+## Omitting Packages
 You can omit a package from deployment with the `noDeploy` option. Note that
 dependencies of omitted packages must explicitly be omitted too.
 By default, this will not install the AWS SDKs that are already installed on
@@ -180,7 +180,7 @@ custom:
     useDownloadCache: true
     cacheLocation: '/home/user/.my_cache_goes_here'
     staticCacheMaxVersions: 10
-      
+
 ```
 
 ### Extra pip arguments
