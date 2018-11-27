@@ -27,13 +27,15 @@ const mkCommand = cmd => (args, options = {}) => {
     )
   );
   if (error) {
-    console.error(`Error running: ${quote([cmd, ...args])}`);
+    console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
     throw error;
   }
   if (status) {
     console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
     console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
-    throw new Error(`${quote([cmd, ...args])} failed with status code ${status}`);
+    throw new Error(
+      `${quote([cmd, ...args])} failed with status code ${status}`
+    );
   }
   return stdout && stdout.toString().trim();
 };
