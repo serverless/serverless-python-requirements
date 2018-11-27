@@ -3,6 +3,7 @@ const deasync = require('deasync-promise');
 const glob = require('glob-all');
 const JSZip = require('jszip');
 const tape = require('tape');
+const { quote } = require('shell-quote');
 const { removeSync, readFileSync, copySync } = require('fs-extra');
 const { sep } = require('path');
 
@@ -25,11 +26,14 @@ const mkCommand = cmd => (args, options = {}) => {
       options
     )
   );
-  if (error) throw error;
+  if (error) {
+    console.error(`Error running: ${quote([cmd, ...args])}`);
+    throw error;
+  }
   if (status) {
-    console.error(stdout.toString()); // eslint-disable-line no-console
-    console.error(stderr.toString()); // eslint-disable-line no-console
-    throw new Error(`${cmd} failed with status code ${status}`);
+    console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
+    console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
+    throw new Error(`${quote([cmd, ...args])} failed with status code ${status}`);
   }
   return stdout && stdout.toString().trim();
 };
