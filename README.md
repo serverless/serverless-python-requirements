@@ -148,14 +148,33 @@ This will remove all folders within the installed requirements that match
 the names in `slimPatterns`  
 ## Omitting Packages 
 You can omit a package from deployment with the `noDeploy` option. Note that
-dependencies of omitted packages must explicitly be omitted too.
-By default, this will not install the AWS SDKs that are already installed on
-Lambda. This example makes it instead omit pytest:
+dependencies of omitted packages must explicitly be omitted too. By default,
+the following packages are omitted as they are already installed on Lambda:
+
+ * boto3
+ * botocore
+ * docutils
+ * jmespath
+ * pip
+ * python-dateutil
+ * s3transfer
+ * setuptools
+ * six
+
+This example makes it instead omit pytest:
 ```yaml
 custom:
   pythonRequirements:
     noDeploy:
       - pytest
+```
+
+To include the default omitted packages, set the `noDeploy` option to an empty
+list:
+```yaml
+custom:
+  pythonRequirements:
+    noDeploy: []
 ```
 
 ## Extra Config Options
