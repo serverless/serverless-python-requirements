@@ -8,7 +8,7 @@ setup() {
         export LANG=C.UTF-8
     fi
     export USR_CACHE_DIR=`node -e 'console.log(require("./lib/shared").getUserCachePath())'`
-    # Please note: If you update change the requirements.txt in test/base this value will 
+    # Please note: If you update change the requirements.txt in test/base this value will
     # change.  Run a test which uses this variable manually step by step and list the cache
     # folder to find the new hash if you do this
     if [ -d "${USR_CACHE_DIR}" ] ; then
@@ -71,7 +71,7 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
-    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0
 }
 
 @test "py3.6 doesn't package boto3 by default" {
@@ -143,7 +143,7 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
-    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0
 }
 
 @test "py3.6 uses download cache with useDownloadCache option" {
@@ -279,7 +279,7 @@ teardown() {
 @test "py2.7 can package flask with slim option" {
     cd tests/base
     npm i $(npm pack ../..)
-    sls --runtime=python2.7 --slim=true package 
+    sls --runtime=python2.7 --slim=true package
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
@@ -301,7 +301,7 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
-    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0
 }
 
 @test "py2.7 doesn't package boto3 by default" {
@@ -372,7 +372,7 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
-    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0
 }
 
 @test "pipenv py3.6 can package flask with default options" {
@@ -400,7 +400,7 @@ teardown() {
     unzip .serverless/sls-py-req-test.zip -d puck
     ls puck/flask
     test $(find puck -name "*.pyc" | wc -l) -eq 0
-    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0  
+    test $(find puck -type d -name "*.egg-info*" | wc -l) -eq 0
 }
 
 @test "pipenv py3.6 can package flask with zip option" {
