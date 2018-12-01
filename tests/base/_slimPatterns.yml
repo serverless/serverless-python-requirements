@@ -1,2 +1,2 @@
 slimPatterns:
-  - "**/*.egg-info*"
+  - "**/__main__.py"

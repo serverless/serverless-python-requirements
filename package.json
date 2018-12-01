@@ -38,7 +38,7 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
-    "test": "node test.js && bats test.bats",
+    "test": "node test.js",
     "lint": "eslint *.js lib/*.js && prettier -l index.js lib/*.js || (echo need formatting ; exit 1)",
     "format": "prettier --write index.js lib/*.js test.js"
   },
