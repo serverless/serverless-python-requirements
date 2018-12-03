@@ -15,6 +15,9 @@ custom:
     slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     vendor: ${opt:vendor, ''}
     fileName: ${opt:fileName, 'requirements.txt'}
+    useStaticCache: ${opt:useStaticCache, self:custom.defaults.useStaticCache}
+    useDownloadCache: ${opt:useDownloadCache, self:custom.defaults.useDownloadCache}
+    cacheLocation: ${opt:cacheLocation, ''}
   defaults:
     slim: false
     slimPatterns: false
@@ -22,13 +25,15 @@ custom:
     zip: false
     dockerizePip: false
     individually: false
+    useStaticCache: false
+    useDownloadCache: false
 
 package:
   individually: ${opt:individually, self:custom.defaults.individually}
   exclude:
     - '**/*'
-  include:
-    - handler.py
+  include: 
+    - 'handler.py'
 
 functions:
   hello:
