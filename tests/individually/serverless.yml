@@ -17,9 +17,17 @@ functions:
   hello1:
     handler: handler1.hello
     module: module1
+    vendor: ${opt:vendor-hello1, ''}
+
   hello2:
     handler: handler2.hello
     module: module2
+    vendor: ${opt:vendor-hello2, ''}
+
+  hello3:
+    handler: handler2.hello
+    module: module2
+    vendor: ${opt:vendor-hello1, ''}
 
 plugins:
   - serverless-python-requirements
