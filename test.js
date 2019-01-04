@@ -1384,7 +1384,8 @@ test('py3.6 can package individually without moving modules to root of zip-File 
 
   const zipfiles_hello4 = listZipFiles('.serverless/hello4.zip');
   t.true(
-    zipfiles_hello4.includes('fn2/fn2_handler.py'),
+    zipfiles_hello4.includes(`fn2${sep}fn2_handler.py`) &&
+      zipfiles_hello4.includes(`fn2${sep}__init__.py`),
     'fn2_handler is packaged as a module in function hello4'
   );
   t.true(
@@ -1740,6 +1741,86 @@ test('py3.6 can package different vendor libraries for each module', t => {
   t.false(
     zipfiles_hello3.includes('handler1.py'),
     'handler1.py is NOT packaged at root level in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`pyaml${sep}__init__.py`),
+    'pyaml is NOT packaged in function hello3'
+  );
+  t.true(
+    zipfiles_hello3.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`vendor_library_a.py`),
+    'vendor library lib_a is packaged in function hello3'
+  );
+  t.true(
+    zipfiles_hello3.includes(`vendor_library_b.py`),
+    'vendor library lib_b is NOT packaged in function hello3'
+  );
+
+  t.end();
+});
+
+test('py3.6 can package different vendor libraries for each module, when modules are not moved up', t => {
+  process.chdir('tests/individually');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([
+    '--vendor-hello1=lib_a',
+    '--vendor-hello2=lib_b',
+    '--moveup=false',
+    'package'
+  ]);
+
+  const zipfiles_hello = listZipFiles('.serverless/hello1.zip');
+  t.true(
+    zipfiles_hello.includes(`module1${sep}handler1.py`),
+    'module1 is packaged as a module in function hello1'
+  );
+  t.true(
+    zipfiles_hello.includes(`pyaml${sep}__init__.py`),
+    'pyaml is packaged in function hello1'
+  );
+  t.false(
+    zipfiles_hello.includes(`flask${sep}__init__.py`),
+    'flask is NOT packaged in function hello1'
+  );
+  t.true(
+    zipfiles_hello.includes(`vendor_library_a.py`),
+    'vendor library lib_a is packaged in function hello1'
+  );
+  t.false(
+    zipfiles_hello.includes(`vendor_library_b.py`),
+    'vendor library lib_b is NOT packaged in function hello1'
+  );
+
+  const zipfiles_hello2 = listZipFiles('.serverless/hello2.zip');
+  t.true(
+    zipfiles_hello2.includes(`module2${sep}handler2.py`),
+    'module2 is packaged as a module in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes(`pyaml${sep}__init__.py`),
+    'pyaml is NOT packaged in function hello2'
+  );
+  t.true(
+    zipfiles_hello2.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes(`vendor_library_a.py`),
+    'vendor library lib_a is NOT packaged in function hello2'
+  );
+  t.true(
+    zipfiles_hello2.includes(`vendor_library_b.py`),
+    'vendor library lib_b is packaged in function hello2'
+  );
+
+  const zipfiles_hello3 = listZipFiles('.serverless/hello3.zip');
+  t.true(
+    zipfiles_hello3.includes(`module2${sep}handler2.py`),
+    'module2 is packaged as a module in function hello3'
   );
   t.false(
     zipfiles_hello3.includes(`pyaml${sep}__init__.py`),

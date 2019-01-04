@@ -10,8 +10,10 @@ package:
 custom:
   pythonRequirements:
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
+    IndividuallyMoveUpModules: ${opt:moveup, self:custom.defaults.IndividuallyMoveUpModules}
   defaults:
     dockerizePip: false
+    IndividuallyMoveUpModules: true
 
 functions:
   hello1:
