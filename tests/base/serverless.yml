@@ -15,6 +15,7 @@ custom:
     slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     vendor: ${opt:vendor, ''}
     fileName: ${opt:fileName, 'requirements.txt'}
+    IndividuallyMoveUpModules: ${opt:moveup, self:custom.defaults.IndividuallyMoveUpModules}
     useStaticCache: ${opt:useStaticCache, self:custom.defaults.useStaticCache}
     useDownloadCache: ${opt:useDownloadCache, self:custom.defaults.useDownloadCache}
     cacheLocation: ${opt:cacheLocation, ''}
@@ -25,6 +26,7 @@ custom:
     zip: false
     dockerizePip: false
     individually: false
+    IndividuallyMoveUpModules: true
     useStaticCache: false
     useDownloadCache: false
 
@@ -38,8 +40,6 @@ package:
 functions:
   hello:
     handler: handler.hello
-  hello2:
-    handler: handler.hello
   hello3:
     handler: handler.hello
     runtime: nodejs6.10
@@ -49,5 +49,19 @@ functions:
     package:
       include:
         - 'fn2/**'
-
-
+  hello2:
+    handler: handler.hello
+  hello5:
+    handler: fn2.handler.hello2
+    module: fn2
+    package:
+      include:
+        - 'fn2/**'
+        - 'common/__init__.py'
+  hello6:
+    handler: fn3.fn3_handler.hello
+    module: fn3
+    package:
+      include:
+        - 'fn3/**'
+        - 'common/__init__.py'
