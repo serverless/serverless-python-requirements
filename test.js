@@ -120,99 +120,6 @@ const canUseDocker = () => {
   return result.status === 0;
 };
 
-test('py3.6 can package different vendor libraries for each module', t => {
-  process.chdir('tests/individually');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
-  sls(['--vendor-hello1=lib_a', '--vendor-hello2=lib_b', 'package']);
-
-  const zipfiles_hello = listZipFiles(
-    '.serverless/module1-sls-py-req-test-indiv-dev-hello1.zip'
-  );
-  t.true(
-    zipfiles_hello.includes('handler1.py'),
-    'handler1.py is packaged at root level in function hello1'
-  );
-  t.false(
-    zipfiles_hello.includes('handler2.py'),
-    'handler2.py is NOT packaged at root level in function hello1'
-  );
-  t.true(
-    zipfiles_hello.includes(`pyaml${sep}__init__.py`),
-    'pyaml is packaged in function hello1'
-  );
-  t.false(
-    zipfiles_hello.includes(`flask${sep}__init__.py`),
-    'flask is NOT packaged in function hello1'
-  );
-  t.true(
-    zipfiles_hello.includes(`vendor_library_a.py`),
-    'vendor library lib_a is packaged in function hello1'
-  );
-  t.false(
-    zipfiles_hello.includes(`vendor_library_b.py`),
-    'vendor library lib_b is NOT packaged in function hello1'
-  );
-
-  const zipfiles_hello2 = listZipFiles(
-    '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
-  );
-  t.true(
-    zipfiles_hello2.includes('handler2.py'),
-    'handler2.py is packaged at root level in function hello2'
-  );
-  t.false(
-    zipfiles_hello2.includes('handler1.py'),
-    'handler1.py is NOT packaged at root level in function hello2'
-  );
-  t.false(
-    zipfiles_hello2.includes(`pyaml${sep}__init__.py`),
-    'pyaml is NOT packaged in function hello2'
-  );
-  t.true(
-    zipfiles_hello2.includes(`flask${sep}__init__.py`),
-    'flask is packaged in function hello2'
-  );
-  t.false(
-    zipfiles_hello2.includes(`vendor_library_a.py`),
-    'vendor library lib_a is NOT packaged in function hello2'
-  );
-  t.true(
-    zipfiles_hello2.includes(`vendor_library_b.py`),
-    'vendor library lib_b is packaged in function hello2'
-  );
-
-  const zipfiles_hello3 = listZipFiles(
-    '.serverless/module2-sls-py-req-test-indiv-dev-hello3.zip'
-  );
-  t.true(
-    zipfiles_hello3.includes('handler2.py'),
-    'handler2.py is packaged at root level in function hello3'
-  );
-  t.false(
-    zipfiles_hello3.includes('handler1.py'),
-    'handler1.py is NOT packaged at root level in function hello3'
-  );
-  t.false(
-    zipfiles_hello3.includes(`pyaml${sep}__init__.py`),
-    'pyaml is NOT packaged in function hello3'
-  );
-  t.true(
-    zipfiles_hello3.includes(`flask${sep}__init__.py`),
-    'flask is packaged in function hello3'
-  );
-  t.false(
-    zipfiles_hello3.includes(`vendor_library_a.py`),
-    'vendor library lib_a is packaged in function hello3'
-  );
-  t.true(
-    zipfiles_hello3.includes(`vendor_library_b.py`),
-    'vendor library lib_b is NOT packaged in function hello3'
-  );
-
-  t.end();
-});
-
 test('default pythonBin can package flask with default options', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
@@ -1101,7 +1008,9 @@ test('py3.6 can package flask with package individually option', t => {
   npm(['i', path]);
   sls(['--individually=true', 'package']);
 
-  const zipfiles_hello = listZipFiles('.serverless/root-sls-py-req-test-dev-hello.zip');
+  const zipfiles_hello = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello.zip'
+  );
   t.false(
     zipfiles_hello.includes(`fn2${sep}__init__.py`),
     'fn2 is NOT packaged in function hello'
@@ -1119,7 +1028,9 @@ test('py3.6 can package flask with package individually option', t => {
     'flask is packaged in function hello'
   );
 
-  const zipfiles_hello2 = listZipFiles('.serverless/root-sls-py-req-test-dev-hello2.zip');
+  const zipfiles_hello2 = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello2.zip'
+  );
   t.false(
     zipfiles_hello2.includes(`fn2${sep}__init__.py`),
     'fn2 is NOT packaged in function hello2'
@@ -1321,7 +1232,9 @@ test('py3.6 can package flask with package individually & slim option', t => {
   npm(['i', path]);
   sls(['--individually=true', '--slim=true', 'package']);
 
-  const zipfiles_hello = listZipFiles('.serverless/root-sls-py-req-test-dev-hello.zip');
+  const zipfiles_hello = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello.zip'
+  );
   t.true(
     zipfiles_hello.includes('handler.py'),
     'handler.py is packaged in function hello'
@@ -1340,7 +1253,9 @@ test('py3.6 can package flask with package individually & slim option', t => {
     'dataclasses is NOT packaged in function hello'
   );
 
-  const zipfiles_hello2 = listZipFiles('.serverless/root-sls-py-req-test-dev-hello2.zip');
+  const zipfiles_hello2 = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello2.zip'
+  );
   t.true(
     zipfiles_hello2.includes('handler.py'),
     'handler.py is packaged in function hello2'
@@ -1467,9 +1382,7 @@ test('py3.6 can package individually without moving modules to root of zip-File 
     'flask is NOT packaged in function hello3'
   );
 
-  const zipfiles_hello4 = listZipFiles(
-    '.serverless/hello4.zip'
-  );
+  const zipfiles_hello4 = listZipFiles('.serverless/hello4.zip');
   t.true(
     zipfiles_hello4.includes('fn2/fn2_handler.py'),
     'fn2_handler is packaged as a module in function hello4'
@@ -1547,7 +1460,9 @@ test('py2.7 can package flask with package individually option', t => {
   npm(['i', path]);
   sls(['--individually=true', '--runtime=python2.7', 'package']);
 
-  const zipfiles_hello = listZipFiles('.serverless/root-sls-py-req-test-dev-hello.zip');
+  const zipfiles_hello = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello.zip'
+  );
   t.true(
     zipfiles_hello.includes('handler.py'),
     'handler.py is packaged in function hello'
@@ -1561,7 +1476,9 @@ test('py2.7 can package flask with package individually option', t => {
     'dataclasses is NOT packaged in function hello'
   );
 
-  const zipfiles_hello2 = listZipFiles('.serverless/root-sls-py-req-test-dev-hello2.zip');
+  const zipfiles_hello2 = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello2.zip'
+  );
   t.true(
     zipfiles_hello2.includes('handler.py'),
     'handler.py is packaged in function hello2'
@@ -1618,7 +1535,9 @@ test('py2.7 can package flask with package individually & slim option', t => {
   npm(['i', path]);
   sls(['--individually=true', '--runtime=python2.7', '--slim=true', 'package']);
 
-  const zipfiles_hello = listZipFiles('.serverless/root-sls-py-req-test-dev-hello.zip');
+  const zipfiles_hello = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello.zip'
+  );
   t.true(
     zipfiles_hello.includes('handler.py'),
     'handler.py is packaged in function hello'
@@ -1637,7 +1556,9 @@ test('py2.7 can package flask with package individually & slim option', t => {
     'dataclasses is NOT packaged in function hello'
   );
 
-  const zipfiles_hello2 = listZipFiles('.serverless/root-sls-py-req-test-dev-hello2.zip');
+  const zipfiles_hello2 = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello2.zip'
+  );
   t.true(
     zipfiles_hello2.includes('handler.py'),
     'handler.py is packaged in function hello2'
@@ -1802,11 +1723,39 @@ test('py3.6 can package different vendor libraries for each module', t => {
   );
   t.false(
     zipfiles_hello2.includes(`vendor_library_a.py`),
-    'vendor library lib_a is NOT packaged in function hello1'
+    'vendor library lib_a is NOT packaged in function hello2'
   );
   t.true(
     zipfiles_hello2.includes(`vendor_library_b.py`),
-    'vendor library lib_b is packaged in function hello1'
+    'vendor library lib_b is packaged in function hello2'
+  );
+
+  const zipfiles_hello3 = listZipFiles(
+    '.serverless/module2-sls-py-req-test-indiv-dev-hello3.zip'
+  );
+  t.true(
+    zipfiles_hello3.includes('handler2.py'),
+    'handler2.py is packaged at root level in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes('handler1.py'),
+    'handler1.py is NOT packaged at root level in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`pyaml${sep}__init__.py`),
+    'pyaml is NOT packaged in function hello3'
+  );
+  t.true(
+    zipfiles_hello3.includes(`flask${sep}__init__.py`),
+    'flask is packaged in function hello3'
+  );
+  t.false(
+    zipfiles_hello3.includes(`vendor_library_a.py`),
+    'vendor library lib_a is packaged in function hello3'
+  );
+  t.true(
+    zipfiles_hello3.includes(`vendor_library_b.py`),
+    'vendor library lib_b is NOT packaged in function hello3'
   );
 
   t.end();
@@ -1818,7 +1767,9 @@ test('py3.6 can package lambda-decorators using vendor and invidiually option', 
   npm(['i', path]);
   sls(['--individually=true', '--vendor=./vendor', 'package']);
 
-  const zipfiles_hello = listZipFiles('.serverless/root-sls-py-req-test-dev-hello.zip');
+  const zipfiles_hello = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello.zip'
+  );
   t.true(
     zipfiles_hello.includes('handler.py'),
     'handler.py is packaged at root level in function hello'
@@ -1836,7 +1787,9 @@ test('py3.6 can package lambda-decorators using vendor and invidiually option', 
     'dataclasses is NOT packaged in function hello'
   );
 
-  const zipfiles_hello2 = listZipFiles('.serverless/root-sls-py-req-test-dev-hello2.zip');
+  const zipfiles_hello2 = listZipFiles(
+    '.serverless/root-sls-py-req-test-dev-hello2.zip'
+  );
   t.true(
     zipfiles_hello2.includes('handler.py'),
     'handler.py is packaged at root level in function hello2'
