@@ -32,7 +32,7 @@ package:
   individually: ${opt:individually, self:custom.defaults.individually}
   exclude:
     - '**/*'
-  include: 
+  include:
     - 'handler.py'
 
 functions:
@@ -43,3 +43,11 @@ functions:
   hello3:
     handler: handler.hello
     runtime: nodejs6.10
+  hello4:
+    handler: fn2_handler.hello
+    module: fn2
+    package:
+      include:
+        - 'fn2/**'
+
+
