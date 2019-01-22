@@ -10,6 +10,7 @@ const {
   packRequirements
 } = require('./lib/zip');
 const { injectAllRequirements } = require('./lib/inject');
+const { layerRequirements } = require('./lib/layer');
 const { installAllRequirements } = require('./lib/pip');
 const { pipfileToRequirements } = require('./lib/pipenv');
 const { cleanup, cleanupCache } = require('./lib/clean');
@@ -31,6 +32,8 @@ class ServerlessPythonRequirements {
         slimPatterns: false,
         slimPatternsAppendDefaults: true,
         zip: false,
+        inject: true,
+        layer: false,
         cleanupZipHelper: true,
         invalidateCaches: false,
         fileName: 'requirements.txt',
@@ -93,6 +96,14 @@ class ServerlessPythonRequirements {
         this.serverless.service.provider.runtime
       }`;
       options.dockerImage = options.dockerImage || defaultImage;
+    }
+    if (options.layer) {
+      // If layers are being used, dependencies should not be injected.
+      options.inject = false;
+      // If layer was set as a boolean, set it to an empty object to use the layer defaults.
+      if (options.layer === true) {
+        options.layer = {};
+      }
     }
     return options;
   }
@@ -167,6 +178,7 @@ class ServerlessPythonRequirements {
       }
       return BbPromise.bind(this)
         .then(removeVendorHelper)
+        .then(layerRequirements)
         .then(() =>
           injectAllRequirements.bind(this)(
             arguments[1].functionObj &&
