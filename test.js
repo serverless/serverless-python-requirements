@@ -128,7 +128,7 @@ test('default pythonBin can package flask with default options', t => {
   sls(['package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
 
@@ -139,7 +139,7 @@ test('py3.6 can package flask with default options', t => {
   sls([`--pythonBin=${getPythonBin(3)}`, 'package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
 
@@ -248,9 +248,9 @@ test(
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-    t.false(
+    t.true(
       zipfiles.includes(`boto3${sep}__init__.py`),
-      'boto3 is NOT packaged'
+      'boto3 is packaged'
     );
     t.end();
   },
@@ -379,7 +379,7 @@ test('py2.7 can package flask with default options', t => {
   sls([`--pythonBin=${getPythonBin(2)}`, 'package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
 
@@ -556,10 +556,7 @@ test(
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-    t.false(
-      zipfiles.includes(`boto3${sep}__init__.py`),
-      'boto3 is NOT packaged'
-    );
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
   { skip: !canUseDocker() }
@@ -631,7 +628,7 @@ test('pipenv py3.6 can package flask with default options', t => {
   sls(['package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
 
@@ -838,11 +835,11 @@ test('py3.6 can package lambda-decorators using vendor option', t => {
   sls([`--vendor=./vendor`, 'package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.true(
     zipfiles.includes(`lambda_decorators.py`),
     'lambda_decorators.py is packaged'
   );
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
   t.end();
 });
 
@@ -867,15 +864,12 @@ test(
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.true(
       zipfiles.includes(`lambda_decorators.py`),
       'lambda_decorators.py is packaged'
     );
     t.true(zipfiles.includes(`foobar`), 'foobar is packaged');
-    t.false(
-      zipfiles.includes(`boto3${sep}__init__.py`),
-      'boto3 is NOT packaged'
-    );
 
     const zipfiles_with_metadata = listZipFilesWithMetaData(
       '.serverless/sls-py-req-test.zip'
@@ -906,7 +900,7 @@ test('py3.6 can package flask in a project with a space in it', t => {
   sls(['package']);
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
 
@@ -920,10 +914,7 @@ test(
     sls(['--dockerizePip=true', 'package']);
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-    t.false(
-      zipfiles.includes(`boto3${sep}__init__.py`),
-      'boto3 is NOT packaged'
-    );
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
   { skip: !canUseDocker() }

@@ -53,17 +53,7 @@ class ServerlessPythonRequirements {
         cacheLocation: false,
         staticCacheMaxVersions: 0,
         pipCmdExtraArgs: [],
-        noDeploy: [
-          'boto3',
-          'botocore',
-          'docutils',
-          'jmespath',
-          'python-dateutil',
-          's3transfer',
-          'six',
-          'pip',
-          'setuptools'
-        ],
+        noDeploy: [],
         vendor: ''
       },
       (this.serverless.service.custom &&
