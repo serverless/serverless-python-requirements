@@ -94,6 +94,23 @@ custom:
 ```
 
 
+## Poetry support :sparkles::pencil::sparkles:
+NOTE: Only poetry version 1 supports the required `export` command for this
+feature. As of the point this feature was added, poetry 1.0.0 was in preview
+and requires that poetry is installed with the --preview flag.
+
+TL;DR Install poetry with the `--preview` flag.
+
+If you include a `pyproject.toml` and have `poetry` installed instead of a `requirements.txt` this will use
+`poetry export --without-hashes -f requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
+`dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
+```yaml
+custom:
+  pythonRequirements:
+    usePoetry: false
+```
+
+
 ## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
 and `scikit-learn`) there is support for compressing the libraries. This does
@@ -405,3 +422,4 @@ zipinfo .serverless/xxx.zip
  * [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
  * [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
  * [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements & Porting tests from bats to js!
+ * [@squaresurf](https://github.com/squaresurf) - adding usePoetry option

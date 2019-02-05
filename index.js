@@ -12,6 +12,7 @@ const {
 const { injectAllRequirements } = require('./lib/inject');
 const { installAllRequirements } = require('./lib/pip');
 const { pipfileToRequirements } = require('./lib/pipenv');
+const { pyprojectTomlToRequirements } = require('./lib/poetry');
 const { cleanup, cleanupCache } = require('./lib/clean');
 
 BbPromise.promisifyAll(fse);
@@ -35,6 +36,7 @@ class ServerlessPythonRequirements {
         invalidateCaches: false,
         fileName: 'requirements.txt',
         usePipenv: true,
+        usePoetry: true,
         pythonBin:
           process.platform === 'win32'
             ? 'python.exe'
@@ -156,6 +158,7 @@ class ServerlessPythonRequirements {
       }
       return BbPromise.bind(this)
         .then(pipfileToRequirements)
+        .then(pyprojectTomlToRequirements)
         .then(addVendorHelper)
         .then(installAllRequirements)
         .then(packRequirements);
