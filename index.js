@@ -32,7 +32,6 @@ class ServerlessPythonRequirements {
         slimPatterns: false,
         slimPatternsAppendDefaults: true,
         zip: false,
-        inject: true,
         layer: false,
         cleanupZipHelper: true,
         invalidateCaches: false,
@@ -98,8 +97,6 @@ class ServerlessPythonRequirements {
       options.dockerImage = options.dockerImage || defaultImage;
     }
     if (options.layer) {
-      // If layers are being used, dependencies should not be injected.
-      options.inject = false;
       // If layer was set as a boolean, set it to an empty object to use the layer defaults.
       if (options.layer === true) {
         options.layer = {};
