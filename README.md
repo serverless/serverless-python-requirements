@@ -163,6 +163,38 @@ custom:
 ```
 This will remove all folders within the installed requirements that match
 the names in `slimPatterns`
+
+### Lamba Layer
+Another method for dealing with large dependencies is to put them into a
+[Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
+Simply add the `layer` option to the configuration.
+```yaml
+custom:
+  pythonRequirements:
+    layer: true
+```
+The requirements will be zipped up and a layer will be created automatically.
+Now just add the reference to the functions that will use the layer.
+```yaml
+functions:
+  hello:
+    handler: handler.hello
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+```
+If the layer requires additional or custom configuration, add them onto the `layer` option.
+```yaml
+custom:
+  pythonRequirements:
+    layer:
+      name: ${self:provider.stage}-layerName
+      description: Python requirements lamba layer
+      compatibleRuntimes:
+        - python3.7
+      licenseInfo: GPLv3
+      allowedAccounts:
+        - '*'
+```
 ## Omitting Packages
 You can omit a package from deployment with the `noDeploy` option. Note that
 dependencies of omitted packages must explicitly be omitted too. By default,
@@ -423,3 +455,4 @@ zipinfo .serverless/xxx.zip
  * [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
  * [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements & Porting tests from bats to js!
  * [@squaresurf](https://github.com/squaresurf) - adding usePoetry option
+ * [@david-mk-lawrence](https://github.com/david-mk-lawrence) - added Lambda Layer support
