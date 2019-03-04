@@ -164,6 +164,16 @@ custom:
 This will remove all folders within the installed requirements that match
 the names in `slimPatterns`
 
+#### Option not to strip binaries
+
+In some cases, stripping binaries leads to problems like "ELF load command address/offset not properly aligned", even when done in the Docker environment. You can still slim down the package without `*.so` files with
+```yaml
+custom:
+  pythonRequirements:
+    slim: true
+    strip: false
+```
+
 ### Lamba Layer
 Another method for dealing with large dependencies is to put them into a
 [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
