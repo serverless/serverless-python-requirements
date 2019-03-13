@@ -21,7 +21,7 @@ This will automatically add the plugin to your project's `package.json` and the 
 `serverless.yml`. That's all that's needed for basic use! The plugin will now bundle your python
 dependencies specified in your `requirements.txt` or `Pipfile` when you run `sls deploy`.
 
-For a more in depth introduction on how to user this plugin, check out
+For a more in depth introduction on how to use this plugin, check out
 [this post on the Serverless Blog](https://serverless.com/blog/serverless-python-packaging/)
 
 If you're on a mac, check out [these notes](#applebeersnake-mac-brew-installed-python-notes) about using python installed by brew.
@@ -94,6 +94,23 @@ custom:
 ```
 
 
+## Poetry support :sparkles::pencil::sparkles:
+NOTE: Only poetry version 1 supports the required `export` command for this
+feature. As of the point this feature was added, poetry 1.0.0 was in preview
+and requires that poetry is installed with the --preview flag.
+
+TL;DR Install poetry with the `--preview` flag.
+
+If you include a `pyproject.toml` and have `poetry` installed instead of a `requirements.txt` this will use
+`poetry export --without-hashes -f requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
+`dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
+```yaml
+custom:
+  pythonRequirements:
+    usePoetry: false
+```
+
+
 ## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
 and `scikit-learn`) there is support for compressing the libraries. This does
@@ -146,6 +163,48 @@ custom:
 ```
 This will remove all folders within the installed requirements that match
 the names in `slimPatterns`
+
+#### Option not to strip binaries
+
+In some cases, stripping binaries leads to problems like "ELF load command address/offset not properly aligned", even when done in the Docker environment. You can still slim down the package without `*.so` files with
+```yaml
+custom:
+  pythonRequirements:
+    slim: true
+    strip: false
+```
+
+### Lamba Layer
+Another method for dealing with large dependencies is to put them into a
+[Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
+Simply add the `layer` option to the configuration.
+```yaml
+custom:
+  pythonRequirements:
+    layer: true
+```
+The requirements will be zipped up and a layer will be created automatically.
+Now just add the reference to the functions that will use the layer.
+```yaml
+functions:
+  hello:
+    handler: handler.hello
+    layers:
+      - {Ref: PythonRequirementsLambdaLayer}
+```
+If the layer requires additional or custom configuration, add them onto the `layer` option.
+```yaml
+custom:
+  pythonRequirements:
+    layer:
+      name: ${self:provider.stage}-layerName
+      description: Python requirements lamba layer
+      compatibleRuntimes:
+        - python3.7
+      licenseInfo: GPLv3
+      allowedAccounts:
+        - '*'
+```
 ## Omitting Packages
 You can omit a package from deployment with the `noDeploy` option. Note that
 dependencies of omitted packages must explicitly be omitted too. By default,
@@ -405,3 +464,5 @@ zipinfo .serverless/xxx.zip
  * [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
  * [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
  * [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements & Porting tests from bats to js!
+ * [@squaresurf](https://github.com/squaresurf) - adding usePoetry option
+ * [@david-mk-lawrence](https://github.com/david-mk-lawrence) - added Lambda Layer support

@@ -1,6 +1,7 @@
 version: '{build}'
 init:
     - cmd: pip install pipenv
+    - cmd: pip install poetry==1.0.0a2
     - ps: npm i -g serverless
 build: off
 test_script:

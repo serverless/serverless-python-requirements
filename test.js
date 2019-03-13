@@ -4,6 +4,7 @@ const glob = require('glob-all');
 const JSZip = require('jszip');
 const tape = require('tape');
 const {
+  chmodSync,
   removeSync,
   readFileSync,
   copySync,
@@ -711,6 +712,94 @@ test("pipenv py3.6 doesn't package bottle with noDeploy option", t => {
   t.end();
 });
 
+test('poetry py3.6 can package flask with default options', t => {
+  process.chdir('tests/poetry');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.end();
+});
+
+test('poetry py3.6 can package flask with slim option', t => {
+  process.chdir('tests/poetry');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['--slim=true', 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.deepEqual(
+    zipfiles.filter(filename => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged'
+  );
+  t.true(
+    zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+    '__main__.py files are packaged'
+  );
+  t.end();
+});
+
+test('poetry py3.6 can package flask with slim & slimPatterns options', t => {
+  process.chdir('tests/poetry');
+
+  copySync('_slimPatterns.yml', 'slimPatterns.yml');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['--slim=true', 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.deepEqual(
+    zipfiles.filter(filename => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged'
+  );
+  t.deepEqual(
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
+    [],
+    '__main__.py files are NOT packaged'
+  );
+  t.end();
+});
+
+test('poetry py3.6 can package flask with zip option', t => {
+  process.chdir('tests/poetry');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([`--pythonBin=${getPythonBin(3)}`, '--zip=true', 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(
+    zipfiles.includes('.requirements.zip'),
+    'zipped requirements are packaged'
+  );
+  t.true(zipfiles.includes(`unzip_requirements.py`), 'unzip util is packaged');
+  t.false(
+    zipfiles.includes(`flask${sep}__init__.py`),
+    "flask isn't packaged on its own"
+  );
+  t.end();
+});
+
+test("poetry py3.6 doesn't package bottle with noDeploy option", t => {
+  process.chdir('tests/poetry');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  perl([
+    '-p',
+    '-i.bak',
+    '-e',
+    's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
+    'serverless.yml'
+  ]);
+  sls(['package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
+  t.end();
+});
+
 test('py3.6 can package flask with zip option and no explicit include', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
@@ -761,7 +850,8 @@ test(
       's/(handler.py.*$)/$1\n    - foobar/',
       'serverless.yml'
     ]);
-    writeFileSync(`foobar`, '', { mode: perm });
+    writeFileSync(`foobar`, '');
+    chmodSync(`foobar`, perm);
     sls(['--vendor=./vendor', 'package']);
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
@@ -983,6 +1073,27 @@ test(
 
 test('pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', t => {
   process.chdir('tests/pipenv');
+  copySync('_slimPatterns.yml', 'slimPatterns.yml');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+
+  sls(['--slim=true', '--slimPatternsAppendDefaults=false', 'package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(
+    zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+    'pyc files are packaged'
+  );
+  t.deepEqual(
+    zipfiles.filter(filename => filename.endsWith('__main__.py')),
+    [],
+    '__main__.py files are NOT packaged'
+  );
+  t.end();
+});
+
+test('poetry py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', t => {
+  process.chdir('tests/poetry');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1934,7 +2045,8 @@ test(
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
     const perm = '775';
-    writeFileSync(`module1${sep}foobar`, '', { mode: perm });
+    writeFileSync(`module1${sep}foobar`, '');
+    chmodSync(`module1${sep}foobar`, perm);
 
     npm(['i', path]);
     sls(['package']);
@@ -1960,6 +2072,7 @@ test(
     const path = npm(['pack', '../..']);
     const perm = '775';
     writeFileSync(`module1${sep}foobar`, '', { mode: perm });
+    chmodSync(`module1${sep}foobar`, perm);
 
     npm(['i', path]);
     sls(['--dockerizePip=true', 'package']);
