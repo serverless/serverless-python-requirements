@@ -9,6 +9,7 @@ const {
   readFileSync,
   copySync,
   writeFileSync,
+  statSync,
   pathExistsSync
 } = require('fs-extra');
 const { quote } = require('shell-quote');
@@ -875,6 +876,12 @@ test(
       'foobar has retained its executable file permissions'
     );
 
+    const flaskPerm = statSync('.serverless/requirements/bin/flask').mode;
+    t.true(
+      zipfiles_with_metadata['bin/flask'].unixPermissions === flaskPerm,
+      'bin/flask has retained its executable file permissions'
+    );
+
     t.end();
   },
   { skip: process.platform === 'win32' }
@@ -1566,13 +1573,21 @@ test(
     npm(['i', path]);
     sls(['package']);
 
-    const zipfiles_hello = listZipFilesWithMetaData('.serverless/hello1.zip');
+    const zipfiles_hello1 = listZipFilesWithMetaData('.serverless/hello1.zip');
 
     t.true(
-      zipfiles_hello['module1/foobar'].unixPermissions
+      zipfiles_hello1['module1/foobar'].unixPermissions
         .toString(8)
         .slice(3, 6) === perm,
       'foobar has retained its executable file permissions'
+    );
+
+    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
+
+    t.true(
+      zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
+      'bin/flask has retained its executable file permissions'
     );
 
     t.end();
@@ -1599,6 +1614,14 @@ test(
         .toString(8)
         .slice(3, 6) === perm,
       'foobar has retained its executable file permissions'
+    );
+
+    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
+
+    t.true(
+      zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
+      'bin/flask has retained its executable file permissions'
     );
 
     t.end();
