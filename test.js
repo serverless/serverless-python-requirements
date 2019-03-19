@@ -14,7 +14,7 @@ const {
 const { quote } = require('shell-quote');
 const { sep } = require('path');
 
-const { getUserCachePath, md5Path } = require('./lib/shared');
+const { getUserCachePath, sha256Path } = require('./lib/shared');
 
 const initialWorkingDir = process.cwd();
 
@@ -1679,7 +1679,7 @@ test('py3.6 uses static and download cache', t => {
   npm(['i', path]);
   sls(['--useDownloadCache=true', '--useStaticCache=true', 'package']);
   const cachepath = getUserCachePath();
-  const cacheFolderHash = md5Path('.serverless/requirements.txt');
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
   t.true(
     pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
     'http exists in download-cache'
