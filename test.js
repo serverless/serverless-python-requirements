@@ -1704,7 +1704,7 @@ test(
       'package'
     ]);
     const cachepath = getUserCachePath();
-    const cacheFolderHash = md5Path('.serverless/requirements.txt');
+    const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
       'http exists in download-cache'
@@ -1724,7 +1724,7 @@ test('py3.6 uses static cache', t => {
   npm(['i', path]);
   sls(['--useStaticCache=true', 'package']);
   const cachepath = getUserCachePath();
-  const cacheFolderHash = md5Path('.serverless/requirements.txt');
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
   t.true(
     pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
     'flask exists in static-cache'
@@ -1758,7 +1758,7 @@ test('py3.6 uses static cache with cacheLocation option', t => {
   npm(['i', path]);
   const cachepath = '.requirements-cache';
   sls(['--useStaticCache=true', `--cacheLocation=${cachepath}`, 'package']);
-  const cacheFolderHash = md5Path('.serverless/requirements.txt');
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
   t.true(
     pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
     'flask exists in static-cache'
@@ -1785,7 +1785,7 @@ test(
       'package'
     ]);
     const cachepath = getUserCachePath();
-    const cacheFolderHash = md5Path('.serverless/requirements.txt');
+    const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     t.true(
       pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
       'flask exists in static-cache'
