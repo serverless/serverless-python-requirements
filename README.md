@@ -219,6 +219,9 @@ the following packages are omitted as they are already installed on Lambda:
  * s3transfer
  * setuptools
  * six
+ 
+Alternatively the `extendNoDeploy` option allows you to omit additional packages
+as well as those on teh default list.
 
 This example makes it instead omit pytest:
 ```yaml
@@ -226,6 +229,14 @@ custom:
   pythonRequirements:
     noDeploy:
       - pytest
+```
+
+This example makes it omit numpy in addition to the above list:
+```yaml
+custom:
+  pythonRequirements:
+    extendNoDeploy:
+      - numpy
 ```
 
 To include the default omitted packages, set the `noDeploy` option to an empty

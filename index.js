@@ -64,6 +64,7 @@ class ServerlessPythonRequirements {
           'pip',
           'setuptools'
         ],
+        extendNoDeploy: [],
         vendor: ''
       },
       (this.serverless.service.custom &&
@@ -103,6 +104,9 @@ class ServerlessPythonRequirements {
       if (options.layer === true) {
         options.layer = {};
       }
+    }
+    if (options.extendNoDeploy.length > 0) {
+      options.noDeploy.push(...options.extendNoDeploy);
     }
     return options;
   }
