@@ -1582,8 +1582,11 @@ test(
       'foobar has retained its executable file permissions'
     );
 
-    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
-    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
+    const zipfiles_hello2 = listZipFilesWithMetaData(
+      '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
+    );
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask')
+      .mode;
 
     t.true(
       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
@@ -1616,8 +1619,11 @@ test(
       'foobar has retained its executable file permissions'
     );
 
-    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
-    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
+    const zipfiles_hello2 = listZipFilesWithMetaData(
+      '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
+    );
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask')
+      .mode;
 
     t.true(
       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
