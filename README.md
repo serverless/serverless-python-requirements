@@ -453,7 +453,7 @@ package:
     - "**"
 ```
 
-This will be very slow. Serverless adds a default '"&ast;&ast;"' include. If you are using the 'cacheLocation' parameter to this plugin, this will result in all of the cached files' names being loaded and then subsequently discarded because of the exclude pattern. To avoid this happening you can add a negated include pattern, as is observed in https://github.com/serverless/serverless/pull/5825.
+This will be very slow. Serverless adds a default `"&ast;&ast;"` include. If you are using the `cacheLocation` parameter to this plugin, this will result in all of the cached files' names being loaded and then subsequently discarded because of the exclude pattern. To avoid this happening you can add a negated include pattern, as is observed in https://github.com/serverless/serverless/pull/5825.
 
 Use this approach instead:
 
