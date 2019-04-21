@@ -174,7 +174,7 @@ custom:
     strip: false
 ```
 
-### Lamba Layer
+### Lambda Layer
 Another method for dealing with large dependencies is to put them into a
 [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
 Simply add the `layer` option to the configuration.
@@ -198,7 +198,7 @@ custom:
   pythonRequirements:
     layer:
       name: ${self:provider.stage}-layerName
-      description: Python requirements lamba layer
+      description: Python requirements lambda layer
       compatibleRuntimes:
         - python3.7
       licenseInfo: GPLv3
