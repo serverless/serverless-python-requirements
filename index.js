@@ -22,6 +22,20 @@ BbPromise.promisifyAll(fse);
  * Plugin for Serverless 1.x that bundles python requirements!
  */
 class ServerlessPythonRequirements {
+  get default_no_deploys() {
+    return [
+      'boto3',
+      'botocore',
+      'docutils',
+      'jmespath',
+      'python-dateutil',
+      's3transfer',
+      'six',
+      'pip',
+      'setuptools'
+    ];
+  }
+  
   /**
    * get the custom.pythonRequirements contents, with defaults set
    * @return {Object}
@@ -53,23 +67,17 @@ class ServerlessPythonRequirements {
         cacheLocation: false,
         staticCacheMaxVersions: 0,
         pipCmdExtraArgs: [],
-        noDeploy: [
-          'boto3',
-          'botocore',
-          'docutils',
-          'jmespath',
-          'python-dateutil',
-          's3transfer',
-          'six',
-          'pip',
-          'setuptools'
-        ],
+        noDeploy: this.default_no_deploys,
+        addDefaultNoDeploys: false,
         vendor: ''
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
         {}
     );
+    if (options.addDefaultNoDeploys) {
+      options.noDeploy = options.noDeploy.concat(this.default_no_deploys);
+    }
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }

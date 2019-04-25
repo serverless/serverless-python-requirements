@@ -228,12 +228,23 @@ custom:
       - pytest
 ```
 
+N.B. When using a `Pipfile`, instead of `requirements.txt`, there is no need to specify `pytest` in the `noDeploy` list if you have specified it as a dev dependency.
+
 To include the default omitted packages, set the `noDeploy` option to an empty
 list:
 ```yaml
 custom:
   pythonRequirements:
     noDeploy: []
+```
+
+Or to use both a custom list of ommitted packages, and the defaults listed above use the `addDefaultNoDeploys` option e.g.:
+```yaml
+custom:
+  pythonRequirements:
+    addDefaultNoDeploys: true
+    noDeploy:
+      - external_layer_provided_package
 ```
 
 ## Extra Config Options
