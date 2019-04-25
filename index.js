@@ -35,7 +35,7 @@ class ServerlessPythonRequirements {
       'setuptools'
     ];
   }
-  
+
   /**
    * get the custom.pythonRequirements contents, with defaults set
    * @return {Object}
