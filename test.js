@@ -712,6 +712,17 @@ test("pipenv py3.6 doesn't package bottle with noDeploy option", t => {
   t.end();
 });
 
+test('non build pyproject.toml uses requirements.txt', t => {
+  process.chdir('tests/non_build_pyproject');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.end();
+});
+
 test('poetry py3.6 can package flask with default options', t => {
   process.chdir('tests/poetry');
   const path = npm(['pack', '../..']);
