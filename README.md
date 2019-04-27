@@ -174,7 +174,7 @@ custom:
     strip: false
 ```
 
-### Lamba Layer
+### Lambda Layer
 Another method for dealing with large dependencies is to put them into a
 [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
 Simply add the `layer` option to the configuration.
@@ -438,6 +438,35 @@ sls package
 zipinfo .serverless/xxx.zip
 ```
 (If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.)
+
+## Optimising packaging time
+
+If you wish to exclude most of the files in your project, and only include the source files of your lambdas and their dependencies you may well use an approach like this:
+
+```yaml
+package:
+  individually: false
+  include:
+    - "./src/lambda_one/**"
+    - "./src/lambda_two/**"
+  exclude:
+    - "**"
+```
+
+This will be very slow. Serverless adds a default `"&ast;&ast;"` include. If you are using the `cacheLocation` parameter to this plugin, this will result in all of the cached files' names being loaded and then subsequently discarded because of the exclude pattern. To avoid this happening you can add a negated include pattern, as is observed in https://github.com/serverless/serverless/pull/5825.
+
+Use this approach instead:
+
+```yaml
+package:
+  individually: false
+  include:
+    - "!./**"
+    - "./src/lambda_one/**"
+    - "./src/lambda_two/**"
+  exclude:
+    - "**"
+```
 
 ## Contributors
  * [@dschep](https://github.com/dschep) - Lead developer & maintainer
