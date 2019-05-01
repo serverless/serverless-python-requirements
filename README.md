@@ -198,7 +198,7 @@ custom:
   pythonRequirements:
     layer:
       name: ${self:provider.stage}-layerName
-      description: Python requirements lamba layer
+      description: Python requirements lambda layer
       compatibleRuntimes:
         - python3.7
       licenseInfo: GPLv3
