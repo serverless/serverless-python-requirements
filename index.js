@@ -48,6 +48,7 @@ class ServerlessPythonRequirements {
         dockerImage: null,
         dockerFile: null,
         dockerEnv: false,
+        dockerRunCmdExtraArgs: [],
         useStaticCache: false,
         useDownloadCache: false,
         cacheLocation: false,
