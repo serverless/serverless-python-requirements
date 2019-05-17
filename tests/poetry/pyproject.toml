@@ -7,7 +7,7 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = "^3.6"
 Flask = "^1.0"
-bottle = "^0.12.16"
+bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
 boto3 = "^1.9"
 
 [tool.poetry.dev-dependencies]
