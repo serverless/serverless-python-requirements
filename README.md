@@ -110,6 +110,21 @@ custom:
     usePoetry: false
 ```
 
+### Poetry with git dependencies
+Poetry by default generates the exported requirements.txt file with `-e` and that breaks pip with `-t` parameter
+(used to install all requirements in a specific folder). In order to fix that we remove all `-e ` from the generated file but,
+for that to work you need to add the git dependencies in a specific way.
+
+Instead of:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
+it has to be:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
 
 ## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
