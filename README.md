@@ -207,18 +207,7 @@ custom:
 ```
 ## Omitting Packages
 You can omit a package from deployment with the `noDeploy` option. Note that
-dependencies of omitted packages must explicitly be omitted too. By default,
-the following packages are omitted as they are already installed on Lambda:
-
- * boto3
- * botocore
- * docutils
- * jmespath
- * pip
- * python-dateutil
- * s3transfer
- * setuptools
- * six
+dependencies of omitted packages must explicitly be omitted too.
 
 This example makes it instead omit pytest:
 ```yaml
