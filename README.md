@@ -251,6 +251,18 @@ custom:
           - --compile
 ```
 
+### Extra Docker arguments
+
+You can specify extra arguments to be passed to [docker build](https://docs.docker.com/engine/reference/commandline/build/) during the build step, and [docker run](https://docs.docker.com/engine/reference/run/) during the dockerized pip install step:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerBuildCmdExtraArgs: ["--build-arg", "MY_GREAT_ARG=123"]
+    dockerRunCmdExtraArgs: ["-v", "${env:PWD}:/my-app"]
+```
+
 
 ### Customize requirements file name
 [Some `pip` workflows involve using requirements files not named
