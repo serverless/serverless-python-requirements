@@ -9,7 +9,7 @@
 A Serverless v1.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
-**Requires Serverless >= v1.12**
+**Requires Serverless >= v1.34**
 
 ## Install
 
