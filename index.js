@@ -85,9 +85,7 @@ class ServerlessPythonRequirements {
       );
     } else if (!options.dockerFile) {
       // If no dockerFile is provided, use default image
-      const defaultImage = `lambci/lambda:build-${
-        this.serverless.service.provider.runtime
-      }`;
+      const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
       options.dockerImage = options.dockerImage || defaultImage;
     }
     if (options.layer) {
