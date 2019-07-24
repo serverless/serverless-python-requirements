@@ -402,26 +402,25 @@ custom:
 
 ## Native Code Dependencies During Runtime
 
-Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to commit the files to your repository:
+Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to use the `dockerExtraFiles` option.
 
-For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, you can extract this file from the builder Dockerfile:
+For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, add an item to the `dockerExtraFiles` option in your `serverless.yml`:
 
-1. Extract the library:
-```bash
-docker run --rm -v "$(pwd):/var/task" sls-py-reqs-custom cp -v /usr/lib64/mysql57/libmysqlclient.so.1020 .
+```yaml
+custom:
+  pythonRequirements:
+    dockerExtraFiles:
+      - /usr/lib64/mysql57/libmysqlclient.so.1020
 ```
-(If you get the error `Unable to find image 'sls-py-reqs-custom:latest' locally`, run `sls package` to build the image.)
-2. Commit to your repo:
-```bash
-git add libmysqlclient.so.1020
-git commit -m "Add libmysqlclient.so.1020"
-```
-3. Verify the library gets included in your package:
+
+Then verify the library gets included in your package:
+
 ```bash
 sls package
 zipinfo .serverless/xxx.zip
 ```
-(If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.)
+
+If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.
 
 ## Optimising packaging time
 
