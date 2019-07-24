@@ -75,6 +75,6 @@
   "prettier": {
     "semi": true,
     "singleQuote": true,
-    "parser": "babylon"
+    "parser": "babel"
   }
 }
