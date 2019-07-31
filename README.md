@@ -120,7 +120,12 @@ Instead of:
 [tool.poetry.dependencies]
 bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
 ```
-it has to be:
+Use:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
+Or, if you have an SSH key configured:
 ```toml
 [tool.poetry.dependencies]
 bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
