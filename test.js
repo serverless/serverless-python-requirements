@@ -728,7 +728,7 @@ test('poetry py3.6 can package flask with default options', t => {
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`bottle.py`), 'bottle is packaged');
-  t.false(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
 
