@@ -1632,11 +1632,11 @@ test(
   { skip: !canUseDocker() || process.platform === 'win32' }
 );
 
-test('py3.6 uses download cache with useDownloadCache option', t => {
+test('py3.6 uses download cache by default option', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['--useDownloadCache=true', 'package']);
+  sls(['package']);
   const cachepath = getUserCachePath();
   t.true(
     pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
@@ -1645,12 +1645,11 @@ test('py3.6 uses download cache with useDownloadCache option', t => {
   t.end();
 });
 
-test('py3.6 uses download cache with cacheLocation option', t => {
+test('py3.6 uses download cache by defaul option', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
   sls([
-    '--useDownloadCache=true',
     '--cacheLocation=.requirements-cache',
     'package'
   ]);
@@ -1667,7 +1666,7 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls(['--useDownloadCache=true', '--dockerizePip=true', 'package']);
+    sls(['--dockerizePip=true', 'package']);
     const cachepath = getUserCachePath();
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
@@ -1679,13 +1678,12 @@ test(
 );
 
 test(
-  'py3.6 uses download cache with dockerizePip + cacheLocation option',
+  'py3.6 uses download cache with dockerizePip by default option',
   t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      '--useDownloadCache=true',
       '--dockerizePip=true',
       '--cacheLocation=.requirements-cache',
       'package'
@@ -1703,7 +1701,7 @@ test('py3.6 uses static and download cache', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['--useDownloadCache=true', '--useStaticCache=true', 'package']);
+  sls(['package']);
   const cachepath = getUserCachePath();
   const cacheFolderHash = sha256Path('.serverless/requirements.txt');
   t.true(
@@ -1724,8 +1722,6 @@ test(
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      '--useDownloadCache=true',
-      '--useStaticCache=true',
       '--dockerizePip=true',
       'package'
     ]);
@@ -1748,7 +1744,7 @@ test('py3.6 uses static cache', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['--useStaticCache=true', 'package']);
+  sls(['package']);
   const cachepath = getUserCachePath();
   const cacheFolderHash = sha256Path('.serverless/requirements.txt');
   t.true(
@@ -1767,7 +1763,7 @@ test('py3.6 uses static cache', t => {
     `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
     'injected new file into static cache folder'
   );
-  sls(['--useStaticCache=true', 'package']);
+  sls(['package']);
 
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(
@@ -1783,7 +1779,7 @@ test('py3.6 uses static cache with cacheLocation option', t => {
   const path = npm(['pack', '../..']);
   npm(['i', path]);
   const cachepath = '.requirements-cache';
-  sls(['--useStaticCache=true', `--cacheLocation=${cachepath}`, 'package']);
+  sls([`--cacheLocation=${cachepath}`, 'package']);
   const cacheFolderHash = sha256Path('.serverless/requirements.txt');
   t.true(
     pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
@@ -1805,7 +1801,6 @@ test(
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      '--useStaticCache=true',
       '--dockerizePip=true',
       '--slim=true',
       'package'
@@ -1829,7 +1824,6 @@ test(
       'injected new file into static cache folder'
     );
     sls([
-      '--useStaticCache=true',
       '--dockerizePip=true',
       '--slim=true',
       'package'
@@ -1858,7 +1852,6 @@ test(
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
-      '--useDownloadCache=true',
       '--dockerizePip=true',
       '--slim=true',
       'package'

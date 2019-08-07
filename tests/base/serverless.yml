@@ -25,8 +25,8 @@ custom:
     zip: false
     dockerizePip: false
     individually: false
-    useStaticCache: false
-    useDownloadCache: false
+    useStaticCache: true
+    useDownloadCache: true
 
 package:
   individually: ${opt:individually, self:custom.defaults.individually}
