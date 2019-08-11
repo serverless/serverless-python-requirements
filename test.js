@@ -157,6 +157,21 @@ test('py3.6 can package flask with hashes', t => {
   t.end();
 });
 
+test('py3.6 can package flask with nested', t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls([
+    `--pythonBin=${getPythonBin(3)}`,
+    '--fileName=requirements-w-nested.txt',
+    'package'
+  ]);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
+
 test('py3.6 can package flask with zip option', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
@@ -1458,6 +1473,10 @@ test('py3.6 can package only requirements of module', t => {
     zipfiles_hello.includes(`pyaml${sep}__init__.py`),
     'pyaml is packaged in function hello1'
   );
+  t.true(
+    zipfiles_hello.includes(`boto3${sep}__init__.py`),
+    'boto3 is packaged in function hello1'
+  );
   t.false(
     zipfiles_hello.includes(`flask${sep}__init__.py`),
     'flask is NOT packaged in function hello1'
@@ -1477,6 +1496,10 @@ test('py3.6 can package only requirements of module', t => {
   t.false(
     zipfiles_hello2.includes(`pyaml${sep}__init__.py`),
     'pyaml is NOT packaged in function hello2'
+  );
+  t.false(
+    zipfiles_hello2.includes(`boto3${sep}__init__.py`),
+    'boto3 is NOT packaged in function hello2'
   );
   t.true(
     zipfiles_hello2.includes(`flask${sep}__init__.py`),
