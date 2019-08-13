@@ -2,6 +2,7 @@ const crossSpawn = require('cross-spawn');
 const deasync = require('deasync-promise');
 const glob = require('glob-all');
 const JSZip = require('jszip');
+const sha256File = require('sha256-file');
 const tape = require('tape');
 const {
   chmodSync,
@@ -130,6 +131,17 @@ test('default pythonBin can package flask with default options', t => {
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
+
+test('py3.6 packages have the same hash', t => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package']);
+  const fileHash = sha256File('.serverless/sls-py-req-test.zip');
+  sls(['package']);
+  t.equal(sha256File('.serverless/sls-py-req-test.zip'), fileHash, 'packages have the same hash');
   t.end();
 });
 
