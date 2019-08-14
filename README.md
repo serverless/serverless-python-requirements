@@ -9,7 +9,7 @@
 A Serverless v1.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
-**Requires Serverless >= v1.12**
+**Requires Serverless >= v1.34**
 
 ## Install
 
@@ -110,6 +110,26 @@ custom:
     usePoetry: false
 ```
 
+### Poetry with git dependencies
+Poetry by default generates the exported requirements.txt file with `-e` and that breaks pip with `-t` parameter
+(used to install all requirements in a specific folder). In order to fix that we remove all `-e ` from the generated file but,
+for that to work you need to add the git dependencies in a specific way.
+
+Instead of:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
+Use:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
+Or, if you have an SSH key configured:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
 
 ## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
@@ -174,7 +194,7 @@ custom:
     strip: false
 ```
 
-### Lamba Layer
+### Lambda Layer
 Another method for dealing with large dependencies is to put them into a
 [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).
 Simply add the `layer` option to the configuration.
@@ -198,7 +218,7 @@ custom:
   pythonRequirements:
     layer:
       name: ${self:provider.stage}-layerName
-      description: Python requirements lamba layer
+      description: Python requirements lambda layer
       compatibleRuntimes:
         - python3.7
       licenseInfo: GPLv3
@@ -207,18 +227,7 @@ custom:
 ```
 ## Omitting Packages
 You can omit a package from deployment with the `noDeploy` option. Note that
-dependencies of omitted packages must explicitly be omitted too. By default,
-the following packages are omitted as they are already installed on Lambda:
-
- * boto3
- * botocore
- * docutils
- * jmespath
- * pip
- * python-dateutil
- * s3transfer
- * setuptools
- * six
+dependencies of omitted packages must explicitly be omitted too.
 
 This example makes it instead omit pytest:
 ```yaml
@@ -226,14 +235,6 @@ custom:
   pythonRequirements:
     noDeploy:
       - pytest
-```
-
-To include the default omitted packages, set the `noDeploy` option to an empty
-list:
-```yaml
-custom:
-  pythonRequirements:
-    noDeploy: []
 ```
 
 ## Extra Config Options
@@ -268,6 +269,18 @@ custom:
   pythonRequirements:
       pipCmdExtraArgs:
           - --compile
+```
+
+### Extra Docker arguments
+
+You can specify extra arguments to be passed to [docker build](https://docs.docker.com/engine/reference/commandline/build/) during the build step, and [docker run](https://docs.docker.com/engine/reference/run/) during the dockerized pip install step:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerBuildCmdExtraArgs: ["--build-arg", "MY_GREAT_ARG=123"]
+    dockerRunCmdExtraArgs: ["-v", "${env:PWD}:/my-app"]
 ```
 
 
@@ -393,19 +406,10 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image (`lambci/lambda:python3.6`) with a `Dockerfile` like:
 
 ```dockerfile
-# AWS Lambda execution environment is based on Amazon Linux 1
-FROM amazonlinux:1
-
-# Install Python 3.6
-RUN yum -y install python36 python36-pip
+FROM lambci/lambda:build-python3.6
 
 # Install your dependencies
-RUN curl -s https://bootstrap.pypa.io/get-pip.py | python3
-RUN yum -y install python3-devel mysql-devel gcc
-
-# Set the same WORKDIR as default image
-RUN mkdir /var/task
-WORKDIR /var/task
+RUN yum -y install mysql-devel
 ```
 
 Then update your `serverless.yml`:
@@ -418,26 +422,54 @@ custom:
 
 ## Native Code Dependencies During Runtime
 
-Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to commit the files to your repository:
+Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to use the `dockerExtraFiles` option.
 
-For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, you can extract this file from the builder Dockerfile:
+For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, add an item to the `dockerExtraFiles` option in your `serverless.yml`:
 
-1. Extract the library:
-```bash
-docker run --rm -v "$(pwd):/var/task" sls-py-reqs-custom cp -v /usr/lib64/mysql57/libmysqlclient.so.1020 .
+```yaml
+custom:
+  pythonRequirements:
+    dockerExtraFiles:
+      - /usr/lib64/mysql57/libmysqlclient.so.1020
 ```
-(If you get the error `Unable to find image 'sls-py-reqs-custom:latest' locally`, run `sls package` to build the image.)
-2. Commit to your repo:
-```bash
-git add libmysqlclient.so.1020
-git commit -m "Add libmysqlclient.so.1020"
-```
-3. Verify the library gets included in your package:
+
+Then verify the library gets included in your package:
+
 ```bash
 sls package
 zipinfo .serverless/xxx.zip
 ```
-(If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.)
+
+If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.
+
+## Optimising packaging time
+
+If you wish to exclude most of the files in your project, and only include the source files of your lambdas and their dependencies you may well use an approach like this:
+
+```yaml
+package:
+  individually: false
+  include:
+    - "./src/lambda_one/**"
+    - "./src/lambda_two/**"
+  exclude:
+    - "**"
+```
+
+This will be very slow. Serverless adds a default `"&ast;&ast;"` include. If you are using the `cacheLocation` parameter to this plugin, this will result in all of the cached files' names being loaded and then subsequently discarded because of the exclude pattern. To avoid this happening you can add a negated include pattern, as is observed in https://github.com/serverless/serverless/pull/5825.
+
+Use this approach instead:
+
+```yaml
+package:
+  individually: false
+  include:
+    - "!./**"
+    - "./src/lambda_one/**"
+    - "./src/lambda_two/**"
+  exclude:
+    - "**"
+```
 
 ## Contributors
  * [@dschep](https://github.com/dschep) - Lead developer & maintainer
@@ -459,7 +491,7 @@ zipinfo .serverless/xxx.zip
   `vendor` option
  * [@kichik](https://github.com/kichik) - Imposed windows & `noDeploy` support,
    switched to adding files straight to zip instead of creating symlinks, and
-   improved pip chache support when using docker.
+   improved pip cache support when using docker.
  * [@dee-me-tree-or-love](https://github.com/dee-me-tree-or-love) - the `slim` package option
  * [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
  * [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching

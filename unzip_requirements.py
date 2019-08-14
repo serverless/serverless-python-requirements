@@ -6,7 +6,8 @@ import zipfile
 
 pkgdir = '/tmp/sls-py-req'
 
-sys.path.append(pkgdir)
+# We want our path to look like [working_dir, serverless_requirements, ...]
+sys.path.insert(1, pkgdir)
 
 if not os.path.exists(pkgdir):
     tempdir = '/tmp/_temp-sls-py-req'

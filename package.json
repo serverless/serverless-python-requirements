@@ -1,6 +1,6 @@
 {
   "name": "serverless-python-requirements",
-  "version": "4.3.0",
+  "version": "5.0.0",
   "engines": {
     "node": ">=6.0"
   },
@@ -43,25 +43,26 @@
     "format": "prettier --write index.js lib/*.js test.js"
   },
   "devDependencies": {
-    "eslint": "*",
+    "eslint": "^5.16.0",
     "prettier": "*",
     "cross-spawn": "*",
     "deasync-promise": "*",
     "tape": "*"
   },
   "dependencies": {
+    "@iarna/toml": "^2.2.3",
     "appdirectory": "^0.1.0",
     "bluebird": "^3.0.6",
     "fs-extra": "^7.0.0",
     "glob-all": "^3.1.0",
-    "is-wsl": "^1.1.0",
+    "is-wsl": "^2.0.0",
     "jszip": "^3.1.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.uniqby": "^4.0.0",
     "lodash.values": "^4.3.0",
-    "md5-file": "^4.0.0",
     "rimraf": "^2.6.2",
+    "sha256-file": "1.0.0",
     "shell-quote": "^1.6.1"
   },
   "eslintConfig": {
@@ -74,6 +75,6 @@
   "prettier": {
     "semi": true,
     "singleQuote": true,
-    "parser": "babylon"
+    "parser": "babel"
   }
 }
