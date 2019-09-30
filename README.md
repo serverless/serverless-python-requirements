@@ -239,24 +239,21 @@ custom:
 
 ## Extra Config Options
 ### Caching
-You can enable two kinds of caching with this plugin which are currently both DISABLED by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
+This plugin supportrs two kinds of caching which are currently both enabled by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
 
- _**Please note:** This has replaced the previously recommended usage of "--cache-dir" in the pipCmdExtraArgs_
+You can manually disable them if they are undesirable:
 ```yaml
 custom:
   pythonRequirements:
-    useDownloadCache: true
-    useStaticCache: true
+    useDownloadCache: false
+    useStaticCache: false
 ```
-_Additionally, In future versions of this plugin, both caching features will probably be enabled by default_
 
 ### Other caching options...
 There are two additional options related to caching.  You can specify where in your system that this plugin caches with the `cacheLocation` option.  By default it will figure out automatically where based on your username and your OS to store the cache via the [appdirectory](https://www.npmjs.com/package/appdirectory) module.  Additionally, you can specify how many max static caches to store with `staticCacheMaxVersions`, as a simple attempt to limit disk space usage for caching.  This is DISABLED (set to 0) by default.  Example:
 ```yaml
 custom:
   pythonRequirements:
-    useStaticCache: true
-    useDownloadCache: true
     cacheLocation: '/home/user/.my_cache_goes_here'
     staticCacheMaxVersions: 10
 
