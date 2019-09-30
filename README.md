@@ -239,7 +239,7 @@ custom:
 
 ## Extra Config Options
 ### Caching
-This plugin supportrs two kinds of caching which are currently both enabled by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
+This plugin supportrs two kinds of caching which are currently both enabled by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, the static cache feature will often offer a large speed improvement.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
 
 You can manually disable them if they are undesirable:
 ```yaml
