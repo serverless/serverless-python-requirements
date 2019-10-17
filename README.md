@@ -237,6 +237,11 @@ custom:
       - pytest
 ```
 
+Another way is to add `#noDeploy` to the end of the line in the file `requirements.txt`:
+```txt
+pytest #noDeploy
+```
+
 ## Extra Config Options
 ### Caching
 You can enable two kinds of caching with this plugin which are currently both DISABLED by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
