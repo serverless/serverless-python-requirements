@@ -99,10 +99,15 @@ class ServerlessPythonRequirements {
   }
 
   get targetFuncs() {
-    let inputOpt = this.serverless.processedInput.options;
-    return inputOpt.function
-      ? [inputOpt.functionObj]
-      : values(this.serverless.service.functions);
+    const inputOpt = this.serverless.processedInput.options;
+    if (inputOpt.function){
+      let singleFunction = inputOpt.functionObj;
+      singleFunction.function = inputOpt.function
+      return [singleFunction];
+    } else {
+      return values(this.serverless.service.functions)
+    }
+
   }
 
   /**
@@ -143,6 +148,7 @@ class ServerlessPythonRequirements {
       if (!args[1].functionObj || !args[1].functionObj.runtime) {
         return true;
       }
+
       return args[1].functionObj.runtime.startsWith('python');
     };
 
@@ -172,8 +178,9 @@ class ServerlessPythonRequirements {
         .then(layerRequirements)
         .then(() =>
           injectAllRequirements.bind(this)(
-            arguments[1].functionObj &&
-              arguments[1].functionObj.package.artifact
+            arguments[1].functionObj && 
+            arguments[1].functionObj.package &&
+            arguments[1].functionObj.package.artifact
           )
         );
     };
