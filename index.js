@@ -102,6 +102,7 @@ class ServerlessPythonRequirements {
     const inputOpt = this.serverless.processedInput.options;
     if (inputOpt.function){
       let singleFunction = inputOpt.functionObj;
+      // set the function name so we can use it later for individual deploys of functions
       singleFunction.function = inputOpt.function
       return [singleFunction];
     } else {
