@@ -95,12 +95,6 @@ custom:
 
 
 ## Poetry support :sparkles::pencil::sparkles:
-NOTE: Only poetry version 1 supports the required `export` command for this
-feature. As of the point this feature was added, poetry 1.0.0 was in preview
-and requires that poetry is installed with the --preview flag.
-
-TL;DR Install poetry with the `--preview` flag.
-
 If you include a `pyproject.toml` and have `poetry` installed instead of a `requirements.txt` this will use
 `poetry export --without-hashes -f requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
 `dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
