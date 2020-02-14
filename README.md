@@ -96,7 +96,7 @@ custom:
 
 ## Poetry support :sparkles::pencil::sparkles:
 If you include a `pyproject.toml` and have `poetry` installed instead of a `requirements.txt` this will use
-`poetry export --without-hashes -f requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
+`poetry export --without-hashes -f requirements.txt -o requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
 `dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
 ```yaml
 custom:
