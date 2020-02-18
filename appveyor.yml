@@ -1,9 +1,9 @@
 version: '{build}'
 init:
-    - cmd: python -m pip install -U pip
-    - cmd: pip install pipenv
-    - cmd: pip install poetry==1.0.0a2
-    - ps: npm i -g serverless
+    - cmd: python3 -m pip install -U pip
+    - cmd: pip3 install pipenv
+    - cmd: pip3 install poetry
+    - cmd: npm i -g serverless
 build: off
 test_script:
     - cmd: >-
