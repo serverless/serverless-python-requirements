@@ -47,22 +47,15 @@ class ServerlessPythonRequirements {
         dockerImage: null,
         dockerFile: null,
         dockerEnv: false,
-        useStaticCache: false,
-        useDownloadCache: false,
+        dockerBuildCmdExtraArgs: [],
+        dockerRunCmdExtraArgs: [],
+        dockerExtraFiles: [],
+        useStaticCache: true,
+        useDownloadCache: true,
         cacheLocation: false,
         staticCacheMaxVersions: 0,
         pipCmdExtraArgs: [],
-        noDeploy: [
-          'boto3',
-          'botocore',
-          'docutils',
-          'jmespath',
-          'python-dateutil',
-          's3transfer',
-          'six',
-          'pip',
-          'setuptools'
-        ],
+        noDeploy: [],
         vendor: ''
       },
       (this.serverless.service.custom &&
@@ -92,9 +85,7 @@ class ServerlessPythonRequirements {
       );
     } else if (!options.dockerFile) {
       // If no dockerFile is provided, use default image
-      const defaultImage = `lambci/lambda:build-${
-        this.serverless.service.provider.runtime
-      }`;
+      const defaultImage = `lambci/lambda:build-${this.serverless.service.provider.runtime}`;
       options.dockerImage = options.dockerImage || defaultImage;
     }
     if (options.layer) {

@@ -9,7 +9,7 @@
 A Serverless v1.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
-**Requires Serverless >= v1.12**
+**Requires Serverless >= v1.34**
 
 ## Install
 
@@ -95,14 +95,8 @@ custom:
 
 
 ## Poetry support :sparkles::pencil::sparkles:
-NOTE: Only poetry version 1 supports the required `export` command for this
-feature. As of the point this feature was added, poetry 1.0.0 was in preview
-and requires that poetry is installed with the --preview flag.
-
-TL;DR Install poetry with the `--preview` flag.
-
 If you include a `pyproject.toml` and have `poetry` installed instead of a `requirements.txt` this will use
-`poetry export --without-hashes -f requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
+`poetry export --without-hashes -f requirements.txt -o requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
 `dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
 ```yaml
 custom:
@@ -110,6 +104,26 @@ custom:
     usePoetry: false
 ```
 
+### Poetry with git dependencies
+Poetry by default generates the exported requirements.txt file with `-e` and that breaks pip with `-t` parameter
+(used to install all requirements in a specific folder). In order to fix that we remove all `-e ` from the generated file but,
+for that to work you need to add the git dependencies in a specific way.
+
+Instead of:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
+Use:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
+Or, if you have an SSH key configured:
+```toml
+[tool.poetry.dependencies]
+bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+```
 
 ## Dealing with Lambda's size limitations
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
@@ -207,18 +221,7 @@ custom:
 ```
 ## Omitting Packages
 You can omit a package from deployment with the `noDeploy` option. Note that
-dependencies of omitted packages must explicitly be omitted too. By default,
-the following packages are omitted as they are already installed on Lambda:
-
- * boto3
- * botocore
- * docutils
- * jmespath
- * pip
- * python-dateutil
- * s3transfer
- * setuptools
- * six
+dependencies of omitted packages must explicitly be omitted too.
 
 This example makes it instead omit pytest:
 ```yaml
@@ -228,17 +231,9 @@ custom:
       - pytest
 ```
 
-To include the default omitted packages, set the `noDeploy` option to an empty
-list:
-```yaml
-custom:
-  pythonRequirements:
-    noDeploy: []
-```
-
 ## Extra Config Options
 ### Caching
-You can enable two kinds of caching with this plugin which are currently both DISABLED by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
+You can enable two kinds of caching with this plugin which are currently both ENABLED by default.  First, a download cache that will cache downloads that pip needs to compile the packages.  And second, a what we call "static caching" which caches output of pip after compiling everything for your requirements file.  Since generally requirements.txt files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.  These caches will be shared between all your projects if no custom cacheLocation is specified (see below).
 
  _**Please note:** This has replaced the previously recommended usage of "--cache-dir" in the pipCmdExtraArgs_
 ```yaml
@@ -268,6 +263,18 @@ custom:
   pythonRequirements:
       pipCmdExtraArgs:
           - --compile
+```
+
+### Extra Docker arguments
+
+You can specify extra arguments to be passed to [docker build](https://docs.docker.com/engine/reference/commandline/build/) during the build step, and [docker run](https://docs.docker.com/engine/reference/run/) during the dockerized pip install step:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerBuildCmdExtraArgs: ["--build-arg", "MY_GREAT_ARG=123"]
+    dockerRunCmdExtraArgs: ["-v", "${env:PWD}:/my-app"]
 ```
 
 
@@ -393,19 +400,10 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image (`lambci/lambda:python3.6`) with a `Dockerfile` like:
 
 ```dockerfile
-# AWS Lambda execution environment is based on Amazon Linux 1
-FROM amazonlinux:1
-
-# Install Python 3.6
-RUN yum -y install python36 python36-pip
+FROM lambci/lambda:build-python3.6
 
 # Install your dependencies
-RUN curl -s https://bootstrap.pypa.io/get-pip.py | python3
-RUN yum -y install python3-devel mysql-devel gcc
-
-# Set the same WORKDIR as default image
-RUN mkdir /var/task
-WORKDIR /var/task
+RUN yum -y install mysql-devel
 ```
 
 Then update your `serverless.yml`:
@@ -418,26 +416,25 @@ custom:
 
 ## Native Code Dependencies During Runtime
 
-Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to commit the files to your repository:
+Some Python packages require extra OS libraries (`*.so` files) at runtime. You need to manually include these files in the root directory of your Serverless package. The simplest way to do this is to use the `dockerExtraFiles` option.
 
-For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, you can extract this file from the builder Dockerfile:
+For instance, the `mysqlclient` package requires `libmysqlclient.so.1020`. If you use the Dockerfile from the previous section, add an item to the `dockerExtraFiles` option in your `serverless.yml`:
 
-1. Extract the library:
-```bash
-docker run --rm -v "$(pwd):/var/task" sls-py-reqs-custom cp -v /usr/lib64/mysql57/libmysqlclient.so.1020 .
+```yaml
+custom:
+  pythonRequirements:
+    dockerExtraFiles:
+      - /usr/lib64/mysql57/libmysqlclient.so.1020
 ```
-(If you get the error `Unable to find image 'sls-py-reqs-custom:latest' locally`, run `sls package` to build the image.)
-2. Commit to your repo:
-```bash
-git add libmysqlclient.so.1020
-git commit -m "Add libmysqlclient.so.1020"
-```
-3. Verify the library gets included in your package:
+
+Then verify the library gets included in your package:
+
 ```bash
 sls package
 zipinfo .serverless/xxx.zip
 ```
-(If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.)
+
+If you can't see the library, you might need to adjust your package include/exclude configuration in `serverless.yml`.
 
 ## Optimising packaging time
 
