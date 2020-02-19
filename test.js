@@ -656,6 +656,7 @@ test('pipenv py3.6 can package flask with default options', t => {
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.false(zipfiles.includes(`pytest${sep}__init__.py`), 'dev-package pytest is NOT packaged');
   t.end();
 });
 
