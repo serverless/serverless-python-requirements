@@ -39,10 +39,14 @@ jobs:
       # install deps
       - run: npm i
       # lint:
-      - run: npm run lint
+      - run: npm run ci:lint
       # test!
       - run: |
           export PATH="$HOME/.poetry/bin:$PATH"
           export LC_ALL=C.UTF-8
           export LANG=C.UTF-8
           npm run test
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports
