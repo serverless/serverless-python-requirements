@@ -2,7 +2,6 @@
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 [![CircleCI](https://circleci.com/gh/UnitedIncome/serverless-python-requirements.svg?style=shield)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
-[![appveyor](https://ci.appveyor.com/api/projects/status/biel93xc535nxvi2?svg=true)](https://ci.appveyor.com/project/dschep/serverless-python-requirements)
 [![npm](https://img.shields.io/npm/v/serverless-python-requirements.svg)](https://www.npmjs.com/package/serverless-python-requirements)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 

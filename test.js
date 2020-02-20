@@ -221,10 +221,6 @@ test('py3.6 can package flask with slim option', t => {
   t.end();
 });
 
-/*
- * News tests NOT in test.bats
- */
-
 test('py3.6 can package flask with slim & slimPatterns options', t => {
   process.chdir('tests/base');
 
