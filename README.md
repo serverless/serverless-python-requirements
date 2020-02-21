@@ -2,7 +2,6 @@
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
 [![CircleCI](https://circleci.com/gh/UnitedIncome/serverless-python-requirements.svg?style=shield)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
-[![appveyor](https://ci.appveyor.com/api/projects/status/biel93xc535nxvi2?svg=true)](https://ci.appveyor.com/project/dschep/serverless-python-requirements)
 [![npm](https://img.shields.io/npm/v/serverless-python-requirements.svg)](https://www.npmjs.com/package/serverless-python-requirements)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
@@ -95,14 +94,8 @@ custom:
 
 
 ## Poetry support :sparkles::pencil::sparkles:
-NOTE: Only poetry version 1 supports the required `export` command for this
-feature. As of the point this feature was added, poetry 1.0.0 was in preview
-and requires that poetry is installed with the --preview flag.
-
-TL;DR Install poetry with the `--preview` flag.
-
 If you include a `pyproject.toml` and have `poetry` installed instead of a `requirements.txt` this will use
-`poetry export --without-hashes -f requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
+`poetry export --without-hashes -f requirements.txt -o requirements.txt` to generate them. It is fully compatible with all options such as `zip` and
 `dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
 ```yaml
 custom:

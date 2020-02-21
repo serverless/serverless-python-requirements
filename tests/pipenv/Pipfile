@@ -6,3 +6,6 @@ verify_ssl = true
 Flask = "*"
 bottle = "*"
 boto3 = "*"
+
+[dev-packages]
+pytest = "*"

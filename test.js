@@ -52,7 +52,6 @@ const sls = mkCommand('sls');
 const git = mkCommand('git');
 const npm = mkCommand('npm');
 const perl = mkCommand('perl');
-const poetry = mkCommand('poetry');
 
 const setup = () => {
   removeSync(getUserCachePath());
@@ -221,10 +220,6 @@ test('py3.6 can package flask with slim option', t => {
   );
   t.end();
 });
-
-/*
- * News tests NOT in test.bats
- */
 
 test('py3.6 can package flask with slim & slimPatterns options', t => {
   process.chdir('tests/base');
@@ -657,6 +652,7 @@ test('pipenv py3.6 can package flask with default options', t => {
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.false(zipfiles.includes(`pytest${sep}__init__.py`), 'dev-package pytest is NOT packaged');
   t.end();
 });
 
@@ -1910,17 +1906,3 @@ test(
   },
   { skip: !canUseDocker() }
 );
-
-// From this point on, the version of the poetry is 1.0.0a0
-test('poetry1.0.0a0 py3.6 can package flask with default options', t => {
-  process.chdir('tests/poetry');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
-  poetry(['self', 'update', '--preview', '1.0.0a0']);
-  sls(['package']);
-  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.true(zipfiles.includes(`bottle.py`), 'bottle is packaged');
-  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
-  t.end();
-});

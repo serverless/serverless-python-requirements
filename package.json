@@ -2,7 +2,7 @@
   "name": "serverless-python-requirements",
   "version": "5.0.1",
   "engines": {
-    "node": ">=6.0"
+    "node": ">=10.0"
   },
   "description": "Serverless Python Requirements Plugin",
   "author": "United Income <engineering@unitedincome.com>",
@@ -38,6 +38,7 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
+    "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c index.js lib/*.js",
     "test": "node test.js",
     "lint": "eslint *.js lib/*.js && prettier -l index.js lib/*.js || (echo need formatting ; exit 1)",
     "format": "prettier --write index.js lib/*.js test.js"
@@ -61,7 +62,7 @@
     "lodash.set": "^4.3.2",
     "lodash.uniqby": "^4.0.0",
     "lodash.values": "^4.3.0",
-    "rimraf": "^2.6.2",
+    "rimraf": "^3.0.2",
     "sha256-file": "1.0.0",
     "shell-quote": "^1.6.1"
   },
