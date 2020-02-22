@@ -6,7 +6,8 @@ provider:
 
 package:
   individually: true
-  exclude: 'node_modules/**'
+  exclude:
+    - 'node_modules/**'
 custom:
   pythonRequirements:
     dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
