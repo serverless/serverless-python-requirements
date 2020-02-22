@@ -75,7 +75,6 @@
   },
   "prettier": {
     "semi": true,
-    "singleQuote": true,
-    "parser": "babel"
+    "singleQuote": true
   }
 }
