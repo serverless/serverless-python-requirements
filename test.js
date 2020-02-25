@@ -744,6 +744,16 @@ test('non build pyproject.toml uses requirements.txt', t => {
   t.end();
 });
 
+test('non poetry pyproject.toml without requirements.txt packages handler only', t => {
+  process.chdir('tests/non_poetry_pyproject');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`handler.py`), 'handler is packaged');
+  t.end();
+});
+
 test('poetry py3.6 can package flask with default options', t => {
   process.chdir('tests/poetry');
   const path = npm(['pack', '../..']);
