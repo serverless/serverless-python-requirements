@@ -98,7 +98,7 @@ const getPythonBin = (version = 3) => {
   if (![2, 3].includes(version)) throw new Error('version must be 2 or 3');
   if (process.platform === 'win32')
     return `c:/python${version === 2 ? '27' : '36'}-x64/python.exe`;
-  else return version === 2 ? 'python2.7' : 'python3.6';
+  else return version === 2 ? 'python2.7' : 'python3.7';
 };
 
 const listZipFiles = filename =>
@@ -121,6 +121,16 @@ const canUseDocker = () => {
   }
   return result.status === 0;
 };
+
+test('non-python runtime', t => {
+  process.chdir('tests/non_python_runtime');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test-non-python.zip');
+  t.false(zipfiles.includes(`.requirements.zip`), 'requirements zip not packaged for node');
+  t.end();
+});
 
 test('default pythonBin can package flask with default options', t => {
   process.chdir('tests/base');
