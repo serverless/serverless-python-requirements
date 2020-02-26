@@ -111,7 +111,8 @@ const listRequirementsZipFiles = filename => {
   const reqsZip = deasync(new JSZip().loadAsync(reqsBuffer));
   return Object.keys(reqsZip.files);
 };
-const hasDirectory = (directoryName, fileList) => fileList.filter(f => f.startsWith(directoryName + "/")).length > 0
+const hasDirectory = (directoryName, fileList) =>
+  fileList.filter(f => f.startsWith(directoryName + '/')).length > 0;
 
 const canUseDocker = () => {
   let result;
@@ -138,7 +139,10 @@ test('non-python runtime doesnt get zip requirements', t => {
     nodeZip.includes(`unzip_requirements.py`),
     'unzip_requirements.py packaged for node'
   );
-  t.true(hasDirectory(`node_modules`, nodeZip), 'node_modules not packaged for node');
+  t.true(
+    hasDirectory(`node_modules`, nodeZip),
+    'node_modules not packaged for node'
+  );
   t.true(
     nodeZip.includes(`nodeHandler.js`),
     'nodeHandler.js packaged for node'
