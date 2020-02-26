@@ -5,6 +5,8 @@ provider:
   runtime: nodejs10.x
 
 package:
+  exclude:
+    - "*"
   include:
     - "node_modules/**"
     - "*.js"
