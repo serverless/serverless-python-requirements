@@ -100,9 +100,21 @@ class ServerlessPythonRequirements {
 
   get targetFuncs() {
     let inputOpt = this.serverless.processedInput.options;
-    return inputOpt.function
+    const functions = inputOpt.function
       ? [inputOpt.functionObj]
       : values(this.serverless.service.functions);
+      return functions
+      .filter(func =>
+        (func.runtime || this.serverless.service.provider.runtime).match(
+          /^python.*/
+        )
+      )
+  }
+
+  get isPythonService(){
+    return this.serverless.service.provider.runtime.match(
+      /^python.*/
+    )
   }
 
   /**
