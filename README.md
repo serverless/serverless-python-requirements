@@ -249,7 +249,7 @@ custom:
       name: ${self:provider.stage}-layerName
       description: Python requirements lambda layer
       compatibleRuntimes:
-        - python3.7
+        - python3.6
       licenseInfo: GPLv3
       allowedAccounts:
         - '*'
@@ -384,13 +384,13 @@ Quick notes on the config file:
 ### Customize Python executable
 
 Sometimes your Python executable isn't available on your `$PATH` as `python2.7`
-or `python3.7` (for example, windows or using pyenv).
+or `python3.6` (for example, windows or using pyenv).
 To support this, this plugin has the following option:
 
 ```yaml
 custom:
   pythonRequirements:
-    pythonBin: /opt/python3.7/bin/python
+    pythonBin: /opt/python3.6/bin/python
 ```
 
 ### Vendor library directory
@@ -458,10 +458,10 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 
 ## Native Code Dependencies During Build
 
-Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image (`lambci/lambda:python3.7`) with a `Dockerfile` like:
+Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image (`lambci/lambda:python3.6`) with a `Dockerfile` like:
 
 ```dockerfile
-FROM lambci/lambda:build-python3.7
+FROM lambci/lambda:build-python3.6
 
 # Install your dependencies
 RUN yum -y install mysql-devel

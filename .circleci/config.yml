@@ -6,7 +6,7 @@ jobs:
       image: circleci/classic
     steps:
       - checkout
-      # Build python3.7. gross. (based on my gist here: https://git.io/vxMFG )
+      # Build python3.6. gross. (based on my gist here: https://git.io/vxMFG )
       - run: |
           sudo apt-get update
           sudo apt-get install build-essential tk-dev libncurses5-dev libncursesw5-dev libreadline6-dev libdb5.3-dev libgdbm-dev libsqlite3-dev libssl-dev libbz2-dev libexpat1-dev liblzma-dev zlib1g-dev
@@ -18,10 +18,10 @@ jobs:
           sudo make altinstall
       # other deps
       - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip
-      # upgrade python3.7 pip to latest
-      - run: sudo python3.7 -m pip install -U pip
+      # upgrade python3.6 pip to latest
+      - run: sudo python3.6 -m pip install -U pip
       # instal pipenv
-      - run: sudo python3.7 -m pip install pipenv pip-tools
+      - run: sudo python3.6 -m pip install pipenv pip-tools
       # install poetry
       - run: |
           curl https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py -o get-poetry.py

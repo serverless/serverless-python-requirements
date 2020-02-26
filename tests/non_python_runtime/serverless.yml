@@ -20,7 +20,7 @@ functions:
 
   python-func:
     handler: pythonHandler.hello
-    runtime: python3.7
+    runtime: python3.6
     package:
       individually: true
       include:

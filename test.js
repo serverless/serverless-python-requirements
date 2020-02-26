@@ -98,7 +98,7 @@ const getPythonBin = (version = 3) => {
   if (![2, 3].includes(version)) throw new Error('version must be 2 or 3');
   if (process.platform === 'win32')
     return `c:/python${version === 2 ? '27' : '36'}-x64/python.exe`;
-  else return version === 2 ? 'python2.7' : 'python3.7';
+  else return version === 2 ? 'python2.7' : 'python3.6';
 };
 
 const listZipFiles = filename =>
