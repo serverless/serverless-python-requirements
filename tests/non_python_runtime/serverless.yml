@@ -6,8 +6,8 @@ provider:
 
 package:
   include:
-    - "**/node_modules/**"
-    - "**/.js"
+    - "node_modules/**"
+    - "*.js"
 
 custom:
   pythonRequirements:
@@ -22,8 +22,8 @@ functions:
     package:
       individually: true
       include:
-        - "!**/node_modules"
-        - "!**/.js"
+        - "!node_modules"
+        - "!*.js"
         - "**/.py"
 
   node-func:

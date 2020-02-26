@@ -130,33 +130,33 @@ test('non-python runtime doesnt get zip requirements', t => {
   const nodeZip = listZipFiles('.serverless/sls-py-req-test-non-python.zip');
   t.false(
     nodeZip.includes(`.requirements.zip`),
-    'requirements zip not packaged for node'
+    'requirements zip packaged for node'
   );
   t.false(
     nodeZip.includes(`unzip_requirements.py`),
-    'unzip_requirements.py not packaged for node'
+    'unzip_requirements.py packaged for node'
   );
-  t.true(nodeZip.includes(`node_modules`), 'node_modules packaged for node');
+  t.true(nodeZip.includes(`node_modules`), 'node_modules not packaged for node');
   t.true(
     nodeZip.includes(`nodeHandler.js`),
     'nodeHandler.js packaged for node'
   );
-  const pythonZip = listZipFiles('.serverless/sls-py-req-test-non-python.zip');
+  const pythonZip = listZipFiles('.serverless/python-func.zip');
   t.true(
     pythonZip.includes(`.requirements.zip`),
-    'requirements zip packaged for python'
+    'requirements zip not packaged for python'
   );
   t.true(
     pythonZip.includes(`unzip_requirements.py`),
-    'unzip_requirements.py packaged for python'
+    'unzip_requirements.py not packaged for python'
   );
   t.false(
     pythonZip.includes(`node_modules`),
-    'node_modules not packaged for python'
+    'node_modules packaged for python'
   );
   t.false(
     pythonZip.includes(`nodeHandler.js`),
-    'nodeHandler.js not packaged for python'
+    'nodeHandler.js packaged for python'
   );
   t.end();
 });
