@@ -24,7 +24,7 @@ functions:
     package:
       individually: true
       include:
-        - "!node_modules"
+        - "!node_modules/**"
         - "!*.js"
         - "**/.py"
 
