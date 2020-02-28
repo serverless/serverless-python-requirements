@@ -30,23 +30,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Check python is available
+      - name: Check python version
         run: |
-          echo "PYTHON"
           python --version
-          echo "PYTHONX.X"
-          python${{ matrix.python-version}} --version
-          echo "PIP"
-          pip --version
-          echo "PIPX.X"
-          pip${{matrix.python-version}} --version
-          echo "ok"
 
       - name: Install setuptools
-        run: python${{ matrix.python-version }} -m pip install setuptools wheel
+        run: python -m pip install setuptools wheel
 
       - name: Install pipenv / poetry
-        run: python${{ matrix.python-version }} -m pip install pipenv poetry
+        run: python -m pip install pipenv poetry
 
       - name: Install serverless
         run: npm install -g serverless
@@ -62,6 +54,6 @@ jobs:
       - name: Test
         run: npm run test
         env:
-          USE_PYTHON: ${{ matrix.python-version }}
+          USE_PYTHON: python
           LC_ALL: C.UTF-8
           LANG: C.UTF-8
