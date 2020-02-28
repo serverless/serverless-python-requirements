@@ -15,6 +15,7 @@ const {
 } = require('fs-extra');
 const { quote } = require('shell-quote');
 const { sep, delimiter } = require('path');
+const { _ } = require('lodash');
 
 const { getUserCachePath, sha256Path } = require('./lib/shared');
 
@@ -94,39 +95,55 @@ const test = (desc, func, opts = {}) =>
     }
   });
 
-const executableExtension = process.platform === 'win32' ? '.exe' : '';
-const executableSearch = process.env.PATH.split(delimiter);
-const whichCache = {};
-
-const which = (name, extra) => {
-  const found = whichCache[name];
-  if (found !== undefined) {
-    return found;
+const availablePythons = (() => {
+  const versions = [];
+  const mapping = {};
+  if (process.env.USE_PYTHON) {
+    versions.push(
+      ...process.env.USE_PYTHON.split(',').map(v => v.toString().trim())
+    );
+  } else {
+    versions.push('3.8', '3.7', '3.6', '2.7');
   }
-  const fullName = `${name}${executableExtension}`;
-  for (const path of (extra || []).concat(executableSearch)) {
-    const fullPath = `${path}${sep}${fullName}`;
-    if (pathExistsSync(fullPath)) {
-      whichCache[name] = fullPath;
-      return fullPath;
+  const exe = process.platform === 'win32' ? '.exe' : '';
+  for (const ver of _.uniq(
+    _.concat(
+      versions,
+      versions.map(v => v[0]),
+      ['']
+    )
+  )) {
+    const python = `python${ver}${exe}`;
+    const { stdout, stderr, status } = crossSpawn.sync(python, [
+      '-c',
+      'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:2])))'
+    ]);
+    const realVer = stdout && stdout.toString().trim();
+    if (!status && realVer && _.includes(versions, realVer)) {
+      for (const recommend of [realVer, realVer[0]]) {
+        if (!mapping[recommend]) {
+          mapping[recommend] = python;
+        }
+      }
     }
   }
-  whichCache[name] = null;
-  return null;
-};
+  if (_.isEmpty(mapping)) {
+    throw new Error(`No pythons available meeting ${versions}`);
+  }
+  return mapping;
+})();
 
 const getPythonBin = (version = 3) => {
-  if (![2, 3].includes(version)) throw new Error('version must be 2 or 3');
-  const extra = [];
-  /* if (process.platform === 'win32')
-   *   extra.push(...glob.sync(`c:/python${version}*`)); */
-  const bin = which(`python${version}`, extra);
-  if (bin === null) throw new Error(`Can't find python${version} on PATH`);
+  const bin = availablePythons[String(version)];
+  if (!bin)
+    throw new Error(
+      `No python version ${version} available, only ${availablePythons}`
+    );
   return bin;
 };
 
 const hasPython = version => {
-  return getPythonBin(version) !== null;
+  return Boolean(availablePythons[String(version)]);
 };
 
 const listZipFiles = filename =>

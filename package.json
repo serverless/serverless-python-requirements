@@ -48,7 +48,8 @@
     "prettier": "*",
     "cross-spawn": "*",
     "deasync-promise": "*",
-    "tape": "*"
+    "tape": "*",
+    "lodash": "^4.16.15"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",

@@ -28,12 +28,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           version: ${{ matrix.node-version }}
-      - name: Install pipenv
-        uses: dschep/install-pipenv-action@v1
-      - name: Install poetry
-        uses: dschep/install-poetry-action@v1.1
-        with:
-          preview: false
+      - name: Install pipenv, poetry
+        run: python${{ matrix.python-version}} -m pip install pipenv poetry setuptools
 
       - name: Install serverless
         run: npm install -g serverless
@@ -47,10 +43,8 @@ jobs:
         if: matrix.python-version == 3.7 && matrix.node-version == 12 && matrix.os == 'ubuntu-latest'
 
       - name: Test
-        run: |
-          PATH=$HOME/.poetry/bin:$PATH \
-          LC_ALL=C.UTF-8 \
-          LANG=C.UTF-8 \
-          npm run test
+        run: npm run test
         env:
-          RUNTIME: python${{ matrix.python-version }}
+          USE_PYTHON: ${{ matrix.python-version }}
+          LC_ALL: C.UTF-8
+          LANG: C.UTF-8
