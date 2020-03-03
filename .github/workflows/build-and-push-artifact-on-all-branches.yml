@@ -1,0 +1,59 @@
+name: Build and Publish
+
+on: [push]
+
+jobs:
+  build:
+    # Only build if no base ref, this prevents us from triggering a build when branching without a commit
+    if: github.event.base_ref == null
+    
+    # This runs on our self-hosted (only one) runner for now
+    # TODO: add sub-labels here
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code and branch
+      uses: actions/checkout@v1
+      
+    - name: Cleaning repo (if necessary)
+      run: |
+        echo "Cleaning/Removing build folder if necessary..."
+        rm -Rf ./build || true
+    
+    - name: Running npm install, test, and build
+      run: |
+        npm install
+        echo "Should run npm test here...?"
+        npm run build
+  
+    # - name: Dump GitHub context
+    #   env:
+    #     GITHUB_CONTEXT: ${{ toJson(github) }}
+    #   run: echo "$GITHUB_CONTEXT"
+    # - name: Dump job context
+    #   env:
+    #     JOB_CONTEXT: ${{ toJson(job) }}
+    #   run: echo "$JOB_CONTEXT"
+    # - name: Dump steps context
+    #   env:
+    #     STEPS_CONTEXT: ${{ toJson(steps) }}
+    #   run: echo "$STEPS_CONTEXT"
+    # - name: Dump runner context
+    #   env:
+    #     RUNNER_CONTEXT: ${{ toJson(runner) }}
+    #   run: echo "$RUNNER_CONTEXT"
+    # - name: Dump strategy context
+    #   env:
+    #     STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+    #   run: echo "$STRATEGY_CONTEXT"
+    # - name: Dump matrix context
+    #   env:
+    #     MATRIX_CONTEXT: ${{ toJson(matrix) }}
+    #   run: echo "$MATRIX_CONTEXT"
+
+
+    # - name: Publishing artifacts to Github
+    #   uses: actions/upload-artifact@v1
+    #   with:
+    #     name: build-artifact
+    #     path: build
