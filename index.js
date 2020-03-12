@@ -159,10 +159,10 @@ class ServerlessPythonRequirements {
       // later to access the artifact path.
       for (const functionName in this.serverless.service.functions) {
         if (!serverless.service.functions[functionName].package) {
-            serverless.service.functions[functionName].package = {}
+          serverless.service.functions[functionName].package = {};
         }
       }
-    }
+    };
 
     const before = () => {
       if (!isFunctionRuntimePython(arguments)) {
