@@ -124,7 +124,7 @@ const canUseDocker = () => {
   return result.status === 0;
 };
 
-const hasZippedRequirements = (t, zip) =>{
+const hasZippedRequirements = (t, zip) => {
   t.true(
     zip.includes(`.requirements.zip`),
     'requirements zip not packaged for python'
@@ -137,12 +137,8 @@ const hasZippedRequirements = (t, zip) =>{
     hasDirectory(`node_modules`, zip),
     'node_modules packaged for python'
   );
-  t.false(
-    zip.includes(`nodeHandler.js`),
-    'nodeHandler.js packaged for python'
-  );
-
-}
+  t.false(zip.includes(`nodeHandler.js`), 'nodeHandler.js packaged for python');
+};
 
 test('non-python runtime doesnt get zip requirements', t => {
   process.chdir('tests/non_python_runtime');
@@ -169,7 +165,7 @@ test('non-python runtime doesnt get zip requirements', t => {
   );
   hasZippedRequirements(listZipFiles('.serverless/python-func1.zip'));
   hasZippedRequirements(listZipFiles('.serverless/python-func2.zip'));
-  
+
   t.end();
 });
 
