@@ -6,7 +6,6 @@ const tape = require('tape-promise/tape');
 const {
   chmodSync,
   removeSync,
-  readFileSync,
   readFile,
   copySync,
   writeFileSync,
@@ -27,11 +26,7 @@ const mkCommand = cmd => (args, options = {}) => {
     args,
     Object.assign(
       {
-        env: Object.assign(
-          process.env,
-          { SLS_DEBUG: 't' },
-          process.env.CI ? { LC_ALL: 'C.UTF-8', LANG: 'C.UTF-8' } : {}
-        )
+        env: Object.assign({}, process.env, { SLS_DEBUG: 't' })
       },
       options
     )
@@ -60,39 +55,58 @@ const setup = () => {
 };
 
 const teardown = () => {
-  [
-    'puck',
-    'puck2',
-    'puck3',
-    'node_modules',
-    '.serverless',
-    '.requirements.zip',
-    '.requirements-cache',
-    'foobar',
-    'package-lock.json',
-    'slimPatterns.yml',
-    'serverless.yml.bak',
-    'module1/foobar',
-    getUserCachePath(),
-    ...glob.sync('serverless-python-requirements-*.tgz')
-  ].map(path => removeSync(path));
-  if (!process.cwd().endsWith('base with a space')) {
-    git(['checkout', 'serverless.yml']);
+  const cwd = process.cwd();
+  if (!cwd.startsWith(initialWorkingDir)) {
+    throw new Error(`Somehow cd'd into ${cwd}`);
   }
-  process.chdir(initialWorkingDir);
+  if (cwd != initialWorkingDir) {
+    [
+      'puck',
+      'puck2',
+      'puck3',
+      'node_modules',
+      '.serverless',
+      '.requirements.zip',
+      '.requirements-cache',
+      'foobar',
+      'package-lock.json',
+      'slimPatterns.yml',
+      'serverless.yml.bak',
+      'module1/foobar',
+      getUserCachePath(),
+      ...glob.sync('serverless-python-requirements-*.tgz')
+    ].map(path => removeSync(path));
+    if (!cwd.endsWith('base with a space')) {
+      try {
+        git(['checkout', 'serverless.yml']);
+      } catch (err) {
+        console.error(
+          `At ${cwd} failed to checkout 'serverless.yml' with ${err}.`
+        );
+        throw err;
+      }
+    }
+    process.chdir(initialWorkingDir);
+  }
   removeSync('tests/base with a space');
 };
 
 const test = (desc, func, opts = {}) =>
   tape.test(desc, opts, async t => {
     setup();
+    let ended = false;
     try {
       await func(t);
+      ended = true;
     } catch (err) {
       t.fail(err);
-      t.end();
     } finally {
-      teardown();
+      try {
+        teardown();
+      } catch (err) {
+        t.fail(err);
+      }
+      if (!ended) t.end();
     }
   });
 
@@ -104,6 +118,7 @@ const availablePythons = (() => {
       ...process.env.USE_PYTHON.split(',').map(v => v.toString().trim())
     );
   } else {
+    // For running outside of CI
     binaries.push(
       'python',
       'python3',
@@ -179,6 +194,9 @@ const canUseDocker = () => {
   }
   return result.status === 0;
 };
+
+// Skip if running on these platforms.
+const brokenOn = (...platforms) => platforms.indexOf(process.platform) != -1;
 
 test(
   'default pythonBin can package flask with default options',
@@ -497,7 +515,7 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([`--pythonBin=${getPythonBin(2)}`, 'package']);
+    sls([`--pythonBin=${getPythonBin(2)}`, '--runtime=python2.7', 'package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
@@ -512,7 +530,12 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([`--pythonBin=${getPythonBin(2)}`, '--slim=true', 'package']);
+    sls([
+      `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
+      '--slim=true',
+      'package'
+    ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
@@ -535,7 +558,12 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([`--pythonBin=${getPythonBin(2)}`, '--zip=true', 'package']);
+    sls([
+      `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
+      '--zip=true',
+      'package'
+    ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(
       zipfiles.includes('.requirements.zip'),
@@ -564,6 +592,7 @@ test(
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
       '--dockerizePip=true',
       '--slim=true',
       'package'
@@ -582,7 +611,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2) }
+  { skip: !canUseDocker() || !hasPython(2) || brokenOn('win32') }
 );
 
 test(
@@ -598,7 +627,7 @@ test(
       's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
       'serverless.yml'
     ]);
-    sls([`--pythonBin=${getPythonBin(2)}`, 'package']);
+    sls([`--pythonBin=${getPythonBin(2)}`, '--runtime=python2.7', 'package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
@@ -615,6 +644,7 @@ test(
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
       '--dockerizePip=true',
       '--zip=true',
       'package'
@@ -642,7 +672,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2) }
+  { skip: !canUseDocker() || !hasPython(2) || brokenOn('win32') }
 );
 
 test(
@@ -653,6 +683,7 @@ test(
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
       '--dockerizePip=true',
       '--zip=true',
       '--slim=true',
@@ -681,7 +712,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2) }
+  { skip: !canUseDocker() || !hasPython(2) || brokenOn('win32') }
 );
 
 test(
@@ -690,14 +721,19 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([`--pythonBin=${getPythonBin(2)}`, '--dockerizePip=true', 'package']);
+    sls([
+      `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
+      '--dockerizePip=true',
+      'package'
+    ]);
 
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2) }
+  { skip: !canUseDocker() || !hasPython(2) || brokenOn('win32') }
 );
 
 test(
@@ -708,6 +744,7 @@ test(
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
       '--dockerizePip=true',
       '--slim=true',
       'package'
@@ -725,7 +762,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2) }
+  { skip: !canUseDocker() || !hasPython(2) || brokenOn('win32') }
 );
 
 test(
@@ -738,6 +775,7 @@ test(
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(2)}`,
+      '--runtime=python2.7',
       '--dockerizePip=true',
       '--slim=true',
       'package'
@@ -756,23 +794,27 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2) }
+  { skip: !canUseDocker() || !hasPython(2) || brokenOn('win32') }
 );
 
-test('pipenv py3.6 can package flask with default options', async t => {
-  process.chdir('tests/pipenv');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
-  sls(['package']);
-  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
-  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
-  t.false(
-    zipfiles.includes(`pytest${sep}__init__.py`),
-    'dev-package pytest is NOT packaged'
-  );
-  t.end();
-});
+test(
+  'pipenv py3.6 can package flask with default options',
+  async t => {
+    process.chdir('tests/pipenv');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls(['package']);
+    const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+    t.false(
+      zipfiles.includes(`pytest${sep}__init__.py`),
+      'dev-package pytest is NOT packaged'
+    );
+    t.end();
+  },
+  { skip: !hasPython(3.6) }
+);
 
 test(
   'pipenv py3.6 can package flask with slim option',
@@ -1275,7 +1317,7 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(2.7) }
+  { skip: !hasPython(2.7) || brokenOn('win32') }
 );
 
 test(
@@ -1849,7 +1891,9 @@ test(
     npm(['i', path]);
     sls(['package']);
 
-    const zipfiles_hello1 = await listZipFilesWithMetaData('.serverless/hello1.zip');
+    const zipfiles_hello1 = await listZipFilesWithMetaData(
+      '.serverless/hello1.zip'
+    );
 
     t.true(
       zipfiles_hello1['module1/foobar'].unixPermissions
@@ -1886,7 +1930,9 @@ test(
     npm(['i', path]);
     sls(['--dockerizePip=true', 'package']);
 
-    const zipfiles_hello = await listZipFilesWithMetaData('.serverless/hello1.zip');
+    const zipfiles_hello = await listZipFilesWithMetaData(
+      '.serverless/hello1.zip'
+    );
 
     t.true(
       zipfiles_hello['module1/foobar'].unixPermissions
@@ -1921,7 +1967,7 @@ test(
     const cachepath = getUserCachePath();
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-      'cache directoy exists'
+      'cache directory exists'
     );
     t.end();
   },
@@ -1937,7 +1983,7 @@ test(
     sls(['--cacheLocation=.requirements-cache', 'package']);
     t.true(
       pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
-      'cache directoy exists'
+      'cache directory exists'
     );
     t.end();
   },
@@ -1954,7 +2000,7 @@ test(
     const cachepath = getUserCachePath();
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-      'cache directoy exists'
+      'cache directory exists'
     );
     t.end();
   },
@@ -1974,7 +2020,7 @@ test(
     ]);
     t.true(
       pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
-      'cache directoy exists'
+      'cache directory exists'
     );
     t.end();
   },

@@ -1,12 +1,12 @@
 name: Test
 
-on:
-  pull_request:
-    branches:
-      - master
-  push:
-    branches:
-      - master
+on: [push]
+  # pull_request:
+  #   branches:
+  #     - master
+  # push:
+  #   branches:
+  #     - master
 
 jobs:
   build:
@@ -15,8 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macOS-latest]
-        python-version: [3.6, 3.7, 2.7]
-        node-version: [8, 10, 12]
+        python-version: [3.6, 2.7]  # 3.7
+        node-version: [12]  # 8, 10
     steps:
       - uses: actions/checkout@v2
 
@@ -35,7 +35,7 @@ jobs:
           python --version
 
       - name: Install setuptools
-        run: python -m pip install setuptools wheel
+        run: python -m pip install --force setuptools wheel
 
       - name: Install pipenv / poetry
         run: python -m pip install pipenv poetry
@@ -49,7 +49,7 @@ jobs:
       - name: Lint
         run: npm run ci:lint
         # Don't run lint a hundred times, also it breaks on windows.
-        if: matrix.python-version == 3.7 && matrix.node-version == 12 && matrix.os == 'ubuntu-latest'
+        if: matrix.python-version == 3.6 && matrix.node-version == 12 && matrix.os == 'ubuntu-latest'
 
       - name: Test
         run: npm run test
@@ -57,3 +57,12 @@ jobs:
           USE_PYTHON: python
           LC_ALL: C.UTF-8
           LANG: C.UTF-8
+        if: matrix.os != 'macOS-latest'
+
+      - name: Test (Mac)
+        run: npm run test
+        env:
+          USE_PYTHON: python
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
+        if: matrix.os == 'macOS-latest'
