@@ -38,14 +38,14 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
-    "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c index.js lib/*.js",
+    "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c '{.,lib}/*.{js,md}'",
     "test": "node test.js",
-    "lint": "eslint *.js lib/*.js && prettier -l index.js lib/*.js || (echo need formatting ; exit 1)",
-    "format": "prettier --write index.js lib/*.js test.js"
+    "lint": "eslint *.js lib/*.js && prettier -c '{.,lib}/*.{js,md}'",
+    "format": "prettier --write '{.,lib}/*.{js,md}'"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "prettier": "*",
+    "prettier": "^1",
     "cross-spawn": "*",
     "deasync-promise": "*",
     "tape": "*"
@@ -75,7 +75,6 @@
   },
   "prettier": {
     "semi": true,
-    "singleQuote": true,
-    "parser": "babel"
+    "singleQuote": true
   }
 }

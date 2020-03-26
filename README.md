@@ -8,7 +8,7 @@
 A Serverless v1.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
-## Requires Serverless >= v1.34**
+## Requires Serverless >= v1.34
 
 ## Install
 
@@ -145,8 +145,8 @@ bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
 
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
 and `scikit-learn`) there is support for compressing the libraries. This does
-require a minor change to your code to decompress them.  To enable this add the
-following to your  `serverless.yml`:
+require a minor change to your code to decompress them. To enable this add the
+following to your `serverless.yml`:
 
 ```yaml
 custom:
@@ -189,7 +189,7 @@ custom:
   pythonRequirements:
     slim: true
     slimPatterns:
-      - "**/*.egg-info*"
+      - '**/*.egg-info*'
 ```
 
 To overwrite the default patterns set the option `slimPatternsAppendDefaults` to `false` (`true` by default).
@@ -200,7 +200,7 @@ custom:
     slim: true
     slimPatternsAppendDefaults: false
     slimPatterns:
-      - "**/*.egg-info*"
+      - '**/*.egg-info*'
 ```
 
 This will remove all folders within the installed requirements that match
@@ -237,7 +237,7 @@ functions:
   hello:
     handler: handler.hello
     layers:
-      - {Ref: PythonRequirementsLambdaLayer}
+      - { Ref: PythonRequirementsLambdaLayer }
 ```
 
 If the layer requires additional or custom configuration, add them onto the `layer` option.
@@ -279,7 +279,7 @@ And second, a what we call "static caching" which caches output of pip after com
 Since generally `requirements.txt` files rarely change, you will often see large amounts of speed improvements when enabling the static cache feature.
 These caches will be shared between all your projects if no custom `cacheLocation` is specified (see below).
 
- _**Please note:** This has replaced the previously recommended usage of "--cache-dir" in the pipCmdExtraArgs_
+_**Please note:** This has replaced the previously recommended usage of "--cache-dir" in the pipCmdExtraArgs_
 
 ```yaml
 custom:
@@ -290,7 +290,12 @@ custom:
 
 ### Other caching options
 
-There are two additional options related to caching.  You can specify where in your system that this plugin caches with the `cacheLocation` option.  By default it will figure out automatically where based on your username and your OS to store the cache via the [appdirectory](https://www.npmjs.com/package/appdirectory) module.  Additionally, you can specify how many max static caches to store with `staticCacheMaxVersions`, as a simple attempt to limit disk space usage for caching.  This is DISABLED (set to 0) by default.  Example:
+There are two additional options related to caching.
+You can specify where in your system that this plugin caches with the `cacheLocation` option.
+By default it will figure out automatically where based on your username and your OS to store the cache via the [appdirectory](https://www.npmjs.com/package/appdirectory) module.
+Additionally, you can specify how many max static caches to store with `staticCacheMaxVersions`, as a simple attempt to limit disk space usage for caching.
+This is DISABLED (set to 0) by default.
+Example:
 
 ```yaml
 custom:
@@ -299,7 +304,6 @@ custom:
     useDownloadCache: true
     cacheLocation: '/home/user/.my_cache_goes_here'
     staticCacheMaxVersions: 10
-
 ```
 
 ### Extra pip arguments
@@ -309,8 +313,8 @@ You can specify extra arguments [supported by pip](https://pip.pypa.io/en/stable
 ```yaml
 custom:
   pythonRequirements:
-      pipCmdExtraArgs:
-          - --compile
+    pipCmdExtraArgs:
+      - --compile
 ```
 
 ### Extra Docker arguments
@@ -321,8 +325,8 @@ You can specify extra arguments to be passed to [docker build](https://docs.dock
 custom:
   pythonRequirements:
     dockerizePip: true
-    dockerBuildCmdExtraArgs: ["--build-arg", "MY_GREAT_ARG=123"]
-    dockerRunCmdExtraArgs: ["-v", "${env:PWD}:/my-app"]
+    dockerBuildCmdExtraArgs: ['--build-arg', 'MY_GREAT_ARG=123']
+    dockerRunCmdExtraArgs: ['-v', '${env:PWD}:/my-app']
 ```
 
 ### Customize requirements file name
@@ -372,10 +376,10 @@ the requirements for function2 in the second one.
 
 Quick notes on the config file:
 
-* The `module` field must be used to tell the plugin where to find the `requirements.txt` file for
-each function.
-* The `handler` field must not be prefixed by the folder name (already known through `module`) as
-the root of the zip artifact is already the path to your function.
+- The `module` field must be used to tell the plugin where to find the `requirements.txt` file for
+  each function.
+- The `handler` field must not be prefixed by the folder name (already known through `module`) as
+  the root of the zip artifact is already the path to your function.
 
 ### Customize Python executable
 
@@ -431,16 +435,16 @@ custom:
 [Brew wilfully breaks the `--target` option with no seeming intention to fix it](https://github.com/Homebrew/brew/pull/821)
 which causes issues since this uses that option. There are a few easy workarounds for this:
 
-* Install Python from [python.org](https://www.python.org/downloads/) and specify it with the
-[`pythonBin` option](#customize-python-executable).
+- Install Python from [python.org](https://www.python.org/downloads/) and specify it with the
+  [`pythonBin` option](#customize-python-executable).
 
 OR
 
-* Create a virtualenv and activate it while using serverless.
+- Create a virtualenv and activate it while using serverless.
 
 OR
 
-* [Install Docker](https://docs.docker.com/docker-for-mac/install/) and use the [`dockerizePip` option](#cross-compiling).
+- [Install Docker](https://docs.docker.com/docker-for-mac/install/) and use the [`dockerizePip` option](#cross-compiling).
 
 Also, [brew seems to cause issues with pipenv](https://github.com/dschep/lambda-decorators/issues/4#event-1418928080),
 so make sure you install pipenv using pip.
@@ -501,10 +505,10 @@ If you wish to exclude most of the files in your project, and only include the s
 package:
   individually: false
   include:
-    - "./src/lambda_one/**"
-    - "./src/lambda_two/**"
+    - './src/lambda_one/**'
+    - './src/lambda_two/**'
   exclude:
-    - "**"
+    - '**'
 ```
 
 This will be very slow. Serverless adds a default `"&ast;&ast;"` include. If you are using the `cacheLocation` parameter to this plugin, this will result in all of the cached files' names being loaded and then subsequently discarded because of the exclude pattern. To avoid this happening you can add a negated include pattern, as is observed in <https://github.com/serverless/serverless/pull/5825>.
@@ -515,37 +519,37 @@ Use this approach instead:
 package:
   individually: false
   include:
-    - "!./**"
-    - "./src/lambda_one/**"
-    - "./src/lambda_two/**"
+    - '!./**'
+    - './src/lambda_one/**'
+    - './src/lambda_two/**'
   exclude:
-    - "**"
+    - '**'
 ```
 
 ## Contributors
 
-* [@dschep](https://github.com/dschep) - Lead developer & maintainer
-* [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
-* [@abetomo](https://github.com/abetomo) - style & linting
-* [@angstwad](https://github.com/angstwad) - `deploy --function` support
-* [@mather](https://github.com/mather) - the cache invalidation option
-* [@rmax](https://github.com/rmax) - the extra pip args option
-* [@bsamuel-ui](https://github.com/bsamuel-ui) - Python 3 support
-* [@suxor42](https://github.com/suxor42) - fixing permission issues with Docker on Linux
-* [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
-* [@Tethik](https://github.com/Tethik) - adding usePipenv option
-* [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
-* [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
-* [@heri16](https://github.com/heri16) - fixing Docker support in Windows
-* [@ryansb](https://github.com/ryansb) - package individually support
-* [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker, `dockerFile` option
+- [@dschep](https://github.com/dschep) - Lead developer & maintainer
+- [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
+- [@abetomo](https://github.com/abetomo) - style & linting
+- [@angstwad](https://github.com/angstwad) - `deploy --function` support
+- [@mather](https://github.com/mather) - the cache invalidation option
+- [@rmax](https://github.com/rmax) - the extra pip args option
+- [@bsamuel-ui](https://github.com/bsamuel-ui) - Python 3 support
+- [@suxor42](https://github.com/suxor42) - fixing permission issues with Docker on Linux
+- [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
+- [@Tethik](https://github.com/Tethik) - adding usePipenv option
+- [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
+- [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
+- [@heri16](https://github.com/heri16) - fixing Docker support in Windows
+- [@ryansb](https://github.com/ryansb) - package individually support
+- [@cgrimal](https://github.com/cgrimal) - Private SSH Repo access in Docker, `dockerFile` option
   to build a custom docker image, real per-function requirements, and the `vendor` option
-* [@kichik](https://github.com/kichik) - Imposed windows & `noDeploy` support,
+- [@kichik](https://github.com/kichik) - Imposed windows & `noDeploy` support,
   switched to adding files straight to zip instead of creating symlinks, and
   improved pip cache support when using docker.
-* [@dee-me-tree-or-love](https://github.com/dee-me-tree-or-love) - the `slim` package option
-* [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
-* [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
-* [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements & Porting tests from bats to js!
-* [@squaresurf](https://github.com/squaresurf) - adding usePoetry option
-* [@david-mk-lawrence](https://github.com/david-mk-lawrence) - added Lambda Layer support
+- [@dee-me-tree-or-love](https://github.com/dee-me-tree-or-love) - the `slim` package option
+- [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
+- [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
+- [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements & Porting tests from bats to js!
+- [@squaresurf](https://github.com/squaresurf) - adding usePoetry option
+- [@david-mk-lawrence](https://github.com/david-mk-lawrence) - added Lambda Layer support
