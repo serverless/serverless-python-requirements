@@ -46,11 +46,6 @@ jobs:
       - name: Install deps
         run: npm install
 
-      - name: Lint
-        run: npm run ci:lint
-        # Don't run lint a hundred times, also it breaks on windows.
-        if: matrix.python-version == 3.6 && matrix.node-version == 12 && matrix.os == 'ubuntu-latest'
-
       - name: Test
         run: npm run test
         env:

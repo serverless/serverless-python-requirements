@@ -1,11 +1,11 @@
 # Serverless Python Requirements
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![CircleCI](https://circleci.com/gh/UnitedIncome/serverless-python-requirements.svg?style=shield)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
+![Github Actions](https://github.com/UnitedIncome/serverless-python-requirements/workflows/Test/badge.svg)
 [![npm](https://img.shields.io/npm/v/serverless-python-requirements.svg)](https://www.npmjs.com/package/serverless-python-requirements)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
-A Serverless v1.x plugin to automatically bundle dependencies from
+A Serverless v5.x plugin to automatically bundle dependencies from
 `requirements.txt` and make them available in your `PYTHONPATH`.
 
 ## Requires Serverless >= v1.34

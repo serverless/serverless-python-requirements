@@ -91,8 +91,18 @@ const teardown = () => {
   removeSync('tests/base with a space');
 };
 
+const testFilter = (() => {
+  const elems = process.argv.slice(2); // skip ['node', 'test.js']
+  if (elems.length) {
+    return desc =>
+      elems.some(text => desc.search(text) != -1) ? tape.test : tape.test.skip;
+  } else {
+    return () => tape.test;
+  }
+})();
+
 const test = (desc, func, opts = {}) =>
-  tape.test(desc, opts, async t => {
+  testFilter(desc)(desc, opts, async t => {
     setup();
     let ended = false;
     try {
@@ -262,7 +272,7 @@ test(
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.end();
   },
-  { skip: !hasPython(3) }
+  { skip: !hasPython(3) || brokenOn('win32') }
 );
 
 test(
@@ -392,7 +402,7 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -415,7 +425,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -440,7 +450,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -473,7 +483,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -506,7 +516,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -928,6 +938,20 @@ test(
 );
 
 test(
+  'non poetry pyproject.toml without requirements.txt packages handler only',
+  async t => {
+    process.chdir('tests/non_poetry_pyproject');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls(['package']);
+    const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(zipfiles.includes(`handler.py`), 'handler is packaged');
+    t.end();
+  },
+  { skip: !hasPython(3.6) }
+);
+
+test(
   'poetry py3.6 can package flask with default options',
   async t => {
     process.chdir('tests/poetry');
@@ -1163,7 +1187,7 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -1287,7 +1311,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -1347,7 +1371,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(2.7) }
+  { skip: !canUseDocker() || !hasPython(2.7) || brokenOn('win32') }
 );
 
 test(
@@ -1975,7 +1999,7 @@ test(
 );
 
 test(
-  'py3.6 uses download cache by defaul option',
+  'py3.6 uses download cache by default',
   async t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2004,7 +2028,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -2024,7 +2048,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -2068,7 +2092,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -2173,7 +2197,7 @@ test(
 
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
 
 test(
@@ -2199,5 +2223,5 @@ test(
 
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) }
+  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
 );
