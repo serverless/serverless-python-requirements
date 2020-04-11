@@ -42,7 +42,7 @@ functions:
     handler: handler.hello
   hello3:
     handler: handler.hello
-    runtime: nodejs6.10
+    runtime: nodejs8.10
   hello4:
     handler: fn2_handler.hello
     module: fn2

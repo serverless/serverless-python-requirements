@@ -16,11 +16,6 @@ jobs:
           ./configure
           make
           sudo make altinstall
-      # install bats
-      - run: |
-          git clone https://github.com/sstephenson/bats.git
-          cd bats
-          sudo ./install.sh /usr/local
       # other deps
       - run: sudo apt -y update && sudo apt -y install python-pip python2.7 curl unzip
       # upgrade python3.6 pip to latest
@@ -33,18 +28,20 @@ jobs:
           python get-poetry.py --preview --yes
           rm get-poetry.py
       # install nodejs
-      - run: curl -sL https://deb.nodesource.com/setup_6.x | sudo bash - && sudo apt -y install nodejs
+      - run: curl -sL https://deb.nodesource.com/setup_10.x | sudo bash - && sudo apt -y install nodejs
       # install serverless & depcheck
-      - run: npm install -g serverless depcheck
+      - run: npm install -g serverless
       # install deps
       - run: npm i
-      # depcheck
-      - run: depcheck .
       # lint:
-      - run: npm run lint
+      - run: npm run ci:lint
       # test!
       - run: |
           export PATH="$HOME/.poetry/bin:$PATH"
           export LC_ALL=C.UTF-8
           export LANG=C.UTF-8
           npm run test
+      - store_test_results:
+          path: ~/reports
+      - store_artifacts:
+          path: ~/reports

@@ -1,8 +1,8 @@
 {
   "name": "serverless-python-requirements",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "engines": {
-    "node": ">=6.0"
+    "node": ">=10.0"
   },
   "description": "Serverless Python Requirements Plugin",
   "author": "United Income <engineering@unitedincome.com>",
@@ -38,13 +38,14 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
+    "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c '{.,lib}/*.{js,md}'",
     "test": "node test.js",
-    "lint": "eslint *.js lib/*.js && prettier -l index.js lib/*.js || (echo need formatting ; exit 1)",
-    "format": "prettier --write index.js lib/*.js test.js"
+    "lint": "eslint *.js lib/*.js && prettier -c '{.,lib}/*.{js,md}'",
+    "format": "prettier --write '{.,lib}/*.{js,md}'"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "prettier": "*",
+    "eslint": "^6.8.0",
+    "prettier": "^1",
     "cross-spawn": "*",
     "deasync-promise": "*",
     "tape": "*"
@@ -53,7 +54,7 @@
     "@iarna/toml": "^2.2.3",
     "appdirectory": "^0.1.0",
     "bluebird": "^3.0.6",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.1.0",
     "glob-all": "^3.1.0",
     "is-wsl": "^2.0.0",
     "jszip": "^3.1.0",
@@ -61,7 +62,7 @@
     "lodash.set": "^4.3.2",
     "lodash.uniqby": "^4.0.0",
     "lodash.values": "^4.3.0",
-    "rimraf": "^2.6.2",
+    "rimraf": "^3.0.2",
     "sha256-file": "1.0.0",
     "shell-quote": "^1.6.1"
   },
@@ -74,7 +75,6 @@
   },
   "prettier": {
     "semi": true,
-    "singleQuote": true,
-    "parser": "babel"
+    "singleQuote": true
   }
 }

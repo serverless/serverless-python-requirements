@@ -1,0 +1,18 @@
+service: sls-py-req-test
+
+provider:
+  name: aws
+  runtime: python3.6
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  exclude:
+    - '**/*'
+  include:
+    - handler.py
+
+functions:
+  hello:
+    handler: handler.hello

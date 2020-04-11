@@ -52,7 +52,6 @@ const sls = mkCommand('sls');
 const git = mkCommand('git');
 const npm = mkCommand('npm');
 const perl = mkCommand('perl');
-const poetry = mkCommand('poetry');
 
 const setup = () => {
   removeSync(getUserCachePath());
@@ -141,7 +140,11 @@ test('py3.6 packages have the same hash', t => {
   sls(['package']);
   const fileHash = sha256File('.serverless/sls-py-req-test.zip');
   sls(['package']);
-  t.equal(sha256File('.serverless/sls-py-req-test.zip'), fileHash, 'packages have the same hash');
+  t.equal(
+    sha256File('.serverless/sls-py-req-test.zip'),
+    fileHash,
+    'packages have the same hash'
+  );
   t.end();
 });
 
@@ -222,10 +225,6 @@ test('py3.6 can package flask with slim option', t => {
   t.end();
 });
 
-/*
- * News tests NOT in test.bats
- */
-
 test('py3.6 can package flask with slim & slimPatterns options', t => {
   process.chdir('tests/base');
 
@@ -276,10 +275,7 @@ test(
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-    t.true(
-      zipfiles.includes(`boto3${sep}__init__.py`),
-      'boto3 is packaged'
-    );
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
   { skip: !canUseDocker() }
@@ -657,6 +653,10 @@ test('pipenv py3.6 can package flask with default options', t => {
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.false(
+    zipfiles.includes(`pytest${sep}__init__.py`),
+    'dev-package pytest is NOT packaged'
+  );
   t.end();
 });
 
@@ -745,6 +745,16 @@ test('non build pyproject.toml uses requirements.txt', t => {
   const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
+
+test('non poetry pyproject.toml without requirements.txt packages handler only', t => {
+  process.chdir('tests/non_poetry_pyproject');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package']);
+  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`handler.py`), 'handler is packaged');
   t.end();
 });
 
@@ -1621,8 +1631,11 @@ test(
       'foobar has retained its executable file permissions'
     );
 
-    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
-    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
+    const zipfiles_hello2 = listZipFilesWithMetaData(
+      '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
+    );
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask')
+      .mode;
 
     t.true(
       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
@@ -1655,8 +1668,11 @@ test(
       'foobar has retained its executable file permissions'
     );
 
-    const zipfiles_hello2 = listZipFilesWithMetaData('.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip');
-    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask').mode;
+    const zipfiles_hello2 = listZipFilesWithMetaData(
+      '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
+    );
+    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask')
+      .mode;
 
     t.true(
       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
@@ -1685,10 +1701,7 @@ test('py3.6 uses download cache by defaul option', t => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls([
-    '--cacheLocation=.requirements-cache',
-    'package'
-  ]);
+  sls(['--cacheLocation=.requirements-cache', 'package']);
   t.true(
     pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
     'cache directoy exists'
@@ -1757,10 +1770,7 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([
-      '--dockerizePip=true',
-      'package'
-    ]);
+    sls(['--dockerizePip=true', 'package']);
     const cachepath = getUserCachePath();
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     t.true(
@@ -1836,11 +1846,7 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([
-      '--dockerizePip=true',
-      '--slim=true',
-      'package'
-    ]);
+    sls(['--dockerizePip=true', '--slim=true', 'package']);
     const cachepath = getUserCachePath();
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     t.true(
@@ -1859,11 +1865,7 @@ test(
       `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
       'injected new file into static cache folder'
     );
-    sls([
-      '--dockerizePip=true',
-      '--slim=true',
-      'package'
-    ]);
+    sls(['--dockerizePip=true', '--slim=true', 'package']);
 
     const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(
@@ -1887,11 +1889,7 @@ test(
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls([
-      '--dockerizePip=true',
-      '--slim=true',
-      'package'
-    ]);
+    sls(['--dockerizePip=true', '--slim=true', 'package']);
     const cachepath = getUserCachePath();
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
@@ -1910,17 +1908,3 @@ test(
   },
   { skip: !canUseDocker() }
 );
-
-// From this point on, the version of the poetry is 1.0.0a0
-test('poetry1.0.0a0 py3.6 can package flask with default options', t => {
-  process.chdir('tests/poetry');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
-  poetry(['self', 'update', '--preview', '1.0.0a0']);
-  sls(['package']);
-  const zipfiles = listZipFiles('.serverless/sls-py-req-test.zip');
-  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
-  t.true(zipfiles.includes(`bottle.py`), 'bottle is packaged');
-  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
-  t.end();
-});
