@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/sls-py-req
     machine:
-      image: circleci/python:3.6
+      image: circleci/python:3.6.5
     steps:
       - checkout
       # other deps
