@@ -39,8 +39,6 @@
   "bin": {},
   "scripts": {
     "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c '{.,lib}/*.{js,md}'",
-    // Enable ES6 staged features with --harmony flag
-    // https://nodejs.org/en/docs/es6/
     "test": "node --harmony test.js",
     "lint": "eslint *.js lib/*.js && prettier -c '{.,lib}/*.{js,md}'",
     "format": "prettier --write '{.,lib}/*.{js,md}'"
