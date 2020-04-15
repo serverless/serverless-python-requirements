@@ -20,7 +20,7 @@ jobs:
       # install nodejs	
       - run: curl -sL https://deb.nodesource.com/setup_10.x | sudo bash - && sudo apt -y install nodejs
       # install serverless & depcheck
-      - run: npm install -g serverless
+      - run: npm install -U serverless
       # install deps
       - run: npm i
       # lint:
