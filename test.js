@@ -377,6 +377,28 @@ test(
 );
 
 test(
+  'py3.6 can package boto3 with editable',
+  async t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls([
+      `--pythonBin=${getPythonBin(3)}`,
+      '--fileName=requirements-w-editable.txt',
+      'package'
+    ]);
+    const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+    t.true(
+      zipfiles.includes(`botocore${sep}__init__.py`),
+      'botocore is packaged'
+    );
+    t.end();
+  },
+  { skip: !hasPython(3) }
+);
+
+test(
   'py3.6 can package flask with dockerizePip option',
   async t => {
     process.chdir('tests/base');
