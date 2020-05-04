@@ -14,7 +14,6 @@ const {
 } = require('fs-extra');
 const { quote } = require('shell-quote');
 const { sep } = require('path');
-const { _ } = require('lodash');
 
 const { getUserCachePath, sha256Path } = require('./lib/shared');
 
@@ -159,7 +158,7 @@ const availablePythons = (() => {
       }
     }
   }
-  if (_.isEmpty(mapping)) {
+  if (!Object.entries(mapping).length) {
     throw new Error('No pythons found');
   }
   return mapping;
