@@ -128,9 +128,7 @@ const availablePythons = (() => {
     );
   } else {
     // For running outside of CI
-    binaries.push(
-      'python',
-    );
+    binaries.push('python');
   }
   const exe = process.platform === 'win32' ? '.exe' : '';
   for (const bin of binaries) {
