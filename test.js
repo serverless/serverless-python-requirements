@@ -130,16 +130,6 @@ const availablePythons = (() => {
     // For running outside of CI
     binaries.push(
       'python',
-      'python3',
-      'python3.6',
-      'python36',
-      'python3.7',
-      'python37',
-      'python3.8',
-      'python38',
-      'python2',
-      'python2.7',
-      'python27'
     );
   }
   const exe = process.platform === 'win32' ? '.exe' : '';

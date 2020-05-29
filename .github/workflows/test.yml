@@ -43,7 +43,6 @@ jobs:
       - name: Test
         run: npm run test
         env:
-          USE_PYTHON: python
           LC_ALL: C.UTF-8
           LANG: C.UTF-8
         if: matrix.os != 'macOS-latest'
@@ -51,7 +50,6 @@ jobs:
       - name: Test (Mac)
         run: npm run test
         env:
-          USE_PYTHON: python
           LC_ALL: en_US.UTF-8
           LANG: en_US.UTF-8
         if: matrix.os == 'macOS-latest'
