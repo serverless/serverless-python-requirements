@@ -1,7 +1,7 @@
 # Serverless Python Requirements
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![CircleCI](https://circleci.com/gh/UnitedIncome/serverless-python-requirements.svg?style=shield)](https://circleci.com/gh/UnitedIncome/serverless-python-requirements)
+![Github Actions](https://github.com/UnitedIncome/serverless-python-requirements/workflows/Test/badge.svg)
 [![npm](https://img.shields.io/npm/v/serverless-python-requirements.svg)](https://www.npmjs.com/package/serverless-python-requirements)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
@@ -180,7 +180,7 @@ custom:
 
 To specify additional directories to remove from the installed packages,
 define a list of patterns in the serverless config using the `slimPatterns`
-option and glob syntax. These paterns will be added to the default ones (`**/*.py[c|o]`, `**/__pycache__*`, `**/*.dist-info*`).
+option and glob syntax. These patterns will be added to the default ones (`**/*.py[c|o]`, `**/__pycache__*`, `**/*.dist-info*`).
 Note, the glob syntax matches against whole paths, so to match a file in any
 directory, start your pattern with `**/`.
 

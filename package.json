@@ -44,11 +44,12 @@
     "format": "prettier --write '{.,lib}/*.{js,md}'"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^5.16.0",
     "prettier": "^1",
     "cross-spawn": "*",
-    "deasync-promise": "*",
-    "tape": "*"
+    "tape": "*",
+    "tape-promise": "*",
+    "lodash": "^4.16.15"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.3",
@@ -69,8 +70,15 @@
   "eslintConfig": {
     "extends": "eslint:recommended",
     "env": {
+      "commonjs": true,
       "node": true,
       "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
+    "rules": {
+      "no-console": "off"
     }
   },
   "prettier": {
