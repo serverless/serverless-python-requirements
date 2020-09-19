@@ -1101,7 +1101,7 @@ test(
   async t => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
-    const perm = '775';
+    const perm = '755';
 
     npm(['i', path]);
     perl([
