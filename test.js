@@ -1895,7 +1895,7 @@ test(
   async t => {
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
-    const perm = '775';
+    const perm = '755';
     writeFileSync(`module1${sep}foobar`, '');
     chmodSync(`module1${sep}foobar`, perm);
 
@@ -1934,7 +1934,7 @@ test(
   async t => {
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
-    const perm = '775';
+    const perm = '755';
     writeFileSync(`module1${sep}foobar`, '', { mode: perm });
     chmodSync(`module1${sep}foobar`, perm);
 
