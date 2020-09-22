@@ -180,7 +180,7 @@ custom:
 
 To specify additional directories to remove from the installed packages,
 define a list of patterns in the serverless config using the `slimPatterns`
-option and glob syntax. These paterns will be added to the default ones (`**/*.py[c|o]`, `**/__pycache__*`, `**/*.dist-info*`).
+option and glob syntax. These patterns will be added to the default ones (`**/*.py[c|o]`, `**/__pycache__*`, `**/*.dist-info*`).
 Note, the glob syntax matches against whole paths, so to match a file in any
 directory, start your pattern with `**/`.
 
