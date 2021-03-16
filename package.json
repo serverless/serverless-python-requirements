@@ -44,12 +44,12 @@
     "format": "prettier --write '{.,lib}/*.{js,md}'"
   },
   "devDependencies": {
-    "eslint": "^7.18.0",
-    "prettier": "^2",
     "cross-spawn": "*",
+    "eslint": "^7.22.0",
+    "lodash": "^4.17.21",
+    "prettier": "^2",
     "tape": "*",
-    "tape-promise": "*",
-    "lodash": "^4.17.20"
+    "tape-promise": "*"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5",
@@ -58,7 +58,7 @@
     "fs-extra": "^9.1.0",
     "glob-all": "^3.2.1",
     "is-wsl": "^2.2.0",
-    "jszip": "^3.5.0",
+    "jszip": "^3.6.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.uniqby": "^4.7.0",
