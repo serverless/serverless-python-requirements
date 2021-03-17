@@ -45,3 +45,4 @@ __pycache__
 
 #NODE STUFF
 package-lock.json
+yarn.lock

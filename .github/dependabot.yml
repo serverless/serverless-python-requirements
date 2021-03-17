@@ -9,4 +9,4 @@ updates:
   ignore:
   - dependency-name: eslint
     versions:
-    - "> 5.16.0"
+    - "> 7.22.0"
