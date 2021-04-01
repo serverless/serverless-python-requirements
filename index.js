@@ -151,6 +151,19 @@ class ServerlessPythonRequirements {
         .then(cleanup)
         .then(removeVendorHelper);
 
+    const setupArtifactPathCapturing = () => {
+      // Reference:
+      // https://github.com/serverless/serverless/blob/9591d5a232c641155613d23b0f88ca05ea51b436/lib/plugins/package/lib/packageService.js#L139
+      // The packageService#packageFunction does set artifact path back to the function config.
+      // As long as the function config's "package" attribute wasn't undefined, we can still use it
+      // later to access the artifact path.
+      for (const functionName in this.serverless.service.functions) {
+        if (!serverless.service.functions[functionName].package) {
+          serverless.service.functions[functionName].package = {};
+        }
+      }
+    };
+
     const before = () => {
       if (!isFunctionRuntimePython(arguments)) {
         return;
@@ -160,7 +173,8 @@ class ServerlessPythonRequirements {
         .then(pyprojectTomlToRequirements)
         .then(addVendorHelper)
         .then(installAllRequirements)
-        .then(packRequirements);
+        .then(packRequirements)
+        .then(setupArtifactPathCapturing);
     };
 
     const after = () => {
