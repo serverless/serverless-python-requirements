@@ -1,7 +1,0 @@
-# npm install
-node_modules
-package-lock.json
-
-# serverless
-.serverless
-.requirements.zip
