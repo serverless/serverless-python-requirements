@@ -11,8 +11,9 @@ botocore==1.12.50 \
     --hash=sha256:07fae5a2b8cfb5a92c1dbee3f2feb4da7c471bcead7e18ce735babe5f39e270f \
     --hash=sha256:eeaa190f50ee05a56225ee78c64cb8bf0c3bf090ec605ca6c2f325aa3826a347 \
     # via boto3, s3transfer
-bottle==0.12.13 \
-    --hash=sha256:39b751aee0b167be8dffb63ca81b735bbf1dd0905b3bc42761efedee8f123355
+bottle==0.12.19 \
+    --hash=sha256:f6b8a34fe9aa406f9813c02990db72ca69ce6a158b5b156d2c41f345016a723d \
+    --hash=sha256:a9d73ffcbc6a1345ca2d7949638db46349f5b2b77dac65d6494d45c23628da2c
 click==7.0 \
     --hash=sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13 \
     --hash=sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7 \
