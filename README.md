@@ -528,17 +528,17 @@ package:
 
 ## Contributors
 
-- [@dschep](https://github.com/dschep) - Lead developer & maintainer
+- [@dschep](https://github.com/dschep) - Lead developer & original maintainer
 - [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
 - [@abetomo](https://github.com/abetomo) - style & linting
 - [@angstwad](https://github.com/angstwad) - `deploy --function` support
 - [@mather](https://github.com/mather) - the cache invalidation option
 - [@rmax](https://github.com/rmax) - the extra pip args option
-- [@bsamuel-ui](https://github.com/bsamuel-ui) - Python 3 support
+- [@bsamuel-ui](https://github.com/bsamuel-ui) - Python 3 support, current maintainer
 - [@suxor42](https://github.com/suxor42) - fixing permission issues with Docker on Linux
 - [@mbeltran213](https://github.com/mbeltran213) - fixing docker linux -u option bug
 - [@Tethik](https://github.com/Tethik) - adding usePipenv option
-- [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option
+- [@miketheman](https://github.com/miketheman) - fixing bug with includes when using zip option, update eslint,
 - [@wattdave](https://github.com/wattdave) - fixing bug when using `deploymentBucket`
 - [@heri16](https://github.com/heri16) - fixing Docker support in Windows
 - [@ryansb](https://github.com/ryansb) - package individually support
@@ -551,5 +551,12 @@ package:
 - [@alexjurkiewicz](https://github.com/alexjurkiewicz) - [docs about docker workflows](#native-code-dependencies-during-build)
 - [@andrewfarley](https://github.com/andrewfarley) - Implemented download caching and static caching
 - [@bweigel](https://github.com/bweigel) - adding the `slimPatternsAppendDefaults` option & fixing per-function packaging when some functions don't have requirements & Porting tests from bats to js!
-- [@squaresurf](https://github.com/squaresurf) - adding usePoetry option
+- Poetry support
+	- [@squaresurf](https://github.com/squaresurf)
+	- [@drice](https://github.com/drice)
+	- [@ofercaspi](https://github.com/ofercaspi)
+	- [@tpansino](https://github.com/tpansino)
 - [@david-mk-lawrence](https://github.com/david-mk-lawrence) - added Lambda Layer support
+- [@bryantbriggs](https://github.com/bryantbiggs) - Fixing CI/CD
+- [@jacksgt](https://github.com/jacksgt) - Fixing pip issues
+- [@lephuongbg](https://github.com/lephuongbg) - Fixing single function deployment
