@@ -1520,6 +1520,8 @@ test(
   { skip: !hasPython(3.6) }
 );
 
+
+
 test(
   'py3.6 can package flask with package individually & slim option',
   async t => {
@@ -1762,6 +1764,40 @@ test(
     t.false(
       zipfiles_hello4.includes(`flask${sep}__init__.py`),
       'flask is NOT packaged in function hello4'
+    );
+
+    t.end();
+  },
+  { skip: !hasPython(2.7) }
+);
+
+test(
+  'py2.7 can ignore functions defined with `image`',
+  async t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls(['--individually=true', '--runtime=python2.7', 'package']);
+
+    t.true(
+      pathExistsSync('.serverless/hello.zip'),
+      'function hello is packaged'
+    );
+    t.true(
+      pathExistsSync('.serverless/hello2.zip'),
+      'function hello2 is packaged'
+    );
+    t.true(
+      pathExistsSync('.serverless/hello3.zip'),
+      'function hello3 is packaged'
+    );
+    t.true(
+      pathExistsSync('.serverless/hello4.zip'),
+      'function hello4 is packaged'
+    );
+    t.false(
+      pathExistsSync('.serverless/hello5.zip'),
+      'function hello5 is not packaged'
     );
 
     t.end();
@@ -2233,4 +2269,39 @@ test(
     t.end();
   },
   { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+);
+
+test(
+  'py3.6 can ignore functions defined with `image`',
+  async t => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls(['--individually=true', 'package']);
+
+
+    t.true(
+      pathExistsSync('.serverless/hello.zip'),
+      'function hello is packaged'
+    );
+    t.true(
+      pathExistsSync('.serverless/hello2.zip'),
+      'function hello2 is packaged'
+    );
+    t.true(
+      pathExistsSync('.serverless/hello3.zip'),
+      'function hello3 is packaged'
+    );
+    t.true(
+      pathExistsSync('.serverless/hello4.zip'),
+      'function hello4 is packaged'
+    );
+    t.false(
+      pathExistsSync('.serverless/hello5.zip'),
+      'function hello5 is not packaged'
+    );
+
+    t.end();
+  },
+  { skip: !hasPython(3.6) }
 );
