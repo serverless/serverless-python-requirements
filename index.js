@@ -102,7 +102,7 @@ class ServerlessPythonRequirements {
     let inputOpt = this.serverless.processedInput.options;
     return inputOpt.function
       ? [inputOpt.functionObj]
-      : values(this.serverless.service.functions);
+      : values(this.serverless.service.functions).filter((func) => !func.image);
   }
 
   /**
