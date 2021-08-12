@@ -118,8 +118,6 @@ class ServerlessPythonRequirements {
 
     this.commands = {
       requirements: {
-        usage: 'Serverless plugin to bundle Python packages',
-        lifecycleEvents: ['requirements'],
         commands: {
           clean: {
             usage: 'Remove .requirements and requirements.zip',
@@ -137,6 +135,15 @@ class ServerlessPythonRequirements {
         }
       }
     };
+
+		if (this.serverless.cli.generateCommandsHelp) {
+			Object.assign(this.commands.requirements, {
+				usage: 'Serverless plugin to bundle Python packages',
+				lifecycleEvents: ['requirements']
+			});
+		} else {
+			this.commands.requirements.type = 'container';
+		}
 
     const isFunctionRuntimePython = args => {
       // If functionObj.runtime is undefined, python.
