@@ -30,9 +30,8 @@ custom:
 
 package:
   individually: ${opt:individually, self:custom.defaults.individually}
-  exclude:
-    - '**/*'
-  include:
+  patterns:
+    - '!**/*'
     - 'handler.py'
 
 functions:
@@ -47,7 +46,7 @@ functions:
     handler: fn2_handler.hello
     module: fn2
     package:
-      include:
+      patterns:
         - 'fn2/**'
   hello5:
     image: 000000000000.dkr.ecr.sa-east-1.amazonaws.com/test-lambda-docker@sha256:6bb600b4d6e1d7cf521097177dd0c4e9ea373edb91984a505333be8ac9455d38

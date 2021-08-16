@@ -21,10 +21,9 @@ custom:
     dockerizePip: false
 
 package:
-  exclude:
-    - '**/*'
-  include:
-    - handler.py
+  patterns:
+    - '!**/*'
+    - 'handler.py'
 
 functions:
   hello:

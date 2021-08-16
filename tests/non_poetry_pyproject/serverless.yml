@@ -8,10 +8,9 @@ plugins:
   - serverless-python-requirements
 
 package:
-  exclude:
-    - '**/*'
-  include:
-    - handler.py
+  patterns:
+    - '!**/*'
+    - 'handler.py'
 
 functions:
   hello:
