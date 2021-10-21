@@ -15,6 +15,7 @@ const { installAllRequirements } = require('./lib/pip');
 const { pipfileToRequirements } = require('./lib/pipenv');
 const { pyprojectTomlToRequirements } = require('./lib/poetry');
 const { cleanup, cleanupCache } = require('./lib/clean');
+const { buildDockerPoetryMonorepo } = require('./lib/monorepo')
 
 BbPromise.promisifyAll(fse);
 
@@ -48,6 +49,7 @@ class ServerlessPythonRequirements {
         dockerImage: null,
         dockerFile: null,
         dockerEnv: false,
+        dockerBuildPoetryMonorepo: false,
         dockerBuildCmdExtraArgs: [],
         dockerRunCmdExtraArgs: [],
         dockerExtraFiles: [],
@@ -79,6 +81,12 @@ class ServerlessPythonRequirements {
         );
         this.warningLogged = true;
       }
+    }
+    if (options.dockerBuildPoetryMonorepo && !options.dockerImage) {
+      this.serverless.cli.log(
+        'WARNING: Custom docker image required for building with a poetry monorepo. Setting default to: tgrowneyhydra/python-builder:latest'
+      )
+      options.dockerImage = 'tgrowneyhydra/python-builder:latest'
     }
     if (options.dockerImage && options.dockerFile) {
       throw new Error(
@@ -176,12 +184,13 @@ class ServerlessPythonRequirements {
         return;
       }
       return BbPromise.bind(this)
-        .then(pipfileToRequirements)
-        .then(pyprojectTomlToRequirements)
-        .then(addVendorHelper)
-        .then(installAllRequirements)
-        .then(packRequirements)
-        .then(setupArtifactPathCapturing);
+        .then(buildDockerPoetryMonorepo)
+        // .then(pipfileToRequirements)
+        // .then(pyprojectTomlToRequirements)
+        // .then(addVendorHelper)
+        // .then(installAllRequirements)
+        // .then(packRequirements)
+        // .then(setupArtifactPathCapturing);
     };
 
     const after = () => {
@@ -189,14 +198,14 @@ class ServerlessPythonRequirements {
         return;
       }
       return BbPromise.bind(this)
-        .then(removeVendorHelper)
-        .then(layerRequirements)
-        .then(() =>
+        // .then(removeVendorHelper)
+        // .then(layerRequirements)
+        /*.then(() =>
           injectAllRequirements.bind(this)(
             arguments[1].functionObj &&
               arguments[1].functionObj.package.artifact
           )
-        );
+        );*/
     };
 
     const invalidateCaches = () => {

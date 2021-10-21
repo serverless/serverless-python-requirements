@@ -59,13 +59,15 @@
     "glob-all": "^3.2.1",
     "is-wsl": "^2.2.0",
     "jszip": "^3.6.0",
+    "klaw-sync": "^6.0.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.uniqby": "^4.7.0",
     "lodash.values": "^4.3.0",
     "rimraf": "^3.0.2",
     "sha256-file": "1.0.0",
-    "shell-quote": "^1.7.2"
+    "shell-quote": "^1.7.2",
+    "uuid": "^8.3.2"
   },
   "peerDependencies": {
     "serverless": "^2.32"
