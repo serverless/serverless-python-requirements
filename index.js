@@ -15,7 +15,7 @@ const { installAllRequirements } = require('./lib/pip');
 const { pipfileToRequirements } = require('./lib/pipenv');
 const { pyprojectTomlToRequirements } = require('./lib/poetry');
 const { cleanup, cleanupCache } = require('./lib/clean');
-const { buildDockerPoetryMonorepo } = require('./lib/monorepo')
+const { buildDockerPoetryMonorepo, zipMonoRepoDeps } = require('./lib/monorepo')
 
 BbPromise.promisifyAll(fse);
 
@@ -198,6 +198,7 @@ class ServerlessPythonRequirements {
         return;
       }
       return BbPromise.bind(this)
+        .then(zipMonoRepoDeps)
         // .then(removeVendorHelper)
         // .then(layerRequirements)
         /*.then(() =>
