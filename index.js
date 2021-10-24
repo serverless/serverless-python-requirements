@@ -5,15 +5,8 @@ const BbPromise = require('bluebird');
 const fse = require('fs-extra');
 const values = require('lodash.values');
 const {
-  addVendorHelper,
   removeVendorHelper,
-  packRequirements
 } = require('./lib/zip');
-const { injectAllRequirements } = require('./lib/inject');
-const { layerRequirements } = require('./lib/layer');
-const { installAllRequirements } = require('./lib/pip');
-const { pipfileToRequirements } = require('./lib/pipenv');
-const { pyprojectTomlToRequirements } = require('./lib/poetry');
 const { cleanup, cleanupCache } = require('./lib/clean');
 const { buildDockerPoetryMonorepo, zipMonoRepoDeps } = require('./lib/monorepo')
 
@@ -185,12 +178,6 @@ class ServerlessPythonRequirements {
       }
       return BbPromise.bind(this)
         .then(buildDockerPoetryMonorepo)
-        // .then(pipfileToRequirements)
-        // .then(pyprojectTomlToRequirements)
-        // .then(addVendorHelper)
-        // .then(installAllRequirements)
-        // .then(packRequirements)
-        // .then(setupArtifactPathCapturing);
     };
 
     const after = () => {
@@ -199,14 +186,6 @@ class ServerlessPythonRequirements {
       }
       return BbPromise.bind(this)
         .then(zipMonoRepoDeps)
-        // .then(removeVendorHelper)
-        // .then(layerRequirements)
-        /*.then(() =>
-          injectAllRequirements.bind(this)(
-            arguments[1].functionObj &&
-              arguments[1].functionObj.package.artifact
-          )
-        );*/
     };
 
     const invalidateCaches = () => {
