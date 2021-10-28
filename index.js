@@ -57,6 +57,7 @@ class ServerlessPythonRequirements {
         pipCmdExtraArgs: [],
         noDeploy: [],
         vendor: '',
+        requirePoetryLockFile: false,
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||

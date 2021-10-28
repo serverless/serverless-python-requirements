@@ -13,6 +13,7 @@ custom:
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
+    requirePoetryLockFile: ${env:requirePoetryLockFile, false}
   defaults:
     zip: false
     slimPatterns: false
