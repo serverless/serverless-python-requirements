@@ -114,6 +114,15 @@ custom:
     usePoetry: false
 ```
 
+Be aware that if no `poetry.lock` file is present, a new one will be generated on the fly. To help having predictable builds,
+you can set the `requirePoetryLockFile` flag to true to throw an error when `poetry.lock` is missing.
+
+```yaml
+custom:
+  pythonRequirements:
+    requirePoetryLockFile: false
+```
+
 ### Poetry with git dependencies
 
 Poetry by default generates the exported requirements.txt file with `-e` and that breaks pip with `-t` parameter

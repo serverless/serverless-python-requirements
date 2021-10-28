@@ -57,7 +57,8 @@ class ServerlessPythonRequirements {
         staticCacheMaxVersions: 0,
         pipCmdExtraArgs: [],
         noDeploy: [],
-        vendor: ''
+        vendor: '',
+        requirePoetryLockFile: false
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
