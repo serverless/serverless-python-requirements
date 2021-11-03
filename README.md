@@ -9,7 +9,7 @@ A Serverless v1.x plugin to automatically bundle dependencies from `requirements
 
 --- 
 
-_Originally developed by [**Capital One**](https://github.com/UnitedIncome), now maintained in scope of Serverless, Inc_
+_Originally developed by [**Capital One**](https://www.capitalone.com/tech/open-source/), now maintained in scope of Serverless, Inc_
 
 _Capital One considers itself the bank a technology company would build. It's delivering best-in-class innovation so that its millions of customers can manage their finances with ease. Capital One is all-in on the cloud and is a leader in the adoption of open source, RESTful APIs, microservices and containers. We build our own products and release them with a speed and agility that allows us to get new customer experiences to market quickly. Our engineers use artificial intelligence and machine learning to transform real-time data, software and algorithms into the future of finance, reimagined._
 
