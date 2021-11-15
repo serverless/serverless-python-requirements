@@ -115,7 +115,18 @@ class ServerlessPythonRequirements {
     this.serverless = serverless;
     this.servicePath = this.serverless.config.servicePath;
     this.warningLogged = false;
-
+    if (
+      this.serverless.configSchemaHandler &&
+      this.serverless.configSchemaHandler.defineFunctionProperties
+    ) {
+      this.serverless.configSchemaHandler.defineFunctionProperties('aws', {
+        properties: {
+          module: {
+            type: 'string',
+          },
+        },
+      });
+    }
     this.commands = {
       requirements: {
         commands: {
