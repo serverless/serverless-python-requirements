@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "cross-spawn": "*",
-    "eslint": "^7.22.0",
+    "eslint": "^7.32.0",
     "lodash": "^4.17.21",
     "prettier": "^2",
     "tape": "*",
@@ -58,14 +58,14 @@
     "fs-extra": "^9.1.0",
     "glob-all": "^3.2.1",
     "is-wsl": "^2.2.0",
-    "jszip": "^3.6.0",
+    "jszip": "^3.7.1",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "lodash.uniqby": "^4.7.0",
     "lodash.values": "^4.3.0",
     "rimraf": "^3.0.2",
     "sha256-file": "1.0.0",
-    "shell-quote": "^1.7.2"
+    "shell-quote": "^1.7.3"
   },
   "peerDependencies": {
     "serverless": "^2.32"
