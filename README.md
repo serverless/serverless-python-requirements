@@ -565,3 +565,4 @@ package:
 - [@bryantbriggs](https://github.com/bryantbiggs) - Fixing CI/CD
 - [@jacksgt](https://github.com/jacksgt) - Fixing pip issues
 - [@lephuongbg](https://github.com/lephuongbg) - Fixing single function deployment
+- [@rileypriddle](https://github.com/rileypriddle) - Introducing schema validation for `module` property
