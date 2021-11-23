@@ -137,7 +137,7 @@ class ServerlessPythonRequirements {
       this.log = v3Utils.log;
       this.progress = v3Utils.progress;
       this.writeText = v3Utils.writeText;
-    };
+    }
 
     this.commands = {
       requirements: {
