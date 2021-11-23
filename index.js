@@ -74,9 +74,13 @@ class ServerlessPythonRequirements {
       (options.dockerSsh || options.dockerImage || options.dockerFile)
     ) {
       if (!this.warningLogged) {
-        this.serverless.cli.log(
-          'WARNING: You provided a docker related option but dockerizePip is set to false.'
-        );
+        if (this.log) {
+          this.log.warning('You provided a docker related option but dockerizePip is set to false.');
+        } else {
+          this.serverless.cli.log(
+            'WARNING: You provided a docker related option but dockerizePip is set to false.'
+          );
+        }
         this.warningLogged = true;
       }
     }
