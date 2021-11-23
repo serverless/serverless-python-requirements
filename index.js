@@ -109,9 +109,10 @@ class ServerlessPythonRequirements {
    * The plugin constructor
    * @param {Object} serverless
    * @param {Object} options
+   * @param {Object} v3Utils
    * @return {undefined}
    */
-  constructor(serverless) {
+  constructor(serverless, cliOptions, v3Utils) {
     this.serverless = serverless;
     this.servicePath = this.serverless.config.servicePath;
     this.warningLogged = false;
@@ -127,6 +128,13 @@ class ServerlessPythonRequirements {
         },
       });
     }
+
+    if (v3Utils) {
+      this.log = v3Utils.log;
+      this.progress = v3Utils.progress;
+      this.writeText = v3Utils.writeText;
+    };
+
     this.commands = {
       requirements: {
         commands: {
