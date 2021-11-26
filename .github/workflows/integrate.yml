@@ -59,7 +59,7 @@ jobs:
           npm update --no-save
           npm update --save-dev --no-save
       - name: Unit tests
-        run: script -e -c "npm test"
+        run: npm test
 
   windowsNode16:
     name: '[Windows] Node.js v16: Unit tests'
@@ -161,7 +161,7 @@ jobs:
           npm update --no-save
           npm update --save-dev --no-save
       - name: Unit tests
-        run: script -e -c "npm test"
+        run: npm test
 
   linuxNode12:
     name: '[Linux] Node.js v12: Unit tests'
@@ -212,12 +212,12 @@ jobs:
           npm update --no-save
           npm update --save-dev --no-save
       - name: Unit tests
-        run: script -e -c "npm test"
+        run: npm test
 
   tagIfNewVersion:
     name: Tag if new version
     runs-on: ubuntu-latest
-    needs: [linuxNode14, windowsNode14, linuxNode16, linuxNode12]
+    needs: [linuxNode16, windowsNode16, linuxNode14, linuxNode12]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2

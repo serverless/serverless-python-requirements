@@ -7,7 +7,7 @@ const values = require('lodash.values');
 const {
   addVendorHelper,
   removeVendorHelper,
-  packRequirements
+  packRequirements,
 } = require('./lib/zip');
 const { injectAllRequirements } = require('./lib/inject');
 const { layerRequirements } = require('./lib/layer');
@@ -57,7 +57,7 @@ class ServerlessPythonRequirements {
         staticCacheMaxVersions: 0,
         pipCmdExtraArgs: [],
         noDeploy: [],
-        vendor: ''
+        vendor: '',
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
@@ -75,7 +75,9 @@ class ServerlessPythonRequirements {
     ) {
       if (!this.warningLogged) {
         if (this.log) {
-          this.log.warning('You provided a docker related option but dockerizePip is set to false.');
+          this.log.warning(
+            'You provided a docker related option but dockerizePip is set to false.'
+          );
         } else {
           this.serverless.cli.log(
             'WARNING: You provided a docker related option but dockerizePip is set to false.'
@@ -144,31 +146,31 @@ class ServerlessPythonRequirements {
         commands: {
           clean: {
             usage: 'Remove .requirements and requirements.zip',
-            lifecycleEvents: ['clean']
+            lifecycleEvents: ['clean'],
           },
           install: {
             usage: 'install requirements manually',
-            lifecycleEvents: ['install']
+            lifecycleEvents: ['install'],
           },
           cleanCache: {
             usage:
               'Removes all items in the pip download/static cache (if present)',
-            lifecycleEvents: ['cleanCache']
-          }
-        }
-      }
+            lifecycleEvents: ['cleanCache'],
+          },
+        },
+      },
     };
 
-		if (this.serverless.cli.generateCommandsHelp) {
-			Object.assign(this.commands.requirements, {
-				usage: 'Serverless plugin to bundle Python packages',
-				lifecycleEvents: ['requirements']
-			});
-		} else {
-			this.commands.requirements.type = 'container';
-		}
+    if (this.serverless.cli.generateCommandsHelp) {
+      Object.assign(this.commands.requirements, {
+        usage: 'Serverless plugin to bundle Python packages',
+        lifecycleEvents: ['requirements'],
+      });
+    } else {
+      this.commands.requirements.type = 'container';
+    }
 
-    const isFunctionRuntimePython = args => {
+    const isFunctionRuntimePython = (args) => {
       // If functionObj.runtime is undefined, python.
       if (!args[1].functionObj || !args[1].functionObj.runtime) {
         return true;
@@ -177,9 +179,7 @@ class ServerlessPythonRequirements {
     };
 
     const clean = () =>
-      BbPromise.bind(this)
-        .then(cleanup)
-        .then(removeVendorHelper);
+      BbPromise.bind(this).then(cleanup).then(removeVendorHelper);
 
     const setupArtifactPathCapturing = () => {
       // Reference:
@@ -243,7 +243,7 @@ class ServerlessPythonRequirements {
       },
       'requirements:install:install': before,
       'requirements:clean:clean': clean,
-      'requirements:cleanCache:cleanCache': cleanCache
+      'requirements:cleanCache:cleanCache': cleanCache,
     };
   }
 }
