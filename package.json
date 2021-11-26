@@ -38,14 +38,19 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
-    "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c '{.,lib}/*.{js,md}'",
-    "test": "node test.js",
+    "format": "prettier --write '{.,lib}/*.{js,md}'",
     "lint": "eslint *.js lib/*.js && prettier -c '{.,lib}/*.{js,md}'",
-    "format": "prettier --write '{.,lib}/*.{js,md}'"
+    "lint:updated": "pipe-git-updated --ext=js -- eslint",
+    "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
+    "prettier-check:updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier -c",
+    "prettify": "prettier --write --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
+    "prettify:updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier --write",
+    "test": "node test.js"
   },
   "devDependencies": {
     "cross-spawn": "*",
     "eslint": "^7.32.0",
+    "git-list-updated": "^1.2.1",
     "lodash": "^4.17.21",
     "prettier": "^2",
     "tape": "*",
