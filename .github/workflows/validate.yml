@@ -86,7 +86,7 @@ jobs:
             npx dump-release-notes-from-cc-changelog $NEW_VERSION
           fi
       - name: Unit tests
-        run: script -e -c "npm test"
+        run: npm test
 
   windowsNode16:
     name: '[Windows] Node.js v16: Unit tests'
@@ -192,9 +192,7 @@ jobs:
           npm update --no-save
           npm update --save-dev --no-save
       - name: Unit tests
-        # Some tests depend on TTY support, which is missing in GA runner
-        # Workaround taken from https://github.com/actions/runner/issues/241#issuecomment-577360161
-        run: script -e -c "npm test"
+        run: npm test
 
   linuxNode12:
     name: '[Linux] Node.js v12: Unit tests'
@@ -247,4 +245,4 @@ jobs:
           npm update --no-save
           npm update --save-dev --no-save
       - name: Unit tests
-        run: script -e -c "npm test"
+        run: npm test

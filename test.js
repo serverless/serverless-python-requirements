@@ -10,7 +10,7 @@ const {
   copySync,
   writeFileSync,
   statSync,
-  pathExistsSync
+  pathExistsSync,
 } = require('fs-extra');
 const { quote } = require('shell-quote');
 const { sep } = require('path');
@@ -19,30 +19,32 @@ const { getUserCachePath, sha256Path } = require('./lib/shared');
 
 const initialWorkingDir = process.cwd();
 
-const mkCommand = cmd => (args, options = {}) => {
-  const { error, stdout, stderr, status } = crossSpawn.sync(
-    cmd,
-    args,
-    Object.assign(
-      {
-        env: Object.assign({}, process.env, { SLS_DEBUG: 't' })
-      },
-      options
-    )
-  );
-  if (error) {
-    console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
-    throw error;
-  }
-  if (status) {
-    console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
-    console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
-    throw new Error(
-      `${quote([cmd, ...args])} failed with status code ${status}`
+const mkCommand =
+  (cmd) =>
+  (args, options = {}) => {
+    const { error, stdout, stderr, status } = crossSpawn.sync(
+      cmd,
+      args,
+      Object.assign(
+        {
+          env: Object.assign({}, process.env, { SLS_DEBUG: 't' }),
+        },
+        options
+      )
     );
-  }
-  return stdout && stdout.toString().trim();
-};
+    if (error) {
+      console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
+      throw error;
+    }
+    if (status) {
+      console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
+      console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
+      throw new Error(
+        `${quote([cmd, ...args])} failed with status code ${status}`
+      );
+    }
+    return stdout && stdout.toString().trim();
+  };
 const sls = mkCommand('sls');
 const git = mkCommand('git');
 const npm = mkCommand('npm');
@@ -73,8 +75,8 @@ const teardown = () => {
       'serverless.yml.bak',
       'module1/foobar',
       getUserCachePath(),
-      ...glob.sync('serverless-python-requirements-*.tgz')
-    ].map(path => removeSync(path));
+      ...glob.sync('serverless-python-requirements-*.tgz'),
+    ].map((path) => removeSync(path));
     if (!cwd.endsWith('base with a space')) {
       try {
         git(['checkout', 'serverless.yml']);
@@ -93,15 +95,17 @@ const teardown = () => {
 const testFilter = (() => {
   const elems = process.argv.slice(2); // skip ['node', 'test.js']
   if (elems.length) {
-    return desc =>
-      elems.some(text => desc.search(text) != -1) ? tape.test : tape.test.skip;
+    return (desc) =>
+      elems.some((text) => desc.search(text) != -1)
+        ? tape.test
+        : tape.test.skip;
   } else {
     return () => tape.test;
   }
 })();
 
 const test = (desc, func, opts = {}) =>
-  testFilter(desc)(desc, opts, async t => {
+  testFilter(desc)(desc, opts, async (t) => {
     setup();
     let ended = false;
     try {
@@ -124,7 +128,7 @@ const availablePythons = (() => {
   const mapping = {};
   if (process.env.USE_PYTHON) {
     binaries.push(
-      ...process.env.USE_PYTHON.split(',').map(v => v.toString().trim())
+      ...process.env.USE_PYTHON.split(',').map((v) => v.toString().trim())
     );
   } else {
     // For running outside of CI
@@ -135,7 +139,7 @@ const availablePythons = (() => {
     const python = `${bin}${exe}`;
     const { stdout, status } = crossSpawn.sync(python, [
       '-c',
-      'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:2])))'
+      'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:2])))',
     ]);
     const ver = stdout && stdout.toString().trim();
     if (!status && ver) {
@@ -152,29 +156,29 @@ const availablePythons = (() => {
   return mapping;
 })();
 
-const getPythonBin = version => {
+const getPythonBin = (version) => {
   const bin = availablePythons[String(version)];
   if (!bin) throw new Error(`No python version ${version} available`);
   return bin;
 };
 
-const hasPython = version => {
+const hasPython = (version) => {
   return Boolean(availablePythons[String(version)]);
 };
 
-const listZipFiles = async function(filename) {
+const listZipFiles = async function (filename) {
   const file = await readFile(filename);
   const zip = await new JSZip().loadAsync(file);
   return Object.keys(zip.files);
 };
 
-const listZipFilesWithMetaData = async function(filename) {
+const listZipFilesWithMetaData = async function (filename) {
   const file = await readFile(filename);
   const zip = await new JSZip().loadAsync(file);
   return Object(zip.files);
 };
 
-const listRequirementsZipFiles = async function(filename) {
+const listRequirementsZipFiles = async function (filename) {
   const file = await readFile(filename);
   const zip = await new JSZip().loadAsync(file);
   const reqsBuffer = await zip.file('.requirements.zip').async('nodebuffer');
@@ -197,7 +201,7 @@ const brokenOn = (...platforms) => platforms.indexOf(process.platform) != -1;
 
 test(
   'default pythonBin can package flask with default options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -212,7 +216,7 @@ test(
 
 test(
   'py3.6 packages have the same hash',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -231,7 +235,7 @@ test(
 
 test(
   'py3.6 can package flask with default options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -246,14 +250,14 @@ test(
 
 test(
   'py3.6 can package flask with hashes',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(3)}`,
       '--fileName=requirements-w-hashes.txt',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
@@ -264,14 +268,14 @@ test(
 
 test(
   'py3.6 can package flask with nested',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(3)}`,
       '--fileName=requirements-w-nested.txt',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
@@ -283,7 +287,7 @@ test(
 
 test(
   'py3.6 can package flask with zip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -308,7 +312,7 @@ test(
 
 test(
   'py3.6 can package flask with slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -316,12 +320,13 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -331,7 +336,7 @@ test(
 
 test(
   'py3.6 can package flask with slim & slimPatterns options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -340,12 +345,12 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -356,7 +361,7 @@ test(
 
 test(
   "py3.6 doesn't package bottle with noDeploy option",
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -365,7 +370,7 @@ test(
       '-i.bak',
       '-e',
       's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
-      'serverless.yml'
+      'serverless.yml',
     ]);
     sls([`--pythonBin=${getPythonBin(3)}`, 'package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -378,14 +383,14 @@ test(
 
 test(
   'py3.6 can package boto3 with editable',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       `--pythonBin=${getPythonBin(3)}`,
       '--fileName=requirements-w-editable.txt',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
@@ -400,7 +405,7 @@ test(
 
 test(
   'py3.6 can package flask with dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -416,7 +421,7 @@ test(
 
 test(
   'py3.6 can package flask with slim & dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -424,12 +429,13 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       '*.pyc files are NOT packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -439,7 +445,7 @@ test(
 
 test(
   'py3.6 can package flask with slim & dockerizePip & slimPatterns options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -448,12 +454,12 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       '*.pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -464,7 +470,7 @@ test(
 
 test(
   'py3.6 can package flask with zip & dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -497,7 +503,7 @@ test(
 
 test(
   'py3.6 can package flask with zip & slim & dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -530,7 +536,7 @@ test(
 
 test(
   'py2.7 can package flask with default options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -545,7 +551,7 @@ test(
 
 test(
   'py2.7 can package flask with slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -553,17 +559,18 @@ test(
       `--pythonBin=${getPythonBin(2)}`,
       '--runtime=python2.7',
       '--slim=true',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -573,7 +580,7 @@ test(
 
 test(
   'py2.7 can package flask with zip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -581,7 +588,7 @@ test(
       `--pythonBin=${getPythonBin(2)}`,
       '--runtime=python2.7',
       '--zip=true',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(
@@ -603,7 +610,7 @@ test(
 
 test(
   'py2.7 can package flask with slim & dockerizePip & slimPatterns options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
 
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -614,17 +621,17 @@ test(
       '--runtime=python2.7',
       '--dockerizePip=true',
       '--slim=true',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       '*.pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -635,7 +642,7 @@ test(
 
 test(
   "py2.7 doesn't package bottle with noDeploy option",
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -644,7 +651,7 @@ test(
       '-i.bak',
       '-e',
       's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
-      'serverless.yml'
+      'serverless.yml',
     ]);
     sls([`--pythonBin=${getPythonBin(2)}`, '--runtime=python2.7', 'package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -657,7 +664,7 @@ test(
 
 test(
   'py2.7 can package flask with zip & dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -666,7 +673,7 @@ test(
       '--runtime=python2.7',
       '--dockerizePip=true',
       '--zip=true',
-      'package'
+      'package',
     ]);
 
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -696,7 +703,7 @@ test(
 
 test(
   'py2.7 can package flask with zip & slim & dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -706,7 +713,7 @@ test(
       '--dockerizePip=true',
       '--zip=true',
       '--slim=true',
-      'package'
+      'package',
     ]);
 
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -736,7 +743,7 @@ test(
 
 test(
   'py2.7 can package flask with dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -744,7 +751,7 @@ test(
       `--pythonBin=${getPythonBin(2)}`,
       '--runtime=python2.7',
       '--dockerizePip=true',
-      'package'
+      'package',
     ]);
 
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -757,7 +764,7 @@ test(
 
 test(
   'py2.7 can package flask with slim & dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -766,17 +773,18 @@ test(
       '--runtime=python2.7',
       '--dockerizePip=true',
       '--slim=true',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       '*.pyc files are NOT packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -786,7 +794,7 @@ test(
 
 test(
   'py2.7 can package flask with slim & dockerizePip & slimPatterns options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
 
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -797,17 +805,17 @@ test(
       '--runtime=python2.7',
       '--dockerizePip=true',
       '--slim=true',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       '*.pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -818,7 +826,7 @@ test(
 
 test(
   'pipenv py3.6 can package flask with default options',
-  async t => {
+  async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -837,7 +845,7 @@ test(
 
 test(
   'pipenv py3.6 can package flask with slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -845,12 +853,13 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -860,7 +869,7 @@ test(
 
 test(
   'pipenv py3.6 can package flask with slim & slimPatterns options',
-  async t => {
+  async (t) => {
     process.chdir('tests/pipenv');
 
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -870,12 +879,12 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -886,7 +895,7 @@ test(
 
 test(
   'pipenv py3.6 can package flask with zip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -911,7 +920,7 @@ test(
 
 test(
   "pipenv py3.6 doesn't package bottle with noDeploy option",
-  async t => {
+  async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -920,7 +929,7 @@ test(
       '-i.bak',
       '-e',
       's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
-      'serverless.yml'
+      'serverless.yml',
     ]);
     sls(['package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -933,7 +942,7 @@ test(
 
 test(
   'non build pyproject.toml uses requirements.txt',
-  async t => {
+  async (t) => {
     process.chdir('tests/non_build_pyproject');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -948,7 +957,7 @@ test(
 
 test(
   'non poetry pyproject.toml without requirements.txt packages handler only',
-  async t => {
+  async (t) => {
     process.chdir('tests/non_poetry_pyproject');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -962,7 +971,7 @@ test(
 
 test(
   'poetry py3.6 can package flask with default options',
-  async t => {
+  async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -978,7 +987,7 @@ test(
 
 test(
   'poetry py3.6 can package flask with slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -986,12 +995,13 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.true(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')).length > 0,
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -1001,7 +1011,7 @@ test(
 
 test(
   'poetry py3.6 can package flask with slim & slimPatterns options',
-  async t => {
+  async (t) => {
     process.chdir('tests/poetry');
 
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -1011,12 +1021,12 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1027,7 +1037,7 @@ test(
 
 test(
   'poetry py3.6 can package flask with zip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1052,7 +1062,7 @@ test(
 
 test(
   "poetry py3.6 doesn't package bottle with noDeploy option",
-  async t => {
+  async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1061,7 +1071,7 @@ test(
       '-i.bak',
       '-e',
       's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
-      'serverless.yml'
+      'serverless.yml',
     ]);
     sls(['package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -1074,7 +1084,7 @@ test(
 
 test(
   'py3.6 can package flask with zip option and no explicit include',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1101,7 +1111,7 @@ test(
 
 test(
   'py3.6 can package lambda-decorators using vendor option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1120,7 +1130,7 @@ test(
 
 test(
   "Don't nuke execute perms",
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     const perm = '755';
@@ -1131,7 +1141,7 @@ test(
       '-i.bak',
       '-e',
       's/(handler.py.*$)/$1\n    - foobar/',
-      'serverless.yml'
+      'serverless.yml',
     ]);
     writeFileSync(`foobar`, '');
     chmodSync(`foobar`, perm);
@@ -1169,7 +1179,7 @@ test(
 
 test(
   'py3.6 can package flask in a project with a space in it',
-  async t => {
+  async (t) => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
     const path = npm(['pack', '../..']);
@@ -1185,7 +1195,7 @@ test(
 
 test(
   'py3.6 can package flask in a project with a space in it with docker',
-  async t => {
+  async (t) => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
     const path = npm(['pack', '../..']);
@@ -1201,7 +1211,7 @@ test(
 
 test(
   'py3.6 supports custom file name with fileName option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     writeFileSync('puck', 'requests');
@@ -1227,7 +1237,7 @@ test(
 
 test(
   "py3.6 doesn't package bottle with zip option",
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1236,7 +1246,7 @@ test(
       '-i.bak',
       '-e',
       's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
-      'serverless.yml'
+      'serverless.yml',
     ]);
     sls([`--pythonBin=${getPythonBin(3)}`, '--zip=true', 'package']);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
@@ -1270,7 +1280,7 @@ test(
 
 test(
   'py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaults=false options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -1280,11 +1290,11 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(
-      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1295,7 +1305,7 @@ test(
 
 test(
   'py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -1304,17 +1314,17 @@ test(
       '--dockerizePip=true',
       '--slim=true',
       '--slimPatternsAppendDefaults=false',
-      'package'
+      'package',
     ]);
 
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(
-      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1325,7 +1335,7 @@ test(
 
 test(
   'py2.7 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -1334,17 +1344,17 @@ test(
       '--runtime=python2.7',
       '--slim=true',
       '--slimPatternsAppendDefaults=false',
-      'package'
+      'package',
     ]);
 
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(
-      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1355,7 +1365,7 @@ test(
 
 test(
   'py2.7 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -1365,16 +1375,16 @@ test(
       '--runtime=python2.7',
       '--slim=true',
       '--slimPatternsAppendDefaults=false',
-      'package'
+      'package',
     ]);
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(
-      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1385,7 +1395,7 @@ test(
 
 test(
   'pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option',
-  async t => {
+  async (t) => {
     process.chdir('tests/pipenv');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -1395,11 +1405,11 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(
-      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1410,7 +1420,7 @@ test(
 
 test(
   'poetry py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option',
-  async t => {
+  async (t) => {
     process.chdir('tests/poetry');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
     const path = npm(['pack', '../..']);
@@ -1420,11 +1430,11 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(
-      zipfiles.filter(filename => filename.endsWith('.pyc')).length >= 1,
+      zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
       'pyc files are packaged'
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('__main__.py')),
+      zipfiles.filter((filename) => filename.endsWith('__main__.py')),
       [],
       '__main__.py files are NOT packaged'
     );
@@ -1435,7 +1445,7 @@ test(
 
 test(
   'py3.6 can package flask with package individually option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1520,11 +1530,9 @@ test(
   { skip: !hasPython(3.6) }
 );
 
-
-
 test(
   'py3.6 can package flask with package individually & slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1536,7 +1544,7 @@ test(
       'handler.py is packaged in function hello'
     );
     t.deepEqual(
-      zipfiles_hello.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello'
     );
@@ -1555,7 +1563,7 @@ test(
       'handler.py is packaged in function hello2'
     );
     t.deepEqual(
-      zipfiles_hello2.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello2.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello2'
     );
@@ -1574,7 +1582,7 @@ test(
       'handler.py is packaged in function hello3'
     );
     t.deepEqual(
-      zipfiles_hello3.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello3.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello3'
     );
@@ -1599,7 +1607,7 @@ test(
       'flask is NOT packaged in function hello4'
     );
     t.deepEqual(
-      zipfiles_hello4.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello4.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello4'
     );
@@ -1611,7 +1619,7 @@ test(
 
 test(
   'py2.7 can package flask with package individually option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1682,7 +1690,7 @@ test(
 
 test(
   'py2.7 can package flask with package individually & slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1690,7 +1698,7 @@ test(
       '--individually=true',
       '--runtime=python2.7',
       '--slim=true',
-      'package'
+      'package',
     ]);
 
     const zipfiles_hello = await listZipFiles('.serverless/hello.zip');
@@ -1699,7 +1707,7 @@ test(
       'handler.py is packaged in function hello'
     );
     t.deepEqual(
-      zipfiles_hello.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello'
     );
@@ -1718,7 +1726,7 @@ test(
       'handler.py is packaged in function hello2'
     );
     t.deepEqual(
-      zipfiles_hello2.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello2.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello2'
     );
@@ -1737,7 +1745,7 @@ test(
       'handler.py is packaged in function hello3'
     );
     t.deepEqual(
-      zipfiles_hello3.filter(filename => filename.endsWith('.pyc')),
+      zipfiles_hello3.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files packaged in function hello3'
     );
@@ -1773,7 +1781,7 @@ test(
 
 test(
   'py2.7 can ignore functions defined with `image`',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1807,7 +1815,7 @@ test(
 
 test(
   'py3.6 can package only requirements of module',
-  async t => {
+  async (t) => {
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1868,7 +1876,7 @@ test(
 
 test(
   'py3.6 can package lambda-decorators using vendor and invidiually option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -1950,7 +1958,7 @@ test(
 
 test(
   "Don't nuke execute perms when using individually",
-  async t => {
+  async (t) => {
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
     const perm = '755';
@@ -1974,8 +1982,9 @@ test(
     const zipfiles_hello2 = await listZipFilesWithMetaData(
       '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
     );
-    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask')
-      .mode;
+    const flaskPerm = statSync(
+      '.serverless/module2/requirements/bin/flask'
+    ).mode;
 
     t.true(
       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
@@ -1989,7 +1998,7 @@ test(
 
 test(
   "Don't nuke execute perms when using individually w/docker",
-  async t => {
+  async (t) => {
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
     const perm = '755';
@@ -2013,8 +2022,9 @@ test(
     const zipfiles_hello2 = await listZipFilesWithMetaData(
       '.serverless/module2-sls-py-req-test-indiv-dev-hello2.zip'
     );
-    const flaskPerm = statSync('.serverless/module2/requirements/bin/flask')
-      .mode;
+    const flaskPerm = statSync(
+      '.serverless/module2/requirements/bin/flask'
+    ).mode;
 
     t.true(
       zipfiles_hello2['bin/flask'].unixPermissions === flaskPerm,
@@ -2028,7 +2038,7 @@ test(
 
 test(
   'py3.6 uses download cache by default option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2045,7 +2055,7 @@ test(
 
 test(
   'py3.6 uses download cache by default',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2061,7 +2071,7 @@ test(
 
 test(
   'py3.6 uses download cache with dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2078,14 +2088,14 @@ test(
 
 test(
   'py3.6 uses download cache with dockerizePip by default option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls([
       '--dockerizePip=true',
       '--cacheLocation=.requirements-cache',
-      'package'
+      'package',
     ]);
     t.true(
       pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
@@ -2098,7 +2108,7 @@ test(
 
 test(
   'py3.6 uses static and download cache',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2120,7 +2130,7 @@ test(
 
 test(
   'py3.6 uses static and download cache with dockerizePip option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2142,7 +2152,7 @@ test(
 
 test(
   'py3.6 uses static cache',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2180,7 +2190,7 @@ test(
 
 test(
   'py3.6 uses static cache with cacheLocation option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2204,7 +2214,7 @@ test(
 
 test(
   'py3.6 uses static cache with dockerizePip & slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2235,7 +2245,7 @@ test(
       "static cache is really used when running 'sls package' again"
     );
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files are packaged'
     );
@@ -2247,7 +2257,7 @@ test(
 
 test(
   'py3.6 uses download cache with dockerizePip & slim option',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
@@ -2261,7 +2271,7 @@ test(
     const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.deepEqual(
-      zipfiles.filter(filename => filename.endsWith('.pyc')),
+      zipfiles.filter((filename) => filename.endsWith('.pyc')),
       [],
       'no pyc files are packaged'
     );
@@ -2273,12 +2283,11 @@ test(
 
 test(
   'py3.6 can ignore functions defined with `image`',
-  async t => {
+  async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     sls(['--individually=true', 'package']);
-
 
     t.true(
       pathExistsSync('.serverless/hello.zip'),
