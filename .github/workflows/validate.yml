@@ -10,8 +10,8 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  linuxNode16:
-    name: '[Linux] Node.js v16: Lint, Eventual Commitlint, Eventual Changelog, Formatting & Unit tests'
+  linuxNode14:
+    name: '[Linux] Node.js v14: Lint, Eventual Commitlint, Eventual Changelog, Formatting & Unit tests'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -38,10 +38,10 @@ jobs:
           path: |
             ~/.npm
             node_modules
-          key: npm-v16-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
+          key: npm-v14-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
           restore-keys: |
-            npm-v16-${{ runner.os }}-${{ github.ref }}-
-            npm-v16-${{ runner.os }}-refs/heads/master-
+            npm-v14-${{ runner.os }}-${{ github.ref }}-
+            npm-v14-${{ runner.os }}-refs/heads/master-
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
@@ -51,7 +51,7 @@ jobs:
       - name: Install Node.js and npm
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 14.x
 
       - name: Check python version
         run: |
@@ -88,62 +88,9 @@ jobs:
       - name: Unit tests
         run: npm test
 
-  windowsNode16:
-    name: '[Windows] Node.js v16: Unit tests'
+  windowsNode14:
+    name: '[Windows] Node.js v14: Unit tests'
     runs-on: windows-latest
-    strategy:
-      matrix:
-        python-version: [2.7, 3.6]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Retrieve dependencies from cache
-        id: cacheNpm
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.npm
-            node_modules
-          key: npm-v16-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            npm-v16-${{ runner.os }}-${{ github.ref }}-
-            npm-v16-${{ runner.os }}-refs/heads/master-
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Node.js and npm
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-
-      - name: Check python version
-        run: |
-          python --version
-
-      - name: Install setuptools
-        run: python -m pip install --force setuptools wheel
-
-      - name: Install pipenv / poetry
-        run: python -m pip install pipenv poetry
-
-      - name: Install serverless
-        run: npm install -g serverless@2
-
-      - name: Install dependencies
-        if: steps.cacheNpm.outputs.cache-hit != 'true'
-        run: |
-          npm update --no-save
-          npm update --save-dev --no-save
-      - name: Unit tests
-        run: npm test
-
-  linuxNode14:
-    name: '[Linux] Node.js 14: Unit tests'
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [2.7, 3.6]
