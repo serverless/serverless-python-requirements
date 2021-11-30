@@ -38,14 +38,21 @@
   "main": "index.js",
   "bin": {},
   "scripts": {
-    "ci:lint": "eslint *.js lib/*.js --format junit --output-file ~/reports/eslint.xml && prettier -c '{.,lib}/*.{js,md}'",
-    "test": "node test.js",
-    "lint": "eslint *.js lib/*.js && prettier -c '{.,lib}/*.{js,md}'",
-    "format": "prettier --write '{.,lib}/*.{js,md}'"
+    "commitlint": "commitlint -f HEAD@{15}",
+    "lint": "eslint .",
+    "lint:updated": "pipe-git-updated --ext=js -- eslint",
+    "prepare-release": "standard-version && prettier --write CHANGELOG.md",
+    "prettier-check": "prettier -c --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
+    "prettier-check:updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier -c",
+    "prettify": "prettier --write --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
+    "prettify:updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier --write",
+    "test": "node test.js"
   },
   "devDependencies": {
     "cross-spawn": "*",
     "eslint": "^7.32.0",
+    "git-list-updated": "^1.2.1",
+    "github-release-from-cc-changelog": "^2.2.0",
     "lodash": "^4.17.21",
     "prettier": "^2",
     "tape": "*",
@@ -55,6 +62,7 @@
     "@iarna/toml": "^2.2.5",
     "appdirectory": "^0.1.0",
     "bluebird": "^3.7.2",
+    "child-process-ext": "^2.1.1",
     "fs-extra": "^9.1.0",
     "glob-all": "^3.2.1",
     "is-wsl": "^2.2.0",
@@ -69,6 +77,14 @@
   },
   "peerDependencies": {
     "serverless": "^2.32"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint"
+    ],
+    "*.{css,html,js,json,md,yaml,yml}": [
+      "prettier -c"
+    ]
   },
   "eslintConfig": {
     "extends": "eslint:recommended",
