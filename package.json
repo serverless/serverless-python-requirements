@@ -55,6 +55,7 @@
     "github-release-from-cc-changelog": "^2.2.0",
     "lodash": "^4.17.21",
     "prettier": "^2",
+    "standard-version": "^9.3.2",
     "tape": "*",
     "tape-promise": "*"
   },
@@ -99,6 +100,30 @@
     "rules": {
       "no-console": "off"
     }
+  },
+  "standard-version": {
+    "skip": {
+      "commit": true,
+      "tag": true
+    },
+    "types": [
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "perf",
+        "section": "Performance Improvements"
+      },
+      {
+        "type": "refactor",
+        "section": "Maintenance Improvements"
+      }
+    ]
   },
   "prettier": {
     "semi": true,
