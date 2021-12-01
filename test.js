@@ -2121,7 +2121,9 @@ test(
       'http exists in download-cache'
     );
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.end();
@@ -2144,7 +2146,9 @@ test(
       'http exists in download-cache'
     );
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.end();
@@ -2163,7 +2167,9 @@ test(
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     const arch = 'x86_64';
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.true(
@@ -2202,7 +2208,9 @@ test(
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     const arch = 'x86_64';
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.true(
@@ -2227,7 +2235,9 @@ test(
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     const arch = 'x86_64';
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.true(
