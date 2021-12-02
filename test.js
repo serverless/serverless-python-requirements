@@ -2115,12 +2115,15 @@ test(
     sls(['package']);
     const cachepath = getUserCachePath();
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    const arch = 'x86_64';
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
       'http exists in download-cache'
     );
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.end();
@@ -2137,12 +2140,15 @@ test(
     sls(['--dockerizePip=true', 'package']);
     const cachepath = getUserCachePath();
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    const arch = 'x86_64';
     t.true(
       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
       'http exists in download-cache'
     );
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.end();
@@ -2159,20 +2165,23 @@ test(
     sls(['package']);
     const cachepath = getUserCachePath();
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    const arch = 'x86_64';
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.true(
       pathExistsSync(
-        `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}.completed_requirements`
       ),
       '.completed_requirements exists in static-cache'
     );
 
     // py3.6 checking that static cache actually pulls from cache (by poisoning it)
     writeFileSync(
-      `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
+      `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}injected_file_is_bad_form`,
       'injected new file into static cache folder'
     );
     sls(['package']);
@@ -2197,13 +2206,16 @@ test(
     const cachepath = '.requirements-cache';
     sls([`--cacheLocation=${cachepath}`, 'package']);
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    const arch = 'x86_64';
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.true(
       pathExistsSync(
-        `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}.completed_requirements`
       ),
       '.completed_requirements exists in static-cache'
     );
@@ -2221,20 +2233,23 @@ test(
     sls(['--dockerizePip=true', '--slim=true', 'package']);
     const cachepath = getUserCachePath();
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+    const arch = 'x86_64';
     t.true(
-      pathExistsSync(`${cachepath}${sep}${cacheFolderHash}_slspyc${sep}flask`),
+      pathExistsSync(
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+      ),
       'flask exists in static-cache'
     );
     t.true(
       pathExistsSync(
-        `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}.completed_requirements`
+        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}.completed_requirements`
       ),
       '.completed_requirements exists in static-cache'
     );
 
     // py3.6 checking that static cache actually pulls from cache (by poisoning it)
     writeFileSync(
-      `${cachepath}${sep}${cacheFolderHash}_slspyc${sep}injected_file_is_bad_form`,
+      `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}injected_file_is_bad_form`,
       'injected new file into static cache folder'
     );
     sls(['--dockerizePip=true', '--slim=true', 'package']);
