@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.3.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.2.1...v5.3.0) (2021-12-21)
+
+### Features
+
+- Support requirements layer caching ([#644](https://github.com/UnitedIncome/serverless-python-requirements/issues/644)) ([406f6ba](https://github.com/UnitedIncome/serverless-python-requirements/commit/406f6bac1ca934a34387048b5c00242aff3f581b)) ([Maciej Wilczyński](https://github.com/mLupine))
+
+### Bug Fixes
+
+- Ensure cast `toString` before `trim` on buffer ([f60eed1](https://github.com/UnitedIncome/serverless-python-requirements/commit/f60eed1225f091c090f9c253771a12b33fafcab0))
+
 ### [5.2.2](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.2.1...v5.2.2) (2021-12-03)
 
 ### Bug Fixes
