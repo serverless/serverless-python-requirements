@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.3.1](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.3.0...v5.3.1) (2022-01-28)
+
+### Bug Fixes
+
+- Address unknown path format error in `wsl2` ([#667](https://github.com/UnitedIncome/serverless-python-requirements/issues/667)) ([b16c82d](https://github.com/UnitedIncome/serverless-python-requirements/commit/b16c82dbdd31ca7f61093bb6b8ed50be31908a24)) ([Shinichi Makino](https://github.com/snicmakino))
+
 ## [5.3.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.2.1...v5.3.0) (2021-12-21)
 
 ### Features
