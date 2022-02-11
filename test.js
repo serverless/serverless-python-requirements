@@ -29,7 +29,7 @@ const mkCommand =
       args = [];
       for (let i = 0; i < argsCopy.length; i++) {
         if (argsCopy[i].includes('--')) {
-          envVars[argsCopy[i].slice(2)] = argsCopy[i].split('=')[1];
+          envVars[argsCopy[i].slice(2).split('=')[0]] = argsCopy[i].split('=')[1];
         } else {
           args.push(argsCopy[i]);
         }
