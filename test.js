@@ -22,12 +22,25 @@ const initialWorkingDir = process.cwd();
 const mkCommand =
   (cmd) =>
   (args, options = {}) => {
+    let envVars = { SLS_DEBUG: 't' };
+    if (cmd == 'sls') {
+      // convert deprecated CLI arguments to env vars
+      const argsCopy = [...args];
+      args = [];
+      for (let i = 0; i < argsCopy.length; i++) {
+        if (argsCopy[i].includes('--')) {
+          envVars[argsCopy[i].slice(2)] = argsCopy[i].split('=')[1];
+        } else {
+          args.push(argsCopy[i]);
+        }
+      }
+    }
     const { error, stdout, stderr, status } = crossSpawn.sync(
       cmd,
       args,
       Object.assign(
         {
-          env: Object.assign({}, process.env, { SLS_DEBUG: 't' }),
+          env: Object.assign({}, process.env, envVars),
         },
         options
       )
@@ -45,6 +58,7 @@ const mkCommand =
     }
     return stdout && stdout.toString().trim();
   };
+
 const sls = mkCommand('sls');
 const git = mkCommand('git');
 const npm = mkCommand('npm');

@@ -2,22 +2,22 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: ${opt:runtime, 'python3.6'}
+  runtime: ${env:runtime, 'python3.6'}
 
 plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
-    zip: ${opt:zip, self:custom.defaults.zip}
-    dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
-    slim: ${opt:slim, self:custom.defaults.slim}
+    zip: ${env:zip, self:custom.defaults.zip}
+    dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
+    slim: ${env:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
-    slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
-    vendor: ${opt:vendor, ''}
-    fileName: ${opt:fileName, 'requirements.txt'}
-    useStaticCache: ${opt:useStaticCache, self:custom.defaults.useStaticCache}
-    useDownloadCache: ${opt:useDownloadCache, self:custom.defaults.useDownloadCache}
-    cacheLocation: ${opt:cacheLocation, ''}
+    slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
+    vendor: ${env:vendor, ''}
+    fileName: ${env:fileName, 'requirements.txt'}
+    useStaticCache: ${env:useStaticCache, self:custom.defaults.useStaticCache}
+    useDownloadCache: ${env:useDownloadCache, self:custom.defaults.useDownloadCache}
+    cacheLocation: ${env:cacheLocation, ''}
   defaults:
     slim: false
     slimPatterns: false
@@ -29,7 +29,7 @@ custom:
     useDownloadCache: true
 
 package:
-  individually: ${opt:individually, self:custom.defaults.individually}
+  individually: ${env:individually, self:custom.defaults.individually}
   patterns:
     - '!**/*'
     - 'handler.py'
