@@ -2198,7 +2198,7 @@ test(
     const path = npm(['pack', '../..']);
     npm(['i', path]);
     const cachepath = '.requirements-cache';
-    sls(['package'], { env: { cacheLocation: '${cachepath}' } });
+    sls(['package'], { env: { cacheLocation: cachepath } });
     const cacheFolderHash = sha256Path('.serverless/requirements.txt');
     const arch = 'x86_64';
     t.true(
