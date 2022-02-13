@@ -10,7 +10,7 @@ package:
     - '!node_modules/**'
 custom:
   pythonRequirements:
-    dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
+    dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
   defaults:
     dockerizePip: false
 

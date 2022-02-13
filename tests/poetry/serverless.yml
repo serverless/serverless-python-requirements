@@ -8,11 +8,11 @@ plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
-    zip: ${opt:zip, self:custom.defaults.zip}
-    slim: ${opt:slim, self:custom.defaults.slim}
+    zip: ${env:zip, self:custom.defaults.zip}
+    slim: ${env:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
-    slimPatternsAppendDefaults: ${opt:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
-    dockerizePip: ${opt:dockerizePip, self:custom.defaults.dockerizePip}
+    slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
+    dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
   defaults:
     zip: false
     slimPatterns: false
