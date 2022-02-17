@@ -10,6 +10,8 @@ custom:
   pythonRequirements:
     zip: ${env:zip, self:custom.defaults.zip}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
+    dockerSsh: ${env:dockerSsh, self:custom.defaults.dockerSsh}
+    dockerPrivateKey: ${env:dockerPrivateKey, self:custom.defaults.dockerPrivateKey}
     slim: ${env:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
@@ -24,6 +26,8 @@ custom:
     slimPatternsAppendDefaults: true
     zip: false
     dockerizePip: false
+    dockerSsh: false
+    dockerPrivateKey: ''
     individually: false
     useStaticCache: true
     useDownloadCache: true

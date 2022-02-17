@@ -201,6 +201,30 @@ const canUseDocker = () => {
 const brokenOn = (...platforms) => platforms.indexOf(process.platform) != -1;
 
 test(
+  'can package private repo with dockerPrivateKey option',
+  async (t) => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    sls(['package'], {
+      env: {
+        dockerizePip: true,
+        dockerSsh: true,
+        dockerPrivateKey: `${__dirname}${sep}tests${sep}base${sep}id_ed25519`,
+        fileName: 'requirements-w-git-ssh.txt',
+      },
+    });
+    const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+    t.true(
+      zipfiles.includes(`dockerPrivateKey_test/__init__.py`),
+      'private repo accessed with specified key'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() }
+);
+
+test(
   'default pythonBin can package flask with default options',
   async (t) => {
     process.chdir('tests/base');
