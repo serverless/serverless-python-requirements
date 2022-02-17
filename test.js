@@ -221,7 +221,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() }
+  { skip: !canUseDocker() || brokenOn('win32') }
 );
 
 test(
