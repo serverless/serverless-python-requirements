@@ -225,7 +225,7 @@ the names in `slimPatterns`
 
 #### Option not to strip binaries
 
-In some cases, stripping binaries leads to problems like "ELF load command address/offset not properly aligned", even when done in the Docker environment. You can still slim down the package without `*.so` files with
+In some cases, stripping binaries leads to problems like "ELF load command address/offset not properly aligned", even when done in the Docker environment. You can still slim down the package without `*.so` files with:
 
 ```yaml
 custom:
