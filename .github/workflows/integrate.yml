@@ -31,7 +31,7 @@ jobs:
           restore-keys: npm-v14-${{ runner.os }}-${{ github.ref }}-
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -82,7 +82,7 @@ jobs:
           restore-keys: npm-v14-${{ runner.os }}-${{ github.ref }}-
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -133,7 +133,7 @@ jobs:
           restore-keys: npm-v12-${{ runner.os }}-${{ github.ref }}-
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
