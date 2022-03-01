@@ -1460,7 +1460,7 @@ test(
     npm(['i', path]);
 
     sls(['package'], { env: { } });
-    const zipfiles = await listZipFiles('.serverless/module1-sls-py-req-test-dev-hello.zip');  // TODO BW: What is appending -dev- ?
+    const zipfiles = await listZipFiles('.serverless/module1-sls-py-req-test-dev-hello.zip');
     t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
     t.true(zipfiles.includes(`bottle.py`), 'bottle is packaged');
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');

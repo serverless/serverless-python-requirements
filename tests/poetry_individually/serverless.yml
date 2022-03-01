@@ -22,9 +22,6 @@ custom:
 
 package:
   individually: true
-  # patterns:
-  #   - '!**/*'
-  #   - 'handler.py'
 
 functions:
   hello:
