@@ -198,9 +198,10 @@ class ServerlessPythonRequirements {
       if (!isFunctionRuntimePython(arguments)) {
         return;
       }
+      const _pyprojectTomlToRequirements = () => pyprojectTomlToRequirements('', this);
       return BbPromise.bind(this)
         .then(pipfileToRequirements)
-        .then(pyprojectTomlToRequirements)
+        .then(_pyprojectTomlToRequirements)
         .then(addVendorHelper)
         .then(installAllRequirements)
         .then(packRequirements)
