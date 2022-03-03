@@ -30,4 +30,3 @@ functions:
     package:
       patterns:
         - 'module1/**'
-
