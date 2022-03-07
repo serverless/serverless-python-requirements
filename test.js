@@ -32,11 +32,11 @@ const mkCommand =
       args,
       options
     );
-    if (error) {
+    if (error && !options['noThrow']) {
       console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
       throw error;
     }
-    if (status) {
+    if (status && !options['noThrow']) {
       console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
       console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
       throw new Error(
@@ -201,27 +201,29 @@ const canUseDocker = () => {
 const brokenOn = (...platforms) => platforms.indexOf(process.platform) != -1;
 
 test(
-  'can package private repo with dockerPrivateKey option',
+  'dockerPrivateKey option correctly resolves docker command',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
-    sls(['package'], {
+    const stdout = sls(['package'], {
+      noThrow: true,
       env: {
         dockerizePip: true,
         dockerSsh: true,
-        dockerPrivateKey: `${__dirname}${sep}tests${sep}base${sep}id_ed25519`,
+        dockerPrivateKey: `${__dirname}${sep}tests${sep}base${sep}custom_ssh`,
         fileName: 'requirements-w-git-ssh.txt',
       },
     });
-    const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
     t.true(
-      zipfiles.includes(`dockerPrivateKey_test/__init__.py`),
-      'private repo accessed with specified key'
+      stdout.includes(
+        `-v ${__dirname}${sep}tests${sep}base${sep}custom_ssh:/root/.ssh/custom_ssh:z`
+      ),
+      'docker command properly resolved'
     );
     t.end();
   },
-  { skip: !canUseDocker() || brokenOn('win32') || true }
+  { skip: !canUseDocker() || brokenOn('win32') }
 );
 
 test(
