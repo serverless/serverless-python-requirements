@@ -428,6 +428,18 @@ functions:
     vendor: ./hello-vendor # The option is also available at the function level
 ```
 
+### Copy dependencies instead of linking
+
+Before final packaging, a link is created in .serverless folder for python dependencies.
+If it is not possible to create a symbolic link, dependencies can be copied instead of linked
+whith the foloowing option:
+
+```yaml
+custom:
+  pythonRequirements:
+    useFinalCopy: true
+```
+
 ## Manual invocations
 
 The `.requirements` and `requirements.zip`(if using zip support) files are left

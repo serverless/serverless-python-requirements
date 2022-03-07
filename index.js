@@ -58,6 +58,7 @@ class ServerlessPythonRequirements {
         pipCmdExtraArgs: [],
         noDeploy: [],
         vendor: '',
+        useFinalCopy: false,
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
