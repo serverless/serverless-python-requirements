@@ -3,6 +3,7 @@ const glob = require('glob-all');
 const JSZip = require('jszip');
 const sha256File = require('sha256-file');
 const tape = require('tape-promise/tape');
+
 const {
   chmodSync,
   removeSync,
@@ -23,7 +24,7 @@ const mkCommand =
   (cmd) =>
   (args, options = {}) => {
     options['env'] = Object.assign(
-      { SLS_DEBUG: 't' },
+      { SLS_DEBUG: 'true' },
       process.env,
       options['env']
     );
@@ -212,7 +213,7 @@ test(
         dockerizePip: true,
         dockerSsh: true,
         dockerPrivateKey: `${__dirname}${sep}tests${sep}base${sep}custom_ssh`,
-        fileName: 'requirements-w-git-ssh.txt',
+        dockerImage: 'break the build to log the command',
       },
     });
     t.true(

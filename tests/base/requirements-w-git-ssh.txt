@@ -1,2 +1,0 @@
-flask
-git+ssh://git@github.com/martinezpl/dockerPrivateKey_test.git@v1.0.0#egg=dockerPrivateKey_test
