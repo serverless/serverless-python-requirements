@@ -77,8 +77,20 @@ custom:
 ```
 
 The `dockerSsh` option will mount your `$HOME/.ssh/id_rsa` and `$HOME/.ssh/known_hosts` as a
-volume in the docker container. If your SSH key is password protected, you can use `ssh-agent`
-because `$SSH_AUTH_SOCK` is also mounted & the env var set.
+volume in the docker container.
+
+In case you want to use a different key, you can specify the path (absolute) to it through `dockerPrivateKey` option:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerSsh: true
+    dockerPrivateKey: /home/.ssh/id_ed25519
+```
+
+If your SSH key is password protected, you can use `ssh-agent`
+because `$SSH_AUTH_SOCK` is also mounted & the env var is set.
 It is important that the host of your private repositories has already been added in your
 `$HOME/.ssh/known_hosts` file, as the install process will fail otherwise due to host authenticity
 failure.
@@ -213,7 +225,7 @@ the names in `slimPatterns`
 
 #### Option not to strip binaries
 
-In some cases, stripping binaries leads to problems like "ELF load command address/offset not properly aligned", even when done in the Docker environment. You can still slim down the package without `*.so` files with
+In some cases, stripping binaries leads to problems like "ELF load command address/offset not properly aligned", even when done in the Docker environment. You can still slim down the package without `*.so` files with:
 
 ```yaml
 custom:
@@ -566,3 +578,4 @@ package:
 - [@jacksgt](https://github.com/jacksgt) - Fixing pip issues
 - [@lephuongbg](https://github.com/lephuongbg) - Fixing single function deployment
 - [@rileypriddle](https://github.com/rileypriddle) - Introducing schema validation for `module` property
+- [@martinezpl](https://github.com/martinezpl) - Fixing test issues, adding `dockerPrivateKey` option
