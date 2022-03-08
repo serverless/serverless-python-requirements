@@ -431,13 +431,13 @@ functions:
 ### Copy dependencies instead of linking
 
 Before final packaging, a link is created in .serverless folder for python dependencies.
-If it is not possible to create a symbolic link, dependencies can be copied instead of linked
-whith the foloowing option:
+If it is not possible for the OS to create a symbolic link, dependencies can be copied, 
+instead of linked, with the following option:
 
 ```yaml
 custom:
   pythonRequirements:
-    useFinalCopy: true
+    useSymlinks: false
 ```
 
 ## Manual invocations
