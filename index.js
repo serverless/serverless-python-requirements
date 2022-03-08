@@ -15,7 +15,6 @@ const { installAllRequirements } = require('./lib/pip');
 const { pipfileToRequirements } = require('./lib/pipenv');
 const { pyprojectTomlToRequirements } = require('./lib/poetry');
 const { cleanup, cleanupCache } = require('./lib/clean');
-
 BbPromise.promisifyAll(fse);
 
 /**
@@ -45,6 +44,7 @@ class ServerlessPythonRequirements {
             : this.serverless.service.provider.runtime || 'python',
         dockerizePip: false,
         dockerSsh: false,
+        dockerPrivateKey: null,
         dockerImage: null,
         dockerFile: null,
         dockerEnv: false,
@@ -71,7 +71,10 @@ class ServerlessPythonRequirements {
     }
     if (
       !options.dockerizePip &&
-      (options.dockerSsh || options.dockerImage || options.dockerFile)
+      (options.dockerSsh ||
+        options.dockerImage ||
+        options.dockerFile ||
+        options.dockerPrivateKey)
     ) {
       if (!this.warningLogged) {
         if (this.log) {
