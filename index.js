@@ -203,7 +203,6 @@ class ServerlessPythonRequirements {
       }
       return BbPromise.bind(this)
         .then(pipfileToRequirements)
-        .then(() => pyprojectTomlToRequirements('', this))
         .then(addVendorHelper)
         .then(installAllRequirements)
         .then(packRequirements)
