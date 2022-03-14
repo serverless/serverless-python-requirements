@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.4.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.3.1...v5.4.0) (2022-03-14)
+
+### Features
+
+- Support `dockerPrivateKey` to specify path to SSH key ([#674](https://github.com/UnitedIncome/serverless-python-requirements/issues/674)) ([915bcad](https://github.com/UnitedIncome/serverless-python-requirements/commit/915bcadad2f8a3be5434d6e42771bc835271baf8)) ([Marcin Szleszynski](https://github.com/martinezpl))
+- Support individual packaging with `poetry` ([#682](https://github.com/UnitedIncome/serverless-python-requirements/issues/682)) ([ebd12cb](https://github.com/UnitedIncome/serverless-python-requirements/commit/ebd12cb14ea352fb08c0957f213bda7dcce800df)) ([Brandon White](https://github.com/BrandonLWhite))
+
+### Maintenance Improvements
+
+- Log child process command output on error ([#679](https://github.com/UnitedIncome/serverless-python-requirements/issues/679)) ([ff11497](https://github.com/UnitedIncome/serverless-python-requirements/commit/ff11497cbcf42fe7f7d73fb2e8e2642c542dd8d7)) ([Andrei Zhemaituk](https://github.com/zhemaituk))
+- Replace `lodash.set` with `set-value` ([#676](https://github.com/UnitedIncome/serverless-python-requirements/issues/676)) ([3edf0e0](https://github.com/UnitedIncome/serverless-python-requirements/commit/3edf0e0cabeeb11ffadd9dcac6f198f22aee4a16)) ([Marc Hassan](https://github.com/mhassan1))
+
 ### [5.3.1](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.3.0...v5.3.1) (2022-01-28)
 
 ### Bug Fixes
