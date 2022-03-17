@@ -1480,6 +1480,25 @@ test(
 );
 
 test(
+  'poetry py3.6 can package flask with package individually option',
+  async (t) => {
+    process.chdir('tests/poetry_individually');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+
+    sls(['package'], { env: {} });
+    const zipfiles = await listZipFiles(
+      '.serverless/module1-sls-py-req-test-dev-hello.zip'
+    );
+    t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+    t.true(zipfiles.includes(`bottle.py`), 'bottle is packaged');
+    t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+    t.end();
+  },
+  { skip: !hasPython(3.6) }
+);
+
+test(
   'py3.6 can package flask with package individually option',
   async (t) => {
     process.chdir('tests/base');
