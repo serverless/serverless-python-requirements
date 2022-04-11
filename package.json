@@ -64,7 +64,7 @@
     "appdirectory": "^0.1.0",
     "bluebird": "^3.7.2",
     "child-process-ext": "^2.1.1",
-    "fs-extra": "^9.1.0",
+    "fs-extra": "^10.0.1",
     "glob-all": "^3.3.0",
     "is-wsl": "^2.2.0",
     "jszip": "^3.7.1",
