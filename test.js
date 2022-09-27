@@ -239,11 +239,11 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 packages have the same hash',
+  'py3.7 packages have the same hash',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -258,11 +258,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask with default options',
+  'py3.7 can package flask with default options',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -277,7 +277,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with hashes',
+  'py3.7 can package flask with hashes',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -296,7 +296,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with nested',
+  'py3.7 can package flask with nested',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -316,7 +316,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with zip option',
+  'py3.7 can package flask with zip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -341,7 +341,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with slim option',
+  'py3.7 can package flask with slim option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -365,7 +365,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with slim & slimPatterns options',
+  'py3.7 can package flask with slim & slimPatterns options',
   async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -386,11 +386,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  "py3.6 doesn't package bottle with noDeploy option",
+  "py3.7 doesn't package bottle with noDeploy option",
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -412,7 +412,7 @@ test(
 );
 
 test(
-  'py3.6 can package boto3 with editable',
+  'py3.7 can package boto3 with editable',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -435,7 +435,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with dockerizePip option',
+  'py3.7 can package flask with dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -446,11 +446,11 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 can package flask with slim & dockerizePip option',
+  'py3.7 can package flask with slim & dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -470,11 +470,11 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 can package flask with slim & dockerizePip & slimPatterns options',
+  'py3.7 can package flask with slim & dockerizePip & slimPatterns options',
   async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -495,11 +495,11 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 can package flask with zip & dockerizePip option',
+  'py3.7 can package flask with zip & dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -527,11 +527,11 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 can package flask with zip & slim & dockerizePip option',
+  'py3.7 can package flask with zip & slim & dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -561,7 +561,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
@@ -856,7 +856,7 @@ test(
 );
 
 test(
-  'pipenv py3.6 can package flask with default options',
+  'pipenv py3.7 can package flask with default options',
   async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
@@ -871,11 +871,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'pipenv py3.6 can package flask with slim option',
+  'pipenv py3.7 can package flask with slim option',
   async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
@@ -895,11 +895,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'pipenv py3.6 can package flask with slim & slimPatterns options',
+  'pipenv py3.7 can package flask with slim & slimPatterns options',
   async (t) => {
     process.chdir('tests/pipenv');
 
@@ -921,11 +921,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'pipenv py3.6 can package flask with zip option',
+  'pipenv py3.7 can package flask with zip option',
   async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
@@ -946,11 +946,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  "pipenv py3.6 doesn't package bottle with noDeploy option",
+  "pipenv py3.7 doesn't package bottle with noDeploy option",
   async (t) => {
     process.chdir('tests/pipenv');
     const path = npm(['pack', '../..']);
@@ -968,7 +968,7 @@ test(
     t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
@@ -983,7 +983,7 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
@@ -997,11 +997,11 @@ test(
     t.true(zipfiles.includes(`handler.py`), 'handler is packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'poetry py3.6 can package flask with default options',
+  'poetry py3.7 can package flask with default options',
   async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
@@ -1013,11 +1013,11 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'poetry py3.6 can package flask with slim option',
+  'poetry py3.7 can package flask with slim option',
   async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
@@ -1037,11 +1037,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'poetry py3.6 can package flask with slim & slimPatterns options',
+  'poetry py3.7 can package flask with slim & slimPatterns options',
   async (t) => {
     process.chdir('tests/poetry');
 
@@ -1063,11 +1063,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'poetry py3.6 can package flask with zip option',
+  'poetry py3.7 can package flask with zip option',
   async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
@@ -1092,7 +1092,7 @@ test(
 );
 
 test(
-  "poetry py3.6 doesn't package bottle with noDeploy option",
+  "poetry py3.7 doesn't package bottle with noDeploy option",
   async (t) => {
     process.chdir('tests/poetry');
     const path = npm(['pack', '../..']);
@@ -1110,11 +1110,11 @@ test(
     t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask with zip option and no explicit include',
+  'py3.7 can package flask with zip option and no explicit include',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1137,11 +1137,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package lambda-decorators using vendor option',
+  'py3.7 can package lambda-decorators using vendor option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1156,7 +1156,7 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
@@ -1204,11 +1204,11 @@ test(
 
     t.end();
   },
-  { skip: process.platform === 'win32' || !hasPython(3.6) }
+  { skip: process.platform === 'win32' || !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask in a project with a space in it',
+  'py3.7 can package flask in a project with a space in it',
   async (t) => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
@@ -1220,11 +1220,11 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask in a project with a space in it with docker',
+  'py3.7 can package flask in a project with a space in it with docker',
   async (t) => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
@@ -1236,11 +1236,11 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 supports custom file name with fileName option',
+  'py3.7 supports custom file name with fileName option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1262,11 +1262,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  "py3.6 doesn't package bottle with zip option",
+  "py3.7 doesn't package bottle with zip option",
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1309,7 +1309,7 @@ test(
 );
 
 test(
-  'py3.6 can package flask with slim, slimPatterns & slimPatternsAppendDefaults=false options',
+  'py3.7 can package flask with slim, slimPatterns & slimPatternsAppendDefaults=false options',
   async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -1331,11 +1331,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
+  'py3.7 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
   async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -1361,7 +1361,7 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
@@ -1426,7 +1426,7 @@ test(
 );
 
 test(
-  'pipenv py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option',
+  'pipenv py3.7 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option',
   async (t) => {
     process.chdir('tests/pipenv');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -1449,11 +1449,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'poetry py3.6 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option',
+  'poetry py3.7 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option',
   async (t) => {
     process.chdir('tests/poetry');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -1476,11 +1476,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'poetry py3.6 can package flask with package individually option',
+  'poetry py3.7 can package flask with package individually option',
   async (t) => {
     process.chdir('tests/poetry_individually');
     const path = npm(['pack', '../..']);
@@ -1495,11 +1495,11 @@ test(
     t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask with package individually option',
+  'py3.7 can package flask with package individually option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1581,11 +1581,11 @@ test(
 
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package flask with package individually & slim option',
+  'py3.7 can package flask with package individually & slim option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1667,7 +1667,7 @@ test(
 
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
@@ -1861,7 +1861,7 @@ test(
 );
 
 test(
-  'py3.6 can package only requirements of module',
+  'py3.7 can package only requirements of module',
   async (t) => {
     process.chdir('tests/individually');
     const path = npm(['pack', '../..']);
@@ -1917,11 +1917,11 @@ test(
 
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 can package lambda-decorators using vendor and invidiually option',
+  'py3.7 can package lambda-decorators using vendor and invidiually option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1998,7 +1998,7 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
@@ -2037,7 +2037,7 @@ test(
 
     t.end();
   },
-  { skip: process.platform === 'win32' || !hasPython(3.6) }
+  { skip: process.platform === 'win32' || !hasPython(3.7) }
 );
 
 test(
@@ -2076,11 +2076,11 @@ test(
 
     t.end();
   },
-  { skip: !canUseDocker() || process.platform === 'win32' || !hasPython(3.6) }
+  { skip: !canUseDocker() || process.platform === 'win32' || !hasPython(3.7) }
 );
 
 test(
-  'py3.6 uses download cache by default option',
+  'py3.7 uses download cache by default option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2093,11 +2093,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 uses download cache by default',
+  'py3.7 uses download cache by default',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2109,11 +2109,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 uses download cache with dockerizePip option',
+  'py3.7 uses download cache with dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2126,11 +2126,11 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 uses download cache with dockerizePip by default option',
+  'py3.7 uses download cache with dockerizePip by default option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2144,11 +2144,11 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 uses static and download cache',
+  'py3.7 uses static and download cache',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2169,11 +2169,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 uses static and download cache with dockerizePip option',
+  'py3.7 uses static and download cache with dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2194,11 +2194,11 @@ test(
     );
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 uses static cache',
+  'py3.7 uses static cache',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2220,7 +2220,7 @@ test(
       '.completed_requirements exists in static-cache'
     );
 
-    // py3.6 checking that static cache actually pulls from cache (by poisoning it)
+    // py3.7 checking that static cache actually pulls from cache (by poisoning it)
     writeFileSync(
       `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}injected_file_is_bad_form`,
       'injected new file into static cache folder'
@@ -2234,11 +2234,11 @@ test(
 
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 uses static cache with cacheLocation option',
+  'py3.7 uses static cache with cacheLocation option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2261,11 +2261,11 @@ test(
     );
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
 
 test(
-  'py3.6 uses static cache with dockerizePip & slim option',
+  'py3.7 uses static cache with dockerizePip & slim option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2287,7 +2287,7 @@ test(
       '.completed_requirements exists in static-cache'
     );
 
-    // py3.6 checking that static cache actually pulls from cache (by poisoning it)
+    // py3.7 checking that static cache actually pulls from cache (by poisoning it)
     writeFileSync(
       `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}injected_file_is_bad_form`,
       'injected new file into static cache folder'
@@ -2306,11 +2306,11 @@ test(
 
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 uses download cache with dockerizePip & slim option',
+  'py3.7 uses download cache with dockerizePip & slim option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2332,11 +2332,11 @@ test(
 
     t.end();
   },
-  { skip: !canUseDocker() || !hasPython(3.6) || brokenOn('win32') }
+  { skip: !canUseDocker() || !hasPython(3.7) || brokenOn('win32') }
 );
 
 test(
-  'py3.6 can ignore functions defined with `image`',
+  'py3.7 can ignore functions defined with `image`',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -2365,5 +2365,5 @@ test(
 
     t.end();
   },
-  { skip: !hasPython(3.6) }
+  { skip: !hasPython(3.7) }
 );
