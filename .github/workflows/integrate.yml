@@ -13,9 +13,6 @@ jobs:
   windowsNode14:
     name: '[Windows] Node.js v14: Unit tests'
     runs-on: windows-latest
-    strategy:
-      matrix:
-        python-version: [2.7, 3.7]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -30,10 +27,10 @@ jobs:
           key: npm-v14-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
           restore-keys: npm-v14-${{ runner.os }}-${{ github.ref }}-
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.7
 
       - name: Install Node.js and npm
         uses: actions/setup-node@v1
@@ -64,9 +61,6 @@ jobs:
   linuxNode14:
     name: '[Linux] Node.js 14: Unit tests'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [2.7, 3.7]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -81,10 +75,10 @@ jobs:
           key: npm-v14-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
           restore-keys: npm-v14-${{ runner.os }}-${{ github.ref }}-
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.7
 
       - name: Install Node.js and npm
         uses: actions/setup-node@v1
@@ -115,9 +109,6 @@ jobs:
   linuxNode12:
     name: '[Linux] Node.js v12: Unit tests'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [2.7, 3.7]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -132,10 +123,10 @@ jobs:
           key: npm-v12-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
           restore-keys: npm-v12-${{ runner.os }}-${{ github.ref }}-
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.7
 
       - name: Install Node.js and npm
         uses: actions/setup-node@v1
