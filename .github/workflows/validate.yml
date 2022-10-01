@@ -61,7 +61,7 @@ jobs:
         run: python -m pip install --force setuptools wheel
 
       - name: Install pipenv / poetry
-        run: python -m pip install pipenv==2021.11.5 poetry
+        run: python -m pip install pipenv==2022.9.24 poetry
 
       - name: Install serverless
         run: npm install -g serverless@${{ matrix.sls-version }}
@@ -128,7 +128,7 @@ jobs:
         run: python -m pip install --force setuptools wheel
 
       - name: Install pipenv / poetry
-        run: python -m pip install pipenv==2021.11.5 poetry
+        run: python -m pip install pipenv==2022.9.24 poetry
 
       - name: Install serverless
         run: npm install -g serverless@${{ matrix.sls-version }}
@@ -181,7 +181,7 @@ jobs:
         run: python -m pip install --force setuptools wheel
 
       - name: Install pipenv / poetry
-        run: python -m pip install pipenv==2021.11.5 poetry
+        run: python -m pip install pipenv==2022.9.24 poetry
 
       - name: Install serverless
         run: npm install -g serverless@${{ matrix.sls-version }}
