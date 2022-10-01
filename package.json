@@ -46,13 +46,16 @@
     "prettier-check:updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier -c",
     "prettify": "prettier --write --ignore-path .gitignore \"**/*.{css,html,js,json,md,yaml,yml}\"",
     "prettify:updated": "pipe-git-updated --ext=css --ext=html --ext=js --ext=json --ext=md --ext=yaml --ext=yml -- prettier --write",
-    "test": "node test.js"
+    "test": "node test.js",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "cross-spawn": "*",
     "eslint": "^7.32.0",
     "git-list-updated": "^1.2.1",
     "github-release-from-cc-changelog": "^2.2.1",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "lodash": "^4.17.21",
     "prettier": "^2",
     "standard-version": "^9.3.2",
