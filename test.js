@@ -1634,3 +1634,23 @@ test('py3.7 can ignore functions defined with `image`', async (t) => {
 
   t.end();
 });
+
+test('poetry py3.7 fails packaging if poetry.lock is missing and flag requirePoetryLockFile is set to true', async (t) => {
+  copySync('tests/poetry', 'tests/base with a space');
+  process.chdir('tests/base with a space');
+  removeSync('poetry.lock');
+
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  const stdout = sls(['package'], {
+    env: { requirePoetryLockFile: 'true', slim: 'true' },
+    noThrow: true,
+  });
+  t.true(
+    stdout.includes(
+      'poetry.lock file not found - set requirePoetryLockFile to false to disable this error'
+    ),
+    'flag works and error is properly reported'
+  );
+  t.end();
+});
