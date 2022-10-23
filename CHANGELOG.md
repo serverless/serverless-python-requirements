@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.4.0...v6.0.0) (2022-10-23)
+
+### ⚠ BREAKING CHANGES
+
+- Changes default `dockerImage` used for building dependencies (now uses images from `public.ecr.aws/sam` repository)
+- Requires `pipenv` in version `2022-04-08` or higher
+
+### Features
+
+- Introduce `requirePoetryLockFile` flag ([#728](https://github.com/serverless/serverless-python-requirements/pull/728)) ([e81d9e1](https://github.com/UnitedIncome/serverless-python-requirements/commit/e81d9e1824c135f110b4deccae2c26b0cbb26778)) ([François-Michel L'Heureux](https://github.com/FinchPowers))
+- Switch to official AWS docker images by default ([#724](https://github.com/UnitedIncome/serverless-python-requirements/issues/724)) ([4ba3bbe](https://github.com/UnitedIncome/serverless-python-requirements/commit/4ba3bbeb9296b4844feb476de695f33ee2a30056)) ([Piotr Grzesik](https://github.com/pgrzesik))
+
+### Bug Fixes
+
+- Adapt to support latest `pipenv` version ([#718](https://github.com/UnitedIncome/serverless-python-requirements/issues/718)) ([853da8d](https://github.com/UnitedIncome/serverless-python-requirements/commit/853da8d39921dc83a23d59fd825b2180814f87ff)) ([Anders Steiner](https://github.com/andidev) & [Randy Westergren](https://github.com/rwestergren) & [Piotr Grzesik](https://github.com/pgrzesik))
+- Properly recognize individual function ([#725](https://github.com/UnitedIncome/serverless-python-requirements/issues/725)) ([78795be](https://github.com/UnitedIncome/serverless-python-requirements/commit/78795be24eb08dc78acd7566778b3960c28b263c)) ([Piotr Grzesik](https://github.com/pgrzesik))
+
+### Maintenance Improvements
+
+- Improve error message for docker failures ([#723](https://github.com/serverless/serverless-python-requirements/pull/723))([cc146d0](https://github.com/UnitedIncome/serverless-python-requirements/commit/cc146d088d362187641dd5ae3e9d0129a14c60e2)) ([Piotr Grzesik](https://github.com/pgrzesik))
+
 ## [5.4.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.3.1...v5.4.0) (2022-03-14)
 
 ### Features

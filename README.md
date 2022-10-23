@@ -109,6 +109,8 @@ custom:
 
 ## :sparkles::cake::sparkles: Pipenv support
 
+Requires `pipenv` in version `2022-04-08` or higher.
+
 If you include a `Pipfile` and have `pipenv` installed instead of a `requirements.txt` this will use
 `pipenv lock -r` to generate them. It is fully compatible with all options such as `zip` and
 `dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
