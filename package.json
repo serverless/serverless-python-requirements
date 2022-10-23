@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "cross-spawn": "*",
-    "eslint": "^7.32.0",
+    "eslint": "^8.26.0",
     "git-list-updated": "^1.2.1",
     "github-release-from-cc-changelog": "^2.3.0",
     "lodash": "^4.17.21",
