@@ -52,10 +52,10 @@
     "cross-spawn": "*",
     "eslint": "^7.32.0",
     "git-list-updated": "^1.2.1",
-    "github-release-from-cc-changelog": "^2.2.1",
+    "github-release-from-cc-changelog": "^2.3.0",
     "lodash": "^4.17.21",
     "prettier": "^2",
-    "standard-version": "^9.3.2",
+    "standard-version": "^9.5.0",
     "tape": "*",
     "tape-promise": "*"
   },
@@ -67,14 +67,14 @@
     "fs-extra": "^9.1.0",
     "glob-all": "^3.3.0",
     "is-wsl": "^2.2.0",
-    "jszip": "^3.7.1",
+    "jszip": "^3.10.1",
     "lodash.get": "^4.4.2",
     "lodash.uniqby": "^4.7.0",
     "lodash.values": "^4.3.0",
     "rimraf": "^3.0.2",
     "set-value": "^4.1.0",
     "sha256-file": "1.0.0",
-    "shell-quote": "^1.7.3"
+    "shell-quote": "^1.7.4"
   },
   "peerDependencies": {
     "serverless": "^2.32 || 3"
