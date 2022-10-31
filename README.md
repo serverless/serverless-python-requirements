@@ -33,8 +33,7 @@ If you're on a mac, check out [these notes](#applebeersnake-mac-brew-installed-p
 ## Cross compiling
 
 Compiling non-pure-Python modules or fetching their manylinux wheels is
-supported on non-linux OSs via the use of Docker and the
-[docker-lambda](https://github.com/lambci/docker-lambda) image.
+supported on non-linux OSs via the use of Docker and [official AWS build](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-image-repositories.html) images.
 To enable docker usage, add the following to your `serverless.yml`:
 
 ```yaml
@@ -489,10 +488,10 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 
 ## Native Code Dependencies During Build
 
-Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image (`lambci/lambda:python3.6`) with a `Dockerfile` like:
+Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image with a `Dockerfile` like:
 
 ```dockerfile
-FROM lambci/lambda:build-python3.6
+FROM public.ecr.aws/sam/build-python3.9
 
 # Install your dependencies
 RUN yum -y install mysql-devel
