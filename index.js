@@ -63,6 +63,10 @@ class ServerlessPythonRequirements {
         this.serverless.service.custom.pythonRequirements) ||
         {}
     );
+    if (options.pythonBin === this.serverless.service.provider.runtime && !options.pythonBin.startsWith('python')) {
+      options.pythonBin = 'python'
+    }
+
     if (options.dockerizePip === 'non-linux') {
       options.dockerizePip = process.platform !== 'linux';
     }
