@@ -1654,3 +1654,52 @@ test('poetry py3.7 fails packaging if poetry.lock is missing and flag requirePoe
   );
   t.end();
 });
+
+test('poetry py3.7 packages additional optional packages', async (t) => {
+  process.chdir('tests/poetry_packages');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], {
+    env: {
+      poetryWithGroups: 'poetryWithGroups',
+    },
+  });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`bottle.py`), 'bottle is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
+
+test('poetry py3.7 skips additional optional packages specified in withoutGroups', async (t) => {
+  process.chdir('tests/poetry_packages');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], {
+    env: {
+      poetryWithGroups: 'poetryWithGroups',
+      poetryWithoutGroups: 'poetryWithoutGroups',
+    },
+  });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
+
+test('poetry py3.7 only installs optional packages specified in onlyGroups', async (t) => {
+  process.chdir('tests/poetry_packages');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], {
+    env: {
+      poetryOnlyGroups: 'poetryOnlyGroups',
+    },
+  });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.false(zipfiles.includes(`flask${sep}__init__.py`), 'flask is NOT packaged');
+  t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
