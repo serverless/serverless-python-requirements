@@ -1729,3 +1729,20 @@ test('poetry py3.9 only installs optional packages specified in onlyGroups', asy
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.end();
 });
+
+test('py3.7 injects dependencies into `package` folder when using scaleway provider', async (t) => {
+  process.chdir('tests/scaleway_provider');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: {} });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(
+    zipfiles.includes(`package${sep}flask${sep}__init__.py`),
+    'flask is packaged'
+  );
+  t.true(
+    zipfiles.includes(`package${sep}boto3${sep}__init__.py`),
+    'boto3 is packaged'
+  );
+  t.end();
+});
