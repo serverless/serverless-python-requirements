@@ -141,6 +141,16 @@ custom:
     requirePoetryLockFile: false
 ```
 
+If your Poetry configuration includes custom dependency groups, they will not be installed automatically. To include them in the deployment package, use the `poetryWithGroups`, `poetryWithoutGroups` and `poetryOnlyGroups` options which wrap `poetry export`'s `--with`, `--without` and `--only` parameters.
+
+```yaml
+custom:
+  pythonRequirements:
+    poetryWithGroups:
+      - internal_dependencies
+      - lambda_dependencies
+```
+
 ### Poetry with git dependencies
 
 Poetry by default generates the exported requirements.txt file with `-e` and that breaks pip with `-t` parameter
