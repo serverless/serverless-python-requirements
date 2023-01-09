@@ -22,30 +22,30 @@ const initialWorkingDir = process.cwd();
 
 const mkCommand =
   (cmd) =>
-    (args, options = {}) => {
-      options['env'] = Object.assign(
-        { SLS_DEBUG: 'true' },
-        process.env,
-        options['env']
+  (args, options = {}) => {
+    options['env'] = Object.assign(
+      { SLS_DEBUG: 'true' },
+      process.env,
+      options['env']
+    );
+    const { error, stdout, stderr, status } = crossSpawn.sync(
+      cmd,
+      args,
+      options
+    );
+    if (error && !options['noThrow']) {
+      console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
+      throw error;
+    }
+    if (status && !options['noThrow']) {
+      console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
+      console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
+      throw new Error(
+        `${quote([cmd, ...args])} failed with status code ${status}`
       );
-      const { error, stdout, stderr, status } = crossSpawn.sync(
-        cmd,
-        args,
-        options
-      );
-      if (error && !options['noThrow']) {
-        console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
-        throw error;
-      }
-      if (status && !options['noThrow']) {
-        console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
-        console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
-        throw new Error(
-          `${quote([cmd, ...args])} failed with status code ${status}`
-        );
-      }
-      return stdout && stdout.toString().trim();
-    };
+    }
+    return stdout && stdout.toString().trim();
+  };
 
 const sls = mkCommand('sls');
 const git = mkCommand('git');
@@ -421,7 +421,7 @@ test(
     );
     t.true(
       zipfiles.filter((filename) => filename.endsWith('__main__.py')).length >
-      0,
+        0,
       '__main__.py files are packaged'
     );
     t.end();
@@ -1722,7 +1722,13 @@ test('py3.7 injects dependencies into `package` folder when using scaleway provi
   npm(['i', path]);
   sls(['package'], { env: {} });
   const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
-  t.true(zipfiles.includes(`package${sep}flask${sep}__init__.py`), 'flask is packaged');
-  t.true(zipfiles.includes(`package${sep}boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.true(
+    zipfiles.includes(`package${sep}flask${sep}__init__.py`),
+    'flask is packaged'
+  );
+  t.true(
+    zipfiles.includes(`package${sep}boto3${sep}__init__.py`),
+    'boto3 is packaged'
+  );
   t.end();
 });
