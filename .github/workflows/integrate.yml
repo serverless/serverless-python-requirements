@@ -117,6 +117,10 @@ jobs:
   linuxNode12:
     name: '[Linux] Node.js v12: Unit tests'
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sls-version: [2, 3]
+        pipenv-version: ['2022.8.5', '2022.8.13']
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -165,10 +169,6 @@ jobs:
   tagIfNewVersion:
     name: Tag if new version
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        sls-version: [2, 3]
-        pipenv-version: ['2022.8.5', '2022.8.13']
     needs: [windowsNode14, linuxNode14, linuxNode12]
     steps:
       - name: Checkout repository
