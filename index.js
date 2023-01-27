@@ -58,6 +58,9 @@ class ServerlessPythonRequirements {
         noDeploy: [],
         vendor: '',
         requirePoetryLockFile: false,
+        poetryWithGroups: [],
+        poetryWithoutGroups: [],
+        poetryOnlyGroups: [],
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||

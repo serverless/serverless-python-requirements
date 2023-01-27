@@ -110,8 +110,7 @@ custom:
 
 Requires `pipenv` in version `2022-04-08` or higher.
 
-If you include a `Pipfile` and have `pipenv` installed instead of a `requirements.txt` this will use
-`pipenv lock -r` to generate them. It is fully compatible with all options such as `zip` and
+If you include a `Pipfile` and have `pipenv` installed, this will use `pipenv` to generate requirements instead of a `requirements.txt`. It is fully compatible with all options such as `zip` and
 `dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
 
 ```yaml
@@ -139,6 +138,16 @@ you can set the `requirePoetryLockFile` flag to true to throw an error when `poe
 custom:
   pythonRequirements:
     requirePoetryLockFile: false
+```
+
+If your Poetry configuration includes custom dependency groups, they will not be installed automatically. To include them in the deployment package, use the `poetryWithGroups`, `poetryWithoutGroups` and `poetryOnlyGroups` options which wrap `poetry export`'s `--with`, `--without` and `--only` parameters.
+
+```yaml
+custom:
+  pythonRequirements:
+    poetryWithGroups:
+      - internal_dependencies
+      - lambda_dependencies
 ```
 
 ### Poetry with git dependencies
