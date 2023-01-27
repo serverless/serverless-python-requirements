@@ -1654,3 +1654,13 @@ test('poetry py3.7 fails packaging if poetry.lock is missing and flag requirePoe
   );
   t.end();
 });
+
+test('works with provider.runtime not being python', async (t) => {
+  console.log('im working')
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { runtime: 'nodejs16.x' } });
+  t.true(pathExistsSync('.serverless/hello.zip'), 'function hello is packaged');
+  t.end();
+});
