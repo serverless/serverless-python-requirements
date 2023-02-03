@@ -1656,7 +1656,7 @@ test('poetry py3.7 fails packaging if poetry.lock is missing and flag requirePoe
 });
 
 test('works with provider.runtime not being python', async (t) => {
-  console.log('im working')
+  console.log('im working');
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
