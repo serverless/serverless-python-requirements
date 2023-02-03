@@ -1660,7 +1660,7 @@ test('works with provider.runtime not being python', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['package'], { env: { runtime: 'nodejs16.x' } });
+  sls(['package'], { env: { runtime: 'nodejs12.x' } });
   t.true(pathExistsSync('.serverless/hello.zip'), 'function hello is packaged');
   t.end();
 });
