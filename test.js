@@ -1660,7 +1660,7 @@ test('works with provider.runtime not being python', async (t) => {
   const path = npm(['pack', '../..']);
   npm(['i', path]);
   sls(['package'], { env: { runtime: 'nodejs12.x' } });
-  t.true(pathExistsSync('.serverless/hello.zip'), 'function hello is packaged');
+  t.true(pathExistsSync('.serverless/sls-py-req-test.zip'), 'sls-py-req-test is packaged');
   t.end();
 });
 
