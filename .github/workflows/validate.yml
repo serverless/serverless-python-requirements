@@ -4,10 +4,7 @@ name: Validate
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    branches: [master]
 
 env:
   FORCE_COLOR: 1
