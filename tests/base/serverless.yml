@@ -21,6 +21,9 @@ custom:
     useStaticCache: ${env:useStaticCache, self:custom.defaults.useStaticCache}
     useDownloadCache: ${env:useDownloadCache, self:custom.defaults.useDownloadCache}
     cacheLocation: ${env:cacheLocation, ''}
+    layer: true
+    noDeploy:
+      - 'bottle'
   defaults:
     slim: false
     slimPatterns: false
