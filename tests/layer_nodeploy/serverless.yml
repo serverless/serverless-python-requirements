@@ -14,6 +14,9 @@ custom:
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
     requirePoetryLockFile: ${env:requirePoetryLockFile, false}
+    layer: true
+    noDeploy:
+      - 'bottle'
   defaults:
     zip: false
     slimPatterns: false
