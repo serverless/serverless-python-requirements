@@ -565,6 +565,31 @@ package:
     - '**'
 ```
 
+## Custom Provider Support
+
+### Scaleway
+
+This plugin is compatible with the [Scaleway Serverless Framework Plugin](https://github.com/scaleway/serverless-scaleway-functions) to package dependencies for Python functions deployed on [Scaleway](https://www.scaleway.com/en/serverless-functions/). To use it, add the following to your `serverless.yml`:
+
+```yaml
+provider:
+  name: scaleway
+  runtime: python311
+
+plugins:
+  - serverless-python-requirements
+  - serverless-scaleway-functions
+```
+
+To handle native dependencies, it's recommended to use the Docker builder with the image provided by Scaleway:
+
+```yaml
+custom:
+  pythonRequirements:
+    # Can use any Python version supported by Scaleway
+    dockerImage: rg.fr-par.scw.cloud/scwfunctionsruntimes-public/python-dep:3.11
+```
+
 ## Contributors
 
 - [@dschep](https://github.com/dschep) - Lead developer & original maintainer
