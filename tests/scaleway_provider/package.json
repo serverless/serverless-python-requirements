@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "serverless-python-requirements": "file:serverless-python-requirements-5.3.1.tgz",
-    "serverless-scaleway-functions": "^0.4.5"
+    "serverless-scaleway-functions": "^0.4.7"
   }
 }
