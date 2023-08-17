@@ -76,3 +76,6 @@ unzip_requirements.py
 # Project ignores
 puck/
 serverless.yml.bak
+
+# Generated packaging
+*.tgz

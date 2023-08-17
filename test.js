@@ -1655,6 +1655,18 @@ test('poetry py3.7 fails packaging if poetry.lock is missing and flag requirePoe
   t.end();
 });
 
+test('works with provider.runtime not being python', async (t) => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { runtime: 'nodejs12.x' } });
+  t.true(
+    pathExistsSync('.serverless/sls-py-req-test.zip'),
+    'sls-py-req-test is packaged'
+  );
+  t.end();
+});
+
 test('poetry py3.7 packages additional optional packages', async (t) => {
   process.chdir('tests/poetry_packages');
   const path = npm(['pack', '../..']);
