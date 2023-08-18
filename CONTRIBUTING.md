@@ -13,12 +13,14 @@ Welcome, and thanks in advance for your help!
 ## Setup
 
 Pre-Reqs:
-* Python 3.7
-* [poetry](https://python-poetry.org/docs/) (if you use multiple versions of Python be sure to install it with python 3.7)
-* Perl (used in the tests)
-* Node v14 or v16
+
+- Python 3.8
+- [poetry](https://python-poetry.org/docs/) (if you use multiple versions of Python be sure to install it with python 3.8)
+- Perl (used in the tests)
+- Node v16 or v18
 
 Then, to begin development:
+
 1. fork the repository
 2. `npm install -g serverless@<VERSION>` (check the peer dependencies in the root `package.json` file for the version)
 3. run `npm install` in its root folder

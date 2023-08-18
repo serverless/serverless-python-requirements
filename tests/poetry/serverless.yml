@@ -2,7 +2,7 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
 
 plugins:
   - serverless-python-requirements
@@ -10,13 +10,20 @@ custom:
   pythonRequirements:
     zip: ${env:zip, self:custom.defaults.zip}
     slim: ${env:slim, self:custom.defaults.slim}
-    slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
+    slimPatterns: ${self:custom.defaults.slimPatterns.${env:slimPatterns, 'empty'}}
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
     requirePoetryLockFile: ${env:requirePoetryLockFile, false}
+    noDeploy: ${self:custom.defaults.noDeploy.${env:noDeploy, 'empty'}}
   defaults:
+    noDeploy:
+      empty: []
+      bottle: [bottle]
     zip: false
-    slimPatterns: false
+    slimPatterns:
+      empty: []
+      default:
+        - '**/__main__.py'
     slimPatternsAppendDefaults: true
     slim: false
     dockerizePip: false

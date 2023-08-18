@@ -1,20 +1,16 @@
 /* jshint ignore:start */
 'use strict';
 
-const BbPromise = require('bluebird');
-const fse = require('fs-extra');
-const values = require('lodash.values');
-const {
+import {
   addVendorHelper,
   removeVendorHelper,
   packRequirements,
-} = require('./lib/zip');
-const { injectAllRequirements } = require('./lib/inject');
-const { layerRequirements } = require('./lib/layer');
-const { installAllRequirements } = require('./lib/pip');
-const { pipfileToRequirements } = require('./lib/pipenv');
-const { cleanup, cleanupCache } = require('./lib/clean');
-BbPromise.promisifyAll(fse);
+} from './lib/zip.js';
+import { injectAllRequirements } from './lib/inject.js';
+import { layerRequirements } from './lib/layer.js';
+import { installAllRequirements } from './lib/pip.js';
+import { pipfileToRequirements } from './lib/pipenv.js';
+import { cleanup, cleanupCache } from './lib/clean.js';
 
 /**
  * Plugin for Serverless 1.x that bundles python requirements!
@@ -87,15 +83,9 @@ class ServerlessPythonRequirements {
         options.dockerPrivateKey)
     ) {
       if (!this.warningLogged) {
-        if (this.log) {
-          this.log.warning(
-            'You provided a docker related option but dockerizePip is set to false.'
-          );
-        } else {
-          this.serverless.cli.log(
-            'WARNING: You provided a docker related option but dockerizePip is set to false.'
-          );
-        }
+        this.log.warning(
+          'You provided a docker related option but dockerizePip is set to false.'
+        );
         this.warningLogged = true;
       }
     }
@@ -123,7 +113,9 @@ class ServerlessPythonRequirements {
     let inputOpt = this.serverless.processedInput.options;
     return inputOpt.function
       ? [this.serverless.service.functions[inputOpt.function]]
-      : values(this.serverless.service.functions).filter((func) => !func.image);
+      : Object.values(this.serverless.service.functions).filter(
+          (func) => !func.image
+        );
   }
 
   /**
@@ -135,7 +127,7 @@ class ServerlessPythonRequirements {
    */
   constructor(serverless, cliOptions, v3Utils) {
     this.serverless = serverless;
-    this.servicePath = this.serverless.config.servicePath;
+    this.serviceDir = this.serverless.serviceDir;
     this.warningLogged = false;
     if (
       this.serverless.configSchemaHandler &&
@@ -193,8 +185,10 @@ class ServerlessPythonRequirements {
       return args[1].functionObj.runtime.startsWith('python');
     };
 
-    const clean = () =>
-      BbPromise.bind(this).then(cleanup).then(removeVendorHelper);
+    const clean = async () => {
+      await cleanup.bind(this)();
+      await removeVendorHelper.bind(this)();
+    };
 
     const setupArtifactPathCapturing = () => {
       // Reference:
@@ -209,41 +203,37 @@ class ServerlessPythonRequirements {
       }
     };
 
-    const before = () => {
+    const before = async () => {
       if (!isFunctionRuntimePython(arguments)) {
         return;
       }
-      return BbPromise.bind(this)
-        .then(pipfileToRequirements)
-        .then(addVendorHelper)
-        .then(installAllRequirements)
-        .then(packRequirements)
-        .then(setupArtifactPathCapturing);
+      await pipfileToRequirements.bind(this)();
+      await addVendorHelper.bind(this)();
+      await installAllRequirements.bind(this)();
+      await packRequirements.bind(this)();
+      await setupArtifactPathCapturing.bind(this)();
     };
 
-    const after = () => {
+    const after = async () => {
       if (!isFunctionRuntimePython(arguments)) {
         return;
       }
-      return BbPromise.bind(this)
-        .then(removeVendorHelper)
-        .then(layerRequirements)
-        .then(() =>
-          injectAllRequirements.bind(this)(
-            arguments[1].functionObj &&
-              arguments[1].functionObj.package.artifact
-          )
-        );
+      await removeVendorHelper.bind(this)();
+      await layerRequirements.bind(this)();
+      await injectAllRequirements.bind(this)(
+        arguments[1].functionObj && arguments[1].functionObj.package.artifact
+      );
     };
 
     const invalidateCaches = () => {
       if (this.options.invalidateCaches) {
         return clean;
       }
-      return BbPromise.resolve();
     };
 
-    const cleanCache = () => BbPromise.bind(this).then(cleanupCache);
+    const cleanCache = async () => {
+      await cleanupCache.bind(this)();
+    };
 
     this.hooks = {
       'after:package:cleanup': invalidateCaches,
@@ -253,7 +243,7 @@ class ServerlessPythonRequirements {
       'after:deploy:function:packageFunction': after,
       'requirements:requirements': () => {
         this.serverless.cli.generateCommandsHelp(['requirements']);
-        return BbPromise.resolve();
+        return Promise.resolve();
       },
       'requirements:install:install': before,
       'requirements:clean:clean': clean,
@@ -262,4 +252,4 @@ class ServerlessPythonRequirements {
   }
 }
 
-module.exports = ServerlessPythonRequirements;
+export default ServerlessPythonRequirements;

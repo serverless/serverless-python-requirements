@@ -14,6 +14,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+results
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -39,43 +40,6 @@ node_modules
 admin.env
 .env
 
-#PYTHON STUFF
-*.py[co]
-__pycache__
-
 #NODE STUFF
 package-lock.json
 yarn.lock
-
-# Lockfiles
-*.lock
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Serverless directories
-.serverless
-.requirements
-.requirements.zip
-unzip_requirements.py
-
-# Project ignores
-puck/
-serverless.yml.bak
-
-# Generated packaging
-*.tgz
