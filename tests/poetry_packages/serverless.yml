@@ -2,7 +2,7 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.8
 
 plugins:
   - serverless-python-requirements
@@ -10,20 +10,31 @@ custom:
   pythonRequirements:
     zip: ${env:zip, self:custom.defaults.zip}
     slim: ${env:slim, self:custom.defaults.slim}
-    slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
+    slimPatterns: ${self:custom.defaults.slimPatterns.${env:slimPatterns, 'empty'}}
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
     requirePoetryLockFile: ${env:requirePoetryLockFile, false}
-    poetryWithGroups: ${file(./_poetryGroups.yml):${env:poetryWithGroups, "empty"}}
-    poetryWithoutGroups: ${file(./_poetryGroups.yml):${env:poetryWithoutGroups, "empty"}}
-    poetryOnlyGroups: ${file(./_poetryGroups.yml):${env:poetryOnlyGroups, "empty"}}
+    poetryWithGroups: ${self:custom.defaults.poetryGroups.${env:poetryWithGroups, 'empty'}}
+    poetryWithoutGroups: ${self:custom.defaults.poetryGroups.${env:poetryWithoutGroups, 'empty'}}
+    poetryOnlyGroups: ${self:custom.defaults.poetryGroups.${env:poetryOnlyGroups, 'empty'}}
   defaults:
     zip: false
-    slimPatterns: false
     slimPatternsAppendDefaults: true
     slim: false
     dockerizePip: false
-
+    slimPatterns:
+      empty: []
+      default:
+        - '**/__main__.py'
+    poetryGroups:
+      empty: []
+      poetryWithGroups:
+        - custom1
+        - custom2
+      poetryWithoutGroups:
+        - custom1
+      poetryOnlyGroups:
+        - custom2
 package:
   patterns:
     - '!**/*'

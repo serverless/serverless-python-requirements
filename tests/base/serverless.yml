@@ -2,28 +2,46 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: ${env:runtime, 'python3.7'}
+  runtime: ${env:runtime, 'python3.8'}
 
 plugins:
   - serverless-python-requirements
 custom:
+  patterns:
+    default:
+      - '!**/*'
+      - 'handler.py'
+    implicit:
+      - '!**/*'
+    foobar:
+      - '!**/*'
+      - 'handler.py'
+      - 'foobar'
   pythonRequirements:
     zip: ${env:zip, self:custom.defaults.zip}
+    pythonBin: ${env:pythonBin, 'python3'}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
     dockerSsh: ${env:dockerSsh, self:custom.defaults.dockerSsh}
     dockerPrivateKey: ${env:dockerPrivateKey, self:custom.defaults.dockerPrivateKey}
     dockerImage: ${env:dockerImage, self:custom.defaults.dockerImage}
     slim: ${env:slim, self:custom.defaults.slim}
-    slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
+    slimPatterns: ${self:custom.defaults.slimPatterns.${env:slimPatterns, 'empty'}}
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     vendor: ${env:vendor, ''}
     fileName: ${env:fileName, 'requirements.txt'}
     useStaticCache: ${env:useStaticCache, self:custom.defaults.useStaticCache}
     useDownloadCache: ${env:useDownloadCache, self:custom.defaults.useDownloadCache}
     cacheLocation: ${env:cacheLocation, ''}
+    noDeploy: ${self:custom.defaults.noDeploy.${env:noDeploy, 'empty'}}
   defaults:
     slim: false
-    slimPatterns: false
+    noDeploy:
+      empty: []
+      bottle: [bottle]
+    slimPatterns:
+      empty: []
+      default:
+        - '**/__main__.py'
     slimPatternsAppendDefaults: true
     zip: false
     dockerizePip: false
@@ -36,9 +54,7 @@ custom:
 
 package:
   individually: ${env:individually, self:custom.defaults.individually}
-  patterns:
-    - '!**/*'
-    - 'handler.py'
+  patterns: ${self:custom.patterns.${env:patterns, 'default'}}
 
 functions:
   hello:
@@ -47,7 +63,7 @@ functions:
     handler: handler.hello
   hello3:
     handler: handler.hello
-    runtime: nodejs8.10
+    runtime: nodejs18.x
   hello4:
     handler: fn2_handler.hello
     module: fn2
