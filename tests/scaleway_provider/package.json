@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "serverless-python-requirements": "file:serverless-python-requirements-5.3.1.tgz",
-    "serverless-scaleway-functions": "^0.4.7"
+    "serverless-python-requirements": "file:serverless-python-requirements-6.0.0.tgz",
+    "serverless-scaleway-functions": "^0.4.8"
   }
 }
