@@ -1718,8 +1718,8 @@ test('poetry py3.7 only installs optional packages specified in onlyGroups', asy
 
 test('py3.7 injects dependencies into `package` folder when using scaleway provider', async (t) => {
   process.chdir('tests/scaleway_provider');
-  const path = npm(['pack', '../..']);
-  npm(['i', path]);
+  npm(['pack', '../..']);
+  npm(['i']); // install the serverless-scaleway-functions plugin
   sls(['package'], { env: {} });
   const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(
