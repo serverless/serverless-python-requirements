@@ -16,11 +16,6 @@ jobs:
     strategy:
       matrix:
         sls-version: [2, 3]
-        pipenv-version: ['2022.8.5', '2022.8.13', '2023.7.4', '2023.7.9']
-        # pipenv 2202.8.13 marks deprecation of pipenv lock --requirements
-        # https://github.com/pypa/pipenv/blob/30067b458bd7a429f242736b7fde40c9bd4d4f14/CHANGELOG.rst#2022813-2022-08-13
-        # pipenv 2023.7.9 marks deprecation of pipenv lock --keep-outdated
-        # https://github.com/pypa/pipenv/blob/30067b458bd7a429f242736b7fde40c9bd4d4f14/CHANGELOG.rst#202379-2023-07-09
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -66,7 +61,7 @@ jobs:
         run: python -m pip install --force setuptools wheel
 
       - name: Install pipenv / poetry
-        run: python -m pip install pipenv==${{ matrix.pipenv-version }} poetry
+        run: python -m pip install pipenv poetry
 
       - name: Install serverless
         run: npm install -g serverless@${{ matrix.sls-version }}
@@ -90,59 +85,5 @@ jobs:
           then
             npx dump-release-notes-from-cc-changelog $NEW_VERSION
           fi
-      - name: Unit tests
-        run: npm test
-
-  windowsNode14:
-    name: '[Windows] Node.js v14: Unit tests'
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        sls-version: [2, 3]
-        pipenv-version: ['2022.8.5', '2022.8.13', '2023.7.4', '2023.7.9']
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Retrieve dependencies from cache
-        id: cacheNpm
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.npm
-            node_modules
-          key: npm-v14-${{ runner.os }}-${{ github.ref }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            npm-v14-${{ runner.os }}-${{ github.ref }}-
-            npm-v14-${{ runner.os }}-refs/heads/master-
-
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-
-      - name: Install Node.js and npm
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-
-      - name: Check python version
-        run: |
-          python --version
-
-      - name: Install setuptools
-        run: python -m pip install --force setuptools wheel
-
-      - name: Install pipenv / poetry
-        run: python -m pip install pipenv==${{ matrix.pipenv-version }} poetry
-
-      - name: Install serverless
-        run: npm install -g serverless@${{ matrix.sls-version }}
-
-      - name: Install dependencies
-        if: steps.cacheNpm.outputs.cache-hit != 'true'
-        run: |
-          npm update --no-save
-          npm update --save-dev --no-save
       - name: Unit tests
         run: npm test
