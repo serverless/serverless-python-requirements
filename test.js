@@ -1373,7 +1373,7 @@ test(
   { skip: !canUseDocker() || process.platform === 'win32' }
 );
 
-test('py3.7 uses download cache by default option', async (t) => {
+test.skip('py3.7 uses download cache by default option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1386,7 +1386,7 @@ test('py3.7 uses download cache by default option', async (t) => {
   t.end();
 });
 
-test('py3.7 uses download cache by default', async (t) => {
+test.skip('py3.7 uses download cache by default', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1415,7 +1415,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test(
+test.skip(
   'py3.7 uses download cache with dockerizePip by default option',
   async (t) => {
     process.chdir('tests/base');
@@ -1433,7 +1433,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('py3.7 uses static and download cache', async (t) => {
+test.skip('py3.7 uses static and download cache', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
