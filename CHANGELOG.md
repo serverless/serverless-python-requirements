@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.1](https://github.com/UnitedIncome/serverless-python-requirements/compare/v6.0.0...v6.0.1) (2023-10-22)
+
+### Bug Fixes
+
+- Add legacy `pipenv` backward compatability ([#742](https://github.com/UnitedIncome/serverless-python-requirements/issues/742)) ([22a1f83](https://github.com/UnitedIncome/serverless-python-requirements/commit/22a1f832ac8051f0963328743f9e768f8e66649e)) ([Randy Westergren](https://github.com/rwestergren))
+- Not crash when runtime is not `python` ([#773](https://github.com/UnitedIncome/serverless-python-requirements/issues/773)) ([c1f5ca1](https://github.com/UnitedIncome/serverless-python-requirements/commit/c1f5ca114de815ca19ad213a79e250b5b81f29b3)) ([Jim Kirkbride](https://github.com/jameskbride))
+- Remove outdated Pipenv requirements flag ([#780](https://github.com/UnitedIncome/serverless-python-requirements/issues/780)) ([ad40278](https://github.com/UnitedIncome/serverless-python-requirements/commit/ad40278629c63f4d0971637214b4d9bc20dbd288)) ([Jeff Gordon](https://github.com/jfgordon2))
+
+### Maintenance Improvements
+
+- Fix integration test matrix configuration ([#755](https://github.com/UnitedIncome/serverless-python-requirements/issues/755)) ([e8b2e51](https://github.com/UnitedIncome/serverless-python-requirements/commit/e8b2e51c265792046bacc3946f22f7bd842c60e6)) ([Randy Westergren](https://github.com/rwestergren))
+
 ## [6.0.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v5.4.0...v6.0.0) (2022-10-23)
 
 ### ⚠ BREAKING CHANGES
