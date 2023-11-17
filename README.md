@@ -567,7 +567,7 @@ package:
 
 ## Contributors
 
-- [@dschep](https://github.com/dschep) - Lead developer & original maintainer
+- [@dschep](https://github.com/dschep) - Original developer
 - [@azurelogic](https://github.com/azurelogic) - logging & documentation fixes
 - [@abetomo](https://github.com/abetomo) - style & linting
 - [@angstwad](https://github.com/angstwad) - `deploy --function` support
