@@ -108,6 +108,7 @@ const testFilter = (() => {
 
 const test = (desc, func, opts = {}) =>
   testFilter(desc)(desc, opts, async (t) => {
+    const startTime = performance.now();
     setup();
     let ended = false;
     try {
@@ -123,6 +124,8 @@ const test = (desc, func, opts = {}) =>
       }
       if (!ended) t.end();
     }
+    const endTime = performance.now();
+    console.log(`Execution time for "${desc}": ${endTime - startTime} ms`);
   });
 
 const availablePythons = (() => {
@@ -1373,7 +1376,8 @@ test(
   { skip: !canUseDocker() || process.platform === 'win32' }
 );
 
-test('py3.7 uses download cache by default option',
+test(
+  'py3.7 uses download cache by default option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1381,7 +1385,7 @@ test('py3.7 uses download cache by default option',
     sls(['package'], { env: {} });
     const cachepath = getUserCachePath();
     t.true(
-       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+      pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
       'cache directory exists'
     );
     t.end();
@@ -1389,7 +1393,8 @@ test('py3.7 uses download cache by default option',
   { skip: true }
 );
 
-test('py3.7 uses download cache by default',
+test(
+  'py3.7 uses download cache by default',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1441,7 +1446,8 @@ test(
   { skip: true }
 );
 
-test('py3.7 uses static and download cache',
+test(
+  'py3.7 uses static and download cache',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
