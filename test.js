@@ -1,3 +1,4 @@
+const performance = require('perf_hooks').performance;
 const crossSpawn = require('cross-spawn');
 const glob = require('glob-all');
 const JSZip = require('jszip');
