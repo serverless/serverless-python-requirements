@@ -1373,36 +1373,30 @@ test(
   { skip: !canUseDocker() || process.platform === 'win32' }
 );
 
-test('py3.7 uses download cache by default option',
-  async (t) => {
-    process.chdir('tests/base');
-    const path = npm(['pack', '../..']);
-    npm(['i', path]);
-    sls(['package'], { env: {} });
-    const cachepath = getUserCachePath();
-    t.true(
-       pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-      'cache directory exists'
-    );
-    t.end();
-  },
-  { skip: true }
-);
+test('py3.7 uses download cache by default option', async (t) => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: {} });
+  const cachepath = getUserCachePath();
+  t.true(
+    pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+    'cache directory exists'
+  );
+  t.end();
+});
 
-test('py3.7 uses download cache by default',
-  async (t) => {
-    process.chdir('tests/base');
-    const path = npm(['pack', '../..']);
-    npm(['i', path]);
-    sls(['package'], { env: { cacheLocation: '.requirements-cache' } });
-    t.true(
-      pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
-      'cache directory exists'
-    );
-    t.end();
-  },
-  { skip: true }
-);
+test('py3.7 uses download cache by default', async (t) => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { cacheLocation: '.requirements-cache' } });
+  t.true(
+    pathExistsSync(`.requirements-cache${sep}downloadCacheslspyc${sep}http`),
+    'cache directory exists'
+  );
+  t.end();
+});
 
 test(
   'py3.7 uses download cache with dockerizePip option',
@@ -1418,8 +1412,7 @@ test(
     );
     t.end();
   },
-  // { skip: !canUseDocker() || brokenOn('win32') }
-  { skip: true }
+  { skip: !canUseDocker() || brokenOn('win32') }
 );
 
 test(
@@ -1437,33 +1430,29 @@ test(
     );
     t.end();
   },
-  // { skip: !canUseDocker() || brokenOn('win32') }
-  { skip: true }
+  { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('py3.7 uses static and download cache',
-  async (t) => {
-    process.chdir('tests/base');
-    const path = npm(['pack', '../..']);
-    npm(['i', path]);
-    sls(['package'], { env: {} });
-    const cachepath = getUserCachePath();
-    const cacheFolderHash = sha256Path('.serverless/requirements.txt');
-    const arch = 'x86_64';
-    t.true(
-      pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
-      'http exists in download-cache'
-    );
-    t.true(
-      pathExistsSync(
-        `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
-      ),
-      'flask exists in static-cache'
-    );
-    t.end();
-  },
-  { skip: true }
-);
+test('py3.7 uses static and download cache', async (t) => {
+  process.chdir('tests/base');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: {} });
+  const cachepath = getUserCachePath();
+  const cacheFolderHash = sha256Path('.serverless/requirements.txt');
+  const arch = 'x86_64';
+  t.true(
+    pathExistsSync(`${cachepath}${sep}downloadCacheslspyc${sep}http`),
+    'http exists in download-cache'
+  );
+  t.true(
+    pathExistsSync(
+      `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}flask`
+    ),
+    'flask exists in static-cache'
+  );
+  t.end();
+});
 
 test(
   'py3.7 uses static and download cache with dockerizePip option',
