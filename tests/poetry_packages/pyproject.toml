@@ -5,14 +5,14 @@ description = ""
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-Flask = "^1.0"
+python = "^3.7"
+Flask = "2.0"
 
 [tool.poetry.group.custom1.dependencies]
 bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
 
 [tool.poetry.group.custom2.dependencies]
-boto3 = "^1.9"
+boto3 = "1.29.6"
 
 [build-system]
 requires = ["poetry-core"]
