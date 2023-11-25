@@ -2,7 +2,7 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: python3.7
+  runtime: python3.9
 
 plugins:
   - serverless-python-requirements
