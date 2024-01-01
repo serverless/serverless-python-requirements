@@ -450,12 +450,27 @@ functions:
     vendor: ./hello-vendor # The option is also available at the function level
 ```
 
-## Manual invocations
+## Manual invocation
 
-The `.requirements` and `requirements.zip`(if using zip support) files are left
-behind to speed things up on subsequent deploys. To clean them up, run
-`sls requirements clean`. You can also create them (and `unzip_requirements` if
-using zip support) manually with `sls requirements install`.
+The `.requirements` and `requirements.zip` (if using zip support) files are left
+behind to speed things up on subsequent deploys. To clean them up, run:
+
+```plaintext
+sls requirements clean
+```
+
+You can also create them (and `unzip_requirements` if
+using zip support) manually with:
+
+```plaintext
+sls requirements install
+```
+
+The pip download/static cache is outside the serverless folder, and should be manually cleaned when i.e. changing python versions:
+
+```plaintext
+sls requirements cleanCache
+```
 
 ## Invalidate requirements caches on package
 
