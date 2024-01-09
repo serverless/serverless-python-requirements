@@ -103,13 +103,8 @@ class ServerlessPythonRequirements {
       throw new Error(
         'Python Requirements: you can provide a dockerImage or a dockerFile option, not both.'
       );
-    } else if (!options.dockerFile) {
-      // If no dockerFile is provided, use default image
-      const architecture =
-        this.serverless.service.provider.architecture || 'x86_64';
-      const defaultImage = `public.ecr.aws/sam/build-${this.serverless.service.provider.runtime}:latest-${architecture}`;
-      options.dockerImage = options.dockerImage || defaultImage;
     }
+
     if (options.layer) {
       // If layer was set as a boolean, set it to an empty object to use the layer defaults.
       if (options.layer === true) {
@@ -184,6 +179,18 @@ class ServerlessPythonRequirements {
     } else {
       this.commands.requirements.type = 'container';
     }
+
+    this.dockerImageForFunction = (funcOptions) => {
+      const runtime =
+        funcOptions.runtime || this.serverless.service.provider.runtime;
+
+      const architecture =
+        funcOptions.architecture ||
+        this.serverless.service.provider.architecture ||
+        'x86_64';
+      const defaultImage = `public.ecr.aws/sam/build-${runtime}:latest-${architecture}`;
+      return this.options.dockerImage || defaultImage;
+    };
 
     const isFunctionRuntimePython = (args) => {
       // If functionObj.runtime is undefined, python.
