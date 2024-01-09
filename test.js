@@ -1408,7 +1408,7 @@ test(
     const path = npm(['pack', '../..']);
 
     npm(['i', path]);
-    sls(['package'], { env: { dockerizePip: 'true' } });
+    sls(['package'], { env: { dockerizePip: 'true', zip: 'true' } });
 
     const zipfiles_hello = await listZipFiles('.serverless/hello1.zip');
     t.true(
@@ -1427,13 +1427,16 @@ test(
     const zipfiles_hello2 = await listZipFiles(
       '.serverless/module2-sls-py-req-test-indiv-mixed-dev-hello2.zip'
     );
+    const zippedReqs = await listRequirementsZipFiles(
+      '.serverless/module2-sls-py-req-test-indiv-mixed-dev-hello2.zip'
+    );
     t.true(
       zipfiles_hello2.includes('handler2.py'),
       'handler2.py is packaged at root level in function hello2'
     );
     t.false(
       zipfiles_hello2.includes(`module1${sep}handler1.ts`),
-      'handler1.py is NOT incldued at module1 level in hello2'
+      'handler1.ts is NOT included at module1 level in hello2'
     );
     t.false(
       zipfiles_hello2.includes(`pyaml${sep}__init__.py`),
@@ -1441,17 +1444,18 @@ test(
     );
     t.false(
       zipfiles_hello2.includes(`boto3${sep}__init__.py`),
-      'boto3 is NOT packaged in function hello2'
+      'boto3 is NOT included in zipfile'
     );
     t.true(
-      zipfiles_hello2.includes(`flask${sep}__init__.py`),
-      'flask is packaged in function hello2'
+      zippedReqs.includes(`flask${sep}__init__.py`),
+      'flask is packaged in function hello2 in requirements.zip'
     );
 
     t.end();
   },
   { skip: !canUseDocker() || process.platform === 'win32' }
 );
+
 test(
   'py3.9 uses download cache by default option',
   async (t) => {

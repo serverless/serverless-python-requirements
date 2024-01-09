@@ -11,12 +11,15 @@ package:
 custom:
   pythonRequirements:
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
+    zip: ${env:zip, self:custom.defaults.zip}
   defaults:
     dockerizePip: false
+    zip: false
 
 functions:
   hello1:
     handler: handler1.hello
+    architecture: x86_64
     package:
       patterns:
         - '!**'
