@@ -1,4 +1,4 @@
-service: sls-py-req-test-indiv-mixed
+service: sls-py-req-test-indiv-mixed-runtime
 
 provider:
   name: aws

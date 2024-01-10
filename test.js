@@ -1376,7 +1376,7 @@ test(
 test(
   'py3.9 can package flask running in docker with module runtime & architecture of function',
   async (t) => {
-    process.chdir('tests/individually_mixed');
+    process.chdir('tests/individually_mixed_runtime');
     const path = npm(['pack', '../..']);
     npm(['i', path]);
 
@@ -1385,7 +1385,7 @@ test(
     });
 
     const zipfiles_hello2 = await listZipFiles(
-      '.serverless/module2-sls-py-req-test-indiv-mixed-dev-hello2.zip'
+      '.serverless/module2-sls-py-req-test-indiv-mixed-runtime-dev-hello2.zip'
     );
     t.true(
       zipfiles_hello2.includes('handler2.py'),
@@ -1404,7 +1404,7 @@ test(
 test(
   'py3.9 can package flask succesfully when using mixed architecture, docker and zipping',
   async (t) => {
-    process.chdir('tests/individually_mixed');
+    process.chdir('tests/individually_mixed_runtime');
     const path = npm(['pack', '../..']);
 
     npm(['i', path]);
@@ -1425,10 +1425,10 @@ test(
     );
 
     const zipfiles_hello2 = await listZipFiles(
-      '.serverless/module2-sls-py-req-test-indiv-mixed-dev-hello2.zip'
+      '.serverless/module2-sls-py-req-test-indiv-mixed-runtime-dev-hello2.zip'
     );
     const zippedReqs = await listRequirementsZipFiles(
-      '.serverless/module2-sls-py-req-test-indiv-mixed-dev-hello2.zip'
+      '.serverless/module2-sls-py-req-test-indiv-mixed-runtime-dev-hello2.zip'
     );
     t.true(
       zipfiles_hello2.includes('handler2.py'),
