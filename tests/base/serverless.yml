@@ -3,6 +3,7 @@ service: sls-py-req-test
 provider:
   name: aws
   runtime: ${env:runtime, 'python3.9'}
+  configValidationMode: warn
 
 plugins:
   - serverless-python-requirements
@@ -47,7 +48,7 @@ functions:
     handler: handler.hello
   hello3:
     handler: handler.hello
-    runtime: nodejs8.10
+    runtime: nodejs18.19
   hello4:
     handler: fn2_handler.hello
     module: fn2

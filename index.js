@@ -61,6 +61,8 @@ class ServerlessPythonRequirements {
         poetryWithGroups: [],
         poetryWithoutGroups: [],
         poetryOnlyGroups: [],
+        usePyProject: true,
+        OptionalDeps: []
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
