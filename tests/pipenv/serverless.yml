@@ -2,12 +2,13 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.10
 
 plugins:
   - serverless-python-requirements
 custom:
   pythonRequirements:
+    noDeploy: [bottle]
     zip: ${env:zip, self:custom.defaults.zip}
     slim: ${env:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}

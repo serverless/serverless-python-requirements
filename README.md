@@ -515,7 +515,7 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image with a `Dockerfile` like:
 
 ```dockerfile
-FROM public.ecr.aws/sam/build-python3.9
+FROM public.ecr.aws/sam/build-python3.10
 
 # Install your dependencies
 RUN yum -y install mysql-devel
@@ -602,7 +602,7 @@ To handle native dependencies, it's recommended to use the Docker builder with t
 custom:
   pythonRequirements:
     # Can use any Python version supported by Scaleway
-    dockerImage: rg.fr-par.scw.cloud/scwfunctionsruntimes-public/python-dep:3.11
+    dockerImage: rg.fr-par.scw.cloud/scwfunctionsruntimes-public/python-dep:3.10
 ```
 
 ## Contributors

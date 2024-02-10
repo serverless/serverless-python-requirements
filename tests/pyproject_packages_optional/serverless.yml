@@ -2,7 +2,7 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.10
 
 plugins:
   - serverless-python-requirements
@@ -10,8 +10,8 @@ custom:
   pythonRequirements:
     dockerizePip: false
     pythonBin: ${opt:pythonBin, self:provider.runtime}
-    OptionalDeps: 
-      - "test"
+    OptionalDeps:
+      - 'test'
 
 package:
   individually: false

@@ -234,7 +234,7 @@ test('default pythonBin can package flask with default options', async (t) => {
   t.end();
 });
 
-test('py3.9 packages have the same hash', async (t) => {
+test('py3.10 packages have the same hash', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -249,7 +249,7 @@ test('py3.9 packages have the same hash', async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with default options', async (t) => {
+test('py3.10 can package flask with default options', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -261,7 +261,7 @@ test('py3.9 can package flask with default options', async (t) => {
 });
 
 test(
-  'py3.9 can package flask with hashes',
+  'py3.10 can package flask with hashes',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -279,7 +279,7 @@ test(
   { skip: brokenOn('win32') }
 );
 
-test('py3.9 can package flask with nested', async (t) => {
+test('py3.10 can package flask with nested', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -295,7 +295,7 @@ test('py3.9 can package flask with nested', async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with zip option', async (t) => {
+test('py3.10 can package flask with zip option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -313,7 +313,7 @@ test('py3.9 can package flask with zip option', async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with slim option', async (t) => {
+test('py3.10 can package flask with slim option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -332,7 +332,7 @@ test('py3.9 can package flask with slim option', async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with slim & slimPatterns options', async (t) => {
+test('py3.10 can package flask with slim & slimPatterns options', async (t) => {
   process.chdir('tests/base');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
@@ -353,7 +353,7 @@ test('py3.9 can package flask with slim & slimPatterns options', async (t) => {
   t.end();
 });
 
-test("py3.9 doesn't package bottle with noDeploy option", async (t) => {
+test("py3.10 doesn't package bottle with noDeploy option", async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -371,7 +371,7 @@ test("py3.9 doesn't package bottle with noDeploy option", async (t) => {
   t.end();
 });
 
-test('py3.9 can package boto3 with editable', async (t) => {
+test('py3.10 can package boto3 with editable', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -391,7 +391,7 @@ test('py3.9 can package boto3 with editable', async (t) => {
 });
 
 test(
-  'py3.9 can package flask with dockerizePip option',
+  'py3.10 can package flask with dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -406,7 +406,7 @@ test(
 );
 
 test(
-  'py3.9 can package flask with slim & dockerizePip option',
+  'py3.10 can package flask with slim & dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -430,7 +430,7 @@ test(
 );
 
 test(
-  'py3.9 can package flask with slim & dockerizePip & slimPatterns options',
+  'py3.10 can package flask with slim & dockerizePip & slimPatterns options',
   async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -455,7 +455,7 @@ test(
 );
 
 test(
-  'py3.9 can package flask with zip & dockerizePip option',
+  'py3.10 can package flask with zip & dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -487,7 +487,7 @@ test(
 );
 
 test(
-  'py3.9 can package flask with zip & slim & dockerizePip option',
+  'py3.10 can package flask with zip & slim & dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -520,7 +520,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('pipenv py3.9 can package flask with default options', async (t) => {
+test('pipenv py3.10 can package flask with default options', async (t) => {
   process.chdir('tests/pipenv');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -535,7 +535,7 @@ test('pipenv py3.9 can package flask with default options', async (t) => {
   t.end();
 });
 
-test('pipenv py3.9 can package flask with slim option', async (t) => {
+test('pipenv py3.10 can package flask with slim option', async (t) => {
   process.chdir('tests/pipenv');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -554,7 +554,7 @@ test('pipenv py3.9 can package flask with slim option', async (t) => {
   t.end();
 });
 
-test('pipenv py3.9 can package flask with slim & slimPatterns options', async (t) => {
+test('pipenv py3.10 can package flask with slim & slimPatterns options', async (t) => {
   process.chdir('tests/pipenv');
 
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -576,7 +576,7 @@ test('pipenv py3.9 can package flask with slim & slimPatterns options', async (t
   t.end();
 });
 
-test('pipenv py3.9 can package flask with zip option', async (t) => {
+test('pipenv py3.10 can package flask with zip option', async (t) => {
   process.chdir('tests/pipenv');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -594,7 +594,7 @@ test('pipenv py3.9 can package flask with zip option', async (t) => {
   t.end();
 });
 
-test("pipenv py3.9 doesn't package bottle with noDeploy option", async (t) => {
+test("pipenv py3.10 doesn't package bottle with noDeploy option", async (t) => {
   process.chdir('tests/pipenv');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -633,7 +633,7 @@ test('non poetry pyproject.toml without requirements.txt packages handler only',
   t.end();
 });
 
-test('poetry py3.9 can package flask with default options', async (t) => {
+test('poetry py3.10 can package flask with default options', async (t) => {
   process.chdir('tests/poetry');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -645,7 +645,7 @@ test('poetry py3.9 can package flask with default options', async (t) => {
   t.end();
 });
 
-test('poetry py3.9 can package flask with slim option', async (t) => {
+test('poetry py3.10 can package flask with slim option', async (t) => {
   process.chdir('tests/poetry');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -664,7 +664,7 @@ test('poetry py3.9 can package flask with slim option', async (t) => {
   t.end();
 });
 
-test('poetry py3.9 can package flask with slim & slimPatterns options', async (t) => {
+test('poetry py3.10 can package flask with slim & slimPatterns options', async (t) => {
   process.chdir('tests/poetry');
 
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -686,7 +686,7 @@ test('poetry py3.9 can package flask with slim & slimPatterns options', async (t
   t.end();
 });
 
-test('poetry py3.9 can package flask with zip option', async (t) => {
+test('poetry py3.10 can package flask with zip option', async (t) => {
   process.chdir('tests/poetry');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -704,7 +704,7 @@ test('poetry py3.9 can package flask with zip option', async (t) => {
   t.end();
 });
 
-test("poetry py3.9 doesn't package bottle with noDeploy option", async (t) => {
+test("poetry py3.10 doesn't package bottle with noDeploy option", async (t) => {
   process.chdir('tests/poetry');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -722,7 +722,7 @@ test("poetry py3.9 doesn't package bottle with noDeploy option", async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with zip option and no explicit include', async (t) => {
+test('py3.10 can package flask with zip option and no explicit include', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -742,7 +742,7 @@ test('py3.9 can package flask with zip option and no explicit include', async (t
   t.end();
 });
 
-test('py3.9 can package lambda-decorators using vendor option', async (t) => {
+test('py3.10 can package lambda-decorators using vendor option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -805,7 +805,7 @@ test(
   { skip: process.platform === 'win32' }
 );
 
-test('py3.9 can package flask in a project with a space in it', async (t) => {
+test('py3.10 can package flask in a project with a space in it', async (t) => {
   copySync('tests/base', 'tests/base with a space');
   process.chdir('tests/base with a space');
   const path = npm(['pack', '../..']);
@@ -818,7 +818,7 @@ test('py3.9 can package flask in a project with a space in it', async (t) => {
 });
 
 test(
-  'py3.9 can package flask in a project with a space in it with docker',
+  'py3.10 can package flask in a project with a space in it with docker',
   async (t) => {
     copySync('tests/base', 'tests/base with a space');
     process.chdir('tests/base with a space');
@@ -833,7 +833,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('py3.9 supports custom file name with fileName option', async (t) => {
+test('py3.10 supports custom file name with fileName option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   writeFileSync('puck', 'requests');
@@ -849,7 +849,7 @@ test('py3.9 supports custom file name with fileName option', async (t) => {
   t.end();
 });
 
-test("py3.9 doesn't package bottle with zip option", async (t) => {
+test("py3.10 doesn't package bottle with zip option", async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -885,7 +885,7 @@ test("py3.9 doesn't package bottle with zip option", async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with slim, slimPatterns & slimPatternsAppendDefaults=false options', async (t) => {
+test('py3.10 can package flask with slim, slimPatterns & slimPatternsAppendDefaults=false options', async (t) => {
   process.chdir('tests/base');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
@@ -908,7 +908,7 @@ test('py3.9 can package flask with slim, slimPatterns & slimPatternsAppendDefaul
 });
 
 test(
-  'py3.9 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
+  'py3.10 can package flask with slim & dockerizePip & slimPatterns & slimPatternsAppendDefaults=false options',
   async (t) => {
     process.chdir('tests/base');
     copySync('_slimPatterns.yml', 'slimPatterns.yml');
@@ -937,7 +937,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('pipenv py3.9 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', async (t) => {
+test('pipenv py3.10 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', async (t) => {
   process.chdir('tests/pipenv');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
@@ -960,7 +960,7 @@ test('pipenv py3.9 can package flask with slim & slimPatterns & slimPatternsAppe
   t.end();
 });
 
-test('poetry py3.9 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', async (t) => {
+test('poetry py3.10 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', async (t) => {
   process.chdir('tests/poetry');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const path = npm(['pack', '../..']);
@@ -983,7 +983,7 @@ test('poetry py3.9 can package flask with slim & slimPatterns & slimPatternsAppe
   t.end();
 });
 
-test('poetry py3.9 can package flask with package individually option', async (t) => {
+test('poetry py3.10 can package flask with package individually option', async (t) => {
   process.chdir('tests/poetry_individually');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -998,7 +998,7 @@ test('poetry py3.9 can package flask with package individually option', async (t
   t.end();
 });
 
-test('py3.9 can package flask with package individually option', async (t) => {
+test('py3.10 can package flask with package individually option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1080,7 +1080,7 @@ test('py3.9 can package flask with package individually option', async (t) => {
   t.end();
 });
 
-test('py3.9 can package flask with package individually & slim option', async (t) => {
+test('py3.10 can package flask with package individually & slim option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1162,7 +1162,7 @@ test('py3.9 can package flask with package individually & slim option', async (t
   t.end();
 });
 
-test('py3.9 can package only requirements of module', async (t) => {
+test('py3.10 can package only requirements of module', async (t) => {
   process.chdir('tests/individually');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1218,7 +1218,7 @@ test('py3.9 can package only requirements of module', async (t) => {
   t.end();
 });
 
-test('py3.9 can package lambda-decorators using vendor and invidiually option', async (t) => {
+test('py3.10 can package lambda-decorators using vendor and invidiually option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1374,7 +1374,7 @@ test(
 );
 
 test(
-  'py3.9 uses download cache by default option',
+  'py3.10 uses download cache by default option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1391,7 +1391,7 @@ test(
 );
 
 test(
-  'py3.9 uses download cache by default',
+  'py3.10 uses download cache by default',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1407,7 +1407,7 @@ test(
 );
 
 test(
-  'py3.9 uses download cache with dockerizePip option',
+  'py3.10 uses download cache with dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1425,7 +1425,7 @@ test(
 );
 
 test(
-  'py3.9 uses download cache with dockerizePip by default option',
+  'py3.10 uses download cache with dockerizePip by default option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1444,7 +1444,7 @@ test(
 );
 
 test(
-  'py3.9 uses static and download cache',
+  'py3.10 uses static and download cache',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1469,7 +1469,7 @@ test(
 );
 
 test(
-  'py3.9 uses static and download cache with dockerizePip option',
+  'py3.10 uses static and download cache with dockerizePip option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1493,7 +1493,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('py3.9 uses static cache', async (t) => {
+test('py3.10 uses static cache', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1514,7 +1514,7 @@ test('py3.9 uses static cache', async (t) => {
     '.completed_requirements exists in static-cache'
   );
 
-  // py3.9 checking that static cache actually pulls from cache (by poisoning it)
+  // py3.10 checking that static cache actually pulls from cache (by poisoning it)
   writeFileSync(
     `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}injected_file_is_bad_form`,
     'injected new file into static cache folder'
@@ -1529,7 +1529,7 @@ test('py3.9 uses static cache', async (t) => {
   t.end();
 });
 
-test('py3.9 uses static cache with cacheLocation option', async (t) => {
+test('py3.10 uses static cache with cacheLocation option', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1553,7 +1553,7 @@ test('py3.9 uses static cache with cacheLocation option', async (t) => {
 });
 
 test(
-  'py3.9 uses static cache with dockerizePip & slim option',
+  'py3.10 uses static cache with dockerizePip & slim option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1575,7 +1575,7 @@ test(
       '.completed_requirements exists in static-cache'
     );
 
-    // py3.9 checking that static cache actually pulls from cache (by poisoning it)
+    // py3.10 checking that static cache actually pulls from cache (by poisoning it)
     writeFileSync(
       `${cachepath}${sep}${cacheFolderHash}_${arch}_slspyc${sep}injected_file_is_bad_form`,
       'injected new file into static cache folder'
@@ -1598,7 +1598,7 @@ test(
 );
 
 test(
-  'py3.9 uses download cache with dockerizePip & slim option',
+  'py3.10 uses download cache with dockerizePip & slim option',
   async (t) => {
     process.chdir('tests/base');
     const path = npm(['pack', '../..']);
@@ -1623,7 +1623,7 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
-test('py3.9 can ignore functions defined with `image`', async (t) => {
+test('py3.10 can ignore functions defined with `image`', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1649,7 +1649,7 @@ test('py3.9 can ignore functions defined with `image`', async (t) => {
   t.end();
 });
 
-test('poetry py3.9 fails packaging if poetry.lock is missing and flag requirePoetryLockFile is set to true', async (t) => {
+test('poetry py3.10 fails packaging if poetry.lock is missing and flag requirePoetryLockFile is set to true', async (t) => {
   copySync('tests/poetry', 'tests/base with a space');
   process.chdir('tests/base with a space');
   removeSync('poetry.lock');
@@ -1681,7 +1681,7 @@ test('works with provider.runtime not being python', async (t) => {
   t.end();
 });
 
-test('poetry py3.9 packages additional optional packages', async (t) => {
+test('poetry py3.10 packages additional optional packages', async (t) => {
   process.chdir('tests/poetry_packages');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1697,7 +1697,7 @@ test('poetry py3.9 packages additional optional packages', async (t) => {
   t.end();
 });
 
-test('poetry py3.9 skips additional optional packages specified in withoutGroups', async (t) => {
+test('poetry py3.10 skips additional optional packages specified in withoutGroups', async (t) => {
   process.chdir('tests/poetry_packages');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
@@ -1714,7 +1714,7 @@ test('poetry py3.9 skips additional optional packages specified in withoutGroups
   t.end();
 });
 
-test('poetry py3.9 only installs optional packages specified in onlyGroups', async (t) => {
+test('poetry py3.10 only installs optional packages specified in onlyGroups', async (t) => {
   process.chdir('tests/poetry_packages');
   const path = npm(['pack', '../..']);
   npm(['i', path]);

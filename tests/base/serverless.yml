@@ -2,8 +2,7 @@ service: sls-py-req-test
 
 provider:
   name: aws
-  runtime: ${env:runtime, 'python3.9'}
-  configValidationMode: warn
+  runtime: ${env:runtime, 'python3.10'}
 
 plugins:
   - serverless-python-requirements
