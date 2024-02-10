@@ -47,7 +47,7 @@ functions:
     handler: handler.hello
   hello3:
     handler: handler.hello
-    runtime: nodejs8.10
+    runtime: nodejs14.x
   hello4:
     handler: fn2_handler.hello
     module: fn2
