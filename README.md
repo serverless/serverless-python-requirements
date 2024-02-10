@@ -160,21 +160,21 @@ Instead of:
 
 ```toml
 [tool.poetry.dependencies]
-bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.25"}
 ```
 
 Use:
 
 ```toml
 [tool.poetry.dependencies]
-bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.25"}
 ```
 
 Or, if you have an SSH key configured:
 
 ```toml
 [tool.poetry.dependencies]
-bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.25"}
 ```
 
 ## Dealing with Lambda's size limitations
@@ -285,7 +285,7 @@ custom:
       name: ${self:provider.stage}-layerName
       description: Python requirements lambda layer
       compatibleRuntimes:
-        - python3.7
+        - python3.10
       licenseInfo: GPLv3
       allowedAccounts:
         - '*'

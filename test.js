@@ -1374,7 +1374,7 @@ test(
 );
 
 test(
-  'py3.9 can package flask running in docker with module runtime & architecture of function',
+  'py3.10 can package flask running in docker with module runtime & architecture of function',
   async (t) => {
     process.chdir('tests/individually_mixed_runtime');
     const path = npm(['pack', '../..']);
@@ -1896,10 +1896,11 @@ test('poetry py3.10 only installs optional packages specified in onlyGroups', as
   t.end();
 });
 
-test('py3.7 injects dependencies into `package` folder when using scaleway provider', async (t) => {
+test('py3.10 injects dependencies into `package` folder when using scaleway provider', async (t) => {
   process.chdir('tests/scaleway_provider');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
+  sls(['plugin', 'install', '-n', 'serverless-scaleway-functions'], { env: {} });
   sls(['package'], { env: {} });
   const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(
