@@ -1,3 +1,3 @@
-flask==0.12.5
+flask==2.0.0
 bottle
 boto3

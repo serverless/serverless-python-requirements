@@ -1,2 +1,2 @@
-flask==2.0.3
+flask==2.0.0
 boto3
