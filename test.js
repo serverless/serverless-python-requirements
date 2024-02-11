@@ -1924,6 +1924,7 @@ test('pyproject.toml py3.10 packages', async (t) => {
   const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.false(zipfiles.includes(`pytest${sep}__init__.py`), 'pytest is packaged');
   t.end();
 });
 
