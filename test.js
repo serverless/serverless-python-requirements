@@ -1900,7 +1900,9 @@ test('py3.10 injects dependencies into `package` folder when using scaleway prov
   process.chdir('tests/scaleway_provider');
   const path = npm(['pack', '../..']);
   npm(['i', path]);
-  sls(['plugin', 'install', '-n', 'serverless-scaleway-functions'], { env: {} });
+  sls(['plugin', 'install', '-n', 'serverless-scaleway-functions'], {
+    env: {},
+  });
   sls(['package'], { env: {} });
   const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
   t.true(
@@ -1911,5 +1913,28 @@ test('py3.10 injects dependencies into `package` folder when using scaleway prov
     zipfiles.includes(`package${sep}boto3${sep}__init__.py`),
     'boto3 is packaged'
   );
+  t.end();
+});
+
+test('pyproject.toml py3.10 packages', async (t) => {
+  process.chdir('tests/pyproject_packages');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { pythonBin: getPythonBin(3) } });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.end();
+});
+
+test('pyproject.toml py3.10 packages with optional', async (t) => {
+  process.chdir('tests/pyproject_packages_optional');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { pythonBin: getPythonBin(3) } });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.true(zipfiles.includes(`pytest${sep}__init__.py`), 'pytest is packaged');
   t.end();
 });
