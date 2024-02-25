@@ -1943,3 +1943,18 @@ test('pyproject.toml py3.10 packages with optional', async (t) => {
   );
   t.end();
 });
+
+test('pyproject.toml py3.10 install code as pacakage', async (t) => {
+  process.chdir('tests/install_folder_as_package');
+  const path = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { pythonBin: getPythonBin(3) } });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.true(
+    zipfiles.includes(`example${sep}__init__.py`),
+    'developers pacakage is packaged',
+  );
+  t.end();
+});

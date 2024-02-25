@@ -63,6 +63,7 @@ class ServerlessPythonRequirements {
         poetryOnlyGroups: [],
         usePyProject: true,
         pyprojectWithGroups: [],
+        installFolderAsPackage: false,
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||

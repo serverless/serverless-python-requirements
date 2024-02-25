@@ -199,6 +199,16 @@ custom:
       - lambda_dependencies
 ```
 
+## :sparkles::snake::sparkles: Custom Python Package installation
+
+If your function rely on your code being installed as a python package use `installFolderAsPackage`. Ensure your code is structured as a python package or otherwise it will not be installed correctly (`pip install .`)
+
+```yaml
+custom:
+  pythonRequirements:
+    installFolderAsPackage: true
+```
+
 ## Dealing with Lambda's size limitations
 
 To help deal with potentially large dependencies (for example: `numpy`, `scipy`
