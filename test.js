@@ -26,12 +26,12 @@ const mkCommand =
     options['env'] = Object.assign(
       { SLS_DEBUG: 'true' },
       process.env,
-      options['env']
+      options['env'],
     );
     const { error, stdout, stderr, status } = crossSpawn.sync(
       cmd,
       args,
-      options
+      options,
     );
     if (error && !options['noThrow']) {
       console.error(`Error running: ${quote([cmd, ...args])}`); // eslint-disable-line no-console
@@ -41,7 +41,7 @@ const mkCommand =
       console.error('STDOUT: ', stdout.toString()); // eslint-disable-line no-console
       console.error('STDERR: ', stderr.toString()); // eslint-disable-line no-console
       throw new Error(
-        `${quote([cmd, ...args])} failed with status code ${status}`
+        `${quote([cmd, ...args])} failed with status code ${status}`,
       );
     }
     return stdout && stdout.toString().trim();
@@ -84,7 +84,7 @@ const teardown = () => {
         git(['checkout', 'serverless.yml']);
       } catch (err) {
         console.error(
-          `At ${cwd} failed to checkout 'serverless.yml' with ${err}.`
+          `At ${cwd} failed to checkout 'serverless.yml' with ${err}.`,
         );
         throw err;
       }
@@ -130,7 +130,7 @@ const availablePythons = (() => {
   const mapping = {};
   if (process.env.USE_PYTHON) {
     binaries.push(
-      ...process.env.USE_PYTHON.split(',').map((v) => v.toString().trim())
+      ...process.env.USE_PYTHON.split(',').map((v) => v.toString().trim()),
     );
   } else {
     // For running outside of CI
@@ -1937,6 +1937,9 @@ test('pyproject.toml py3.10 packages with optional', async (t) => {
   t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.true(zipfiles.includes(`pytest${sep}__init__.py`), 'pytest is packaged');
-  t.true(zipfiles.includes(`pytest-cov${sep}__init__.py`), 'pytest is packaged');
+  t.true(
+    zipfiles.includes(`pytest-cov${sep}__init__.py`),
+    'pytest is packaged',
+  );
   t.end();
 });
