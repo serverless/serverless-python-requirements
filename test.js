@@ -1938,8 +1938,8 @@ test('pyproject.toml py3.10 packages with optional', async (t) => {
   t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
   t.true(zipfiles.includes(`pytest${sep}__init__.py`), 'pytest is packaged');
   t.true(
-    zipfiles.includes(`pytest-cov${sep}__init__.py`),
-    'pytest is packaged',
+    zipfiles.includes(`pytest_cov${sep}__init__.py`),
+    'pytest-cov is packaged',
   );
   t.end();
 });
