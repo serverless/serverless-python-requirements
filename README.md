@@ -66,6 +66,28 @@ custom:
 With `Dockerfile` the path to the Dockerfile that must be in the current folder (or a subfolder).
 Please note the `dockerImage` and the `dockerFile` are mutually exclusive.
 
+To install requirements with custom git settings (e.g., to map private repositories with
+authentication parameters), add the following to your `serverless.yml`:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerGit: true
+```
+
+The `dockerGit` option will mount your `$HOME/.gitconfig` as a volume in the docker container.
+
+In case you want to use a different git configuration, you can specify the path (absolute) to it through `dockerGitConfig` option:
+
+```yaml
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    dockerGit: true
+    dockerGitConfig: /home/.git/config
+```
+
 To install requirements from private git repositories, add the following to your `serverless.yml`:
 
 ```yaml

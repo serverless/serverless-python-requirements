@@ -223,6 +223,32 @@ test(
   { skip: !canUseDocker() || brokenOn('win32') }
 );
 
+test(
+  'dockerGitConfig option correctly resolves docker command',
+  async (t) => {
+    process.chdir('tests/base');
+    const path = npm(['pack', '../..']);
+    npm(['i', path]);
+    const stdout = sls(['package'], {
+      noThrow: true,
+      env: {
+        dockerizePip: true,
+        dockerGit: true,
+        dockerGitConfig: `${__dirname}${sep}tests${sep}base${sep}custom_gitconfig`,
+        dockerImage: 'break the build to log the command',
+      },
+    });
+    t.true(
+      stdout.includes(
+        `-v ${__dirname}${sep}tests${sep}base${sep}custom_gitconfig:/root/.gitconfig:z`
+      ),
+      'docker command properly resolved'
+    );
+    t.end();
+  },
+  { skip: !canUseDocker() || brokenOn('win32') }
+)
+
 test('default pythonBin can package flask with default options', async (t) => {
   process.chdir('tests/base');
   const path = npm(['pack', '../..']);
