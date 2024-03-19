@@ -247,7 +247,7 @@ test(
     t.end();
   },
   { skip: !canUseDocker() || brokenOn('win32') }
-)
+);
 
 test('default pythonBin can package flask with default options', async (t) => {
   process.chdir('tests/base');
