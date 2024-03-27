@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.1.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v6.0.1...v6.1.0) (2024-03-27)
+
+### Features
+
+- Support Scaleway provider ([#812](https://github.com/UnitedIncome/serverless-python-requirements/issues/812)) ([1b0faae](https://github.com/UnitedIncome/serverless-python-requirements/commit/1b0faaeb6aadd2bc4b1b53526e35298a98d00aca)) ([Andy Méry](https://github.com/cyclimse))
+- Improved pip failure logging ([#813](https://github.com/UnitedIncome/serverless-python-requirements/issues/813)) ([787b479](https://github.com/UnitedIncome/serverless-python-requirements/commit/787b4791306e9a3ded5f0177c304cfbce081c119)) ([Justin Lyons](https://github.com/babyhuey))
+
+### Bug Fixes
+
+- Ensure proper support for mixed runtimes and architectures ([#815](https://github.com/UnitedIncome/serverless-python-requirements/issues/815)) ([27b70f4](https://github.com/UnitedIncome/serverless-python-requirements/commit/27b70f4d6a7e43fd0e9711bbb56752fee2762901)) ([Stijn IJzermans](https://github.com/stijzermans))
+
 ### [6.0.1](https://github.com/UnitedIncome/serverless-python-requirements/compare/v6.0.0...v6.0.1) (2023-10-22)
 
 ### Bug Fixes
