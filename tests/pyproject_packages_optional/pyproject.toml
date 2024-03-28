@@ -1,0 +1,20 @@
+[project]
+name = "example"
+version = "1.0.0"
+authors = [
+  { name="Jackson Borneman", email="11304426+jax-b@users.noreply.github.com" },
+]
+description = "example"
+requires-python = ">=3.10"
+
+dependencies = [
+  "flask",
+  "hug",
+  "boto3"
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov"
+]

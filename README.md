@@ -160,21 +160,53 @@ Instead of:
 
 ```toml
 [tool.poetry.dependencies]
-bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+bottle = {git = "git@github.com/bottlepy/bottle.git", tag = "0.12.25"}
 ```
 
 Use:
 
 ```toml
 [tool.poetry.dependencies]
-bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+bottle = {git = "https://git@github.com/bottlepy/bottle.git", tag = "0.12.25"}
 ```
 
 Or, if you have an SSH key configured:
 
 ```toml
 [tool.poetry.dependencies]
-bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.16"}
+bottle = {git = "ssh://git@github.com/bottlepy/bottle.git", tag = "0.12.25"}
+```
+
+## :sparkles::snake::sparkles: PyProject PEP631/621
+
+If you include a `pyproject.toml` and have `dependencies` installed instead of a `requirements.txt` this will
+generate a requirements file from it. It is fully compatible with all options such as `zip` and
+`dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
+
+```yaml
+custom:
+  pythonRequirements:
+    usePyProject: false
+```
+
+If your PyProject configuration includes custom dependency groups, they will not be installed automatically. To include them in the deployment package, use the `pyprojectWithGroups`.
+
+```yaml
+custom:
+  pythonRequirements:
+    pyprojectWithGroups:
+      - internal_dependencies
+      - lambda_dependencies
+```
+
+## :sparkles::snake::sparkles: Custom Python Package installation
+
+If your function rely on your code being installed as a python package use `installFolderAsPackage`. Ensure your code is structured as a python package or otherwise it will not be installed correctly (`pip install .`)
+
+```yaml
+custom:
+  pythonRequirements:
+    installFolderAsPackage: true
 ```
 
 ## Dealing with Lambda's size limitations
@@ -285,7 +317,7 @@ custom:
       name: ${self:provider.stage}-layerName
       description: Python requirements lambda layer
       compatibleRuntimes:
-        - python3.7
+        - python3.10
       licenseInfo: GPLv3
       allowedAccounts:
         - '*'
@@ -515,7 +547,7 @@ For usage of `dockerizePip` on Windows do Step 1 only if running serverless on w
 Some Python packages require extra OS dependencies to build successfully. To deal with this, replace the default image with a `Dockerfile` like:
 
 ```dockerfile
-FROM public.ecr.aws/sam/build-python3.9
+FROM public.ecr.aws/sam/build-python3.10
 
 # Install your dependencies
 RUN yum -y install mysql-devel
@@ -602,7 +634,7 @@ To handle native dependencies, it's recommended to use the Docker builder with t
 custom:
   pythonRequirements:
     # Can use any Python version supported by Scaleway
-    dockerImage: rg.fr-par.scw.cloud/scwfunctionsruntimes-public/python-dep:3.11
+    dockerImage: rg.fr-par.scw.cloud/scwfunctionsruntimes-public/python-dep:3.10
 ```
 
 ## Contributors
@@ -635,6 +667,8 @@ custom:
   - [@drice](https://github.com/drice)
   - [@ofercaspi](https://github.com/ofercaspi)
   - [@tpansino](https://github.com/tpansino)
+- PyProject PEP631/621
+  - [@jax-b](https://github.com/jax-b)
 - [@david-mk-lawrence](https://github.com/david-mk-lawrence) - added Lambda Layer support
 - [@bryantbriggs](https://github.com/bryantbiggs) - Fixing CI/CD
 - [@jacksgt](https://github.com/jacksgt) - Fixing pip issues

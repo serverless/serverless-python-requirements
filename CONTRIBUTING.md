@@ -14,8 +14,8 @@ Welcome, and thanks in advance for your help!
 
 Pre-Reqs:
 
-- Python 3.9
-- [poetry](https://python-poetry.org/docs/) (if you use multiple versions of Python be sure to install it with python 3.9)
+- Python 3.10
+- [poetry](https://python-poetry.org/docs/) (if you use multiple versions of Python be sure to install it with python 3.10)
 - Perl (used in the tests)
 - Node v14 or v16
 

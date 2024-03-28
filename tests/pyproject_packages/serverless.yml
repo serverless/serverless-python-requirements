@@ -14,9 +14,6 @@ custom:
     slimPatternsAppendDefaults: ${env:slimPatternsAppendDefaults, self:custom.defaults.slimPatternsAppendDefaults}
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
     requirePoetryLockFile: ${env:requirePoetryLockFile, false}
-    poetryWithGroups: ${file(./_poetryGroups.yml):${env:poetryWithGroups, "empty"}}
-    poetryWithoutGroups: ${file(./_poetryGroups.yml):${env:poetryWithoutGroups, "empty"}}
-    poetryOnlyGroups: ${file(./_poetryGroups.yml):${env:poetryOnlyGroups, "empty"}}
   defaults:
     zip: false
     slimPatterns: false
@@ -25,9 +22,7 @@ custom:
     dockerizePip: false
 
 package:
-  patterns:
-    - '!**/*'
-    - 'handler.py'
+  individually: false
 
 functions:
   hello:

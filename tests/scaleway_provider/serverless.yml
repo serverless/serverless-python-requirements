@@ -4,7 +4,7 @@ configValidationMode: off
 
 provider:
   name: scaleway
-  runtime: python39
+  runtime: python3.10
 
 plugins:
   - serverless-python-requirements

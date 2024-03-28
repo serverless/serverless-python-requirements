@@ -10,6 +10,8 @@ custom:
   pythonRequirements:
     dockerizePip: false
     pythonBin: ${opt:pythonBin, self:provider.runtime}
+    pyprojectWithGroups:
+      - 'test'
 
 package:
   individually: false

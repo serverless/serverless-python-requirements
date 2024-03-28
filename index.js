@@ -62,10 +62,13 @@ class ServerlessPythonRequirements {
         poetryWithGroups: [],
         poetryWithoutGroups: [],
         poetryOnlyGroups: [],
+        usePyProject: true,
+        pyprojectWithGroups: [],
+        installFolderAsPackage: false,
       },
       (this.serverless.service.custom &&
         this.serverless.service.custom.pythonRequirements) ||
-        {}
+        {},
     );
     if (
       options.pythonBin === this.serverless.service.provider.runtime &&
@@ -93,11 +96,11 @@ class ServerlessPythonRequirements {
       if (!this.warningLogged) {
         if (this.log) {
           this.log.warning(
-            'You provided a docker related option but dockerizePip is set to false.'
+            'You provided a docker related option but dockerizePip is set to false.',
           );
         } else {
           this.serverless.cli.log(
-            'WARNING: You provided a docker related option but dockerizePip is set to false.'
+            'WARNING: You provided a docker related option but dockerizePip is set to false.',
           );
         }
         this.warningLogged = true;
@@ -105,7 +108,7 @@ class ServerlessPythonRequirements {
     }
     if (options.dockerImage && options.dockerFile) {
       throw new Error(
-        'Python Requirements: you can provide a dockerImage or a dockerFile option, not both.'
+        'Python Requirements: you can provide a dockerImage or a dockerFile option, not both.',
       );
     }
 
@@ -242,8 +245,8 @@ class ServerlessPythonRequirements {
         .then(() =>
           injectAllRequirements.bind(this)(
             arguments[1].functionObj &&
-              arguments[1].functionObj.package.artifact
-          )
+              arguments[1].functionObj.package.artifact,
+          ),
         );
     };
 
