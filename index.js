@@ -44,6 +44,8 @@ class ServerlessPythonRequirements {
         dockerizePip: false,
         dockerSsh: false,
         dockerPrivateKey: null,
+        dockerGit: false,
+        dockerGitOptions: null,
         dockerImage: null,
         dockerFile: null,
         dockerEnv: false,
@@ -86,6 +88,7 @@ class ServerlessPythonRequirements {
     if (
       !options.dockerizePip &&
       (options.dockerSsh ||
+        options.dockerGit ||
         options.dockerImage ||
         options.dockerFile ||
         options.dockerPrivateKey)
