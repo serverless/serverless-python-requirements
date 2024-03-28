@@ -12,6 +12,8 @@ custom:
     dockerizePip: ${env:dockerizePip, self:custom.defaults.dockerizePip}
     dockerSsh: ${env:dockerSsh, self:custom.defaults.dockerSsh}
     dockerPrivateKey: ${env:dockerPrivateKey, self:custom.defaults.dockerPrivateKey}
+    dockerGit: ${env:dockerGit, self:custom.defaults.dockerGit}
+    dockerGitOptions: ${env:dockerGitOptions, self:custom.defaults.dockerGitOptions}
     dockerImage: ${env:dockerImage, self:custom.defaults.dockerImage}
     slim: ${env:slim, self:custom.defaults.slim}
     slimPatterns: ${file(./slimPatterns.yml):slimPatterns, self:custom.defaults.slimPatterns}
@@ -29,6 +31,8 @@ custom:
     dockerizePip: false
     dockerSsh: false
     dockerPrivateKey: ''
+    dockerGit: false
+    dockerGitOptions: ''
     dockerImage: ''
     individually: false
     useStaticCache: true
