@@ -17,11 +17,11 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.USER_GITHUB_TOKEN }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Retrieve node_modules from cache
         id: cacheNodeModules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
@@ -29,7 +29,7 @@ jobs:
           key: npm-v18-${{ runner.os }}-refs/heads/master-${{ hashFiles('package.json') }}
 
       - name: Install Node.js and npm
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
           registry-url: https://registry.npmjs.org

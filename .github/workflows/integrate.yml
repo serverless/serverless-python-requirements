@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           # Ensure to have complete history of commits pushed with given push operation
           # It's loose and imperfect assumption that no more than 30 commits will be pushed at once
