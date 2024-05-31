@@ -78,7 +78,7 @@
     "shell-quote": "^1.8.1"
   },
   "peerDependencies": {
-    "serverless": "^2.32 || 3"
+    "serverless": ">=2.32"
   },
   "lint-staged": {
     "*.js": [
