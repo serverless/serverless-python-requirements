@@ -87,3 +87,6 @@ jobs:
           fi
       - name: Unit tests
         run: npm test
+        env:
+          SERVERLESS_PLATFORM_STAGE: dev
+          SERVERLESS_LICENSE_KEY: ${{ secrets.SERVERLESS_LICENSE_KEY }}
