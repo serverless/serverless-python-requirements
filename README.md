@@ -1,7 +1,7 @@
 # Serverless Python Requirements
 
 [![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-![Github Actions](https://github.com/UnitedIncome/serverless-python-requirements/workflows/Test/badge.svg)
+[![Integrate](https://github.com/serverless/serverless-python-requirements/actions/workflows/integrate.yml/badge.svg)](https://github.com/serverless/serverless-python-requirements/actions/workflows/integrate.yml)
 [![npm](https://img.shields.io/npm/v/serverless-python-requirements.svg)](https://www.npmjs.com/package/serverless-python-requirements)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
