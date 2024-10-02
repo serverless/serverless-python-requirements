@@ -150,6 +150,17 @@ custom:
       - lambda_dependencies
 ```
 
+## :sparkles::rocket::sparkles: uv support
+
+If you include a `uv.lock` and have `uv` installed, this will use `uv` to generate requirements instead of a `requirements.txt`. It is fully compatible with all options such as `zip` and
+`dockerizePip`. If you don't want this plugin to generate it for you, set the following option:
+
+```yaml
+custom:
+  pythonRequirements:
+    useUv: false
+```
+
 ### Poetry with git dependencies
 
 Poetry by default generates the exported requirements.txt file with `-e` and that breaks pip with `-t` parameter

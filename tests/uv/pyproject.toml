@@ -1,0 +1,19 @@
+[project]
+name = "uv"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "boto3==1.29.6",
+    "bottle",
+    "flask==2.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.3",
+]
+
+[tool.uv.sources]
+bottle = { git = "https://github.com/bottlepy/bottle.git", rev = "0.12.16" }
