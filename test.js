@@ -215,7 +215,9 @@ test(
         dockerImage: 'break the build to log the command',
       },
     });
-    console.log(`-v ${__dirname}${sep}tests${sep}base${sep}custom_ssh:/root/.ssh/custom_ssh:z`)
+    console.log(
+      `-v ${__dirname}${sep}tests${sep}base${sep}custom_ssh:/root/.ssh/custom_ssh:z`
+    );
     console.log('stderr', stderr);
     t.true(
       stderr.includes(
