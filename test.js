@@ -206,7 +206,7 @@ test(
     process.chdir('tests/base');
     const { stdout: path } = npm(['pack', '../..']);
     npm(['i', path]);
-    const { stderr } = sls(['package'], {
+    const { stdout } = sls(['package'], {
       noThrow: true,
       env: {
         dockerizePip: true,
@@ -216,7 +216,7 @@ test(
       },
     });
     t.true(
-      stderr.includes(
+      stdout.includes(
         `-v ${__dirname}${sep}tests${sep}base${sep}custom_ssh:/root/.ssh/custom_ssh:z`
       ),
       'docker command properly resolved'
@@ -1742,12 +1742,12 @@ test('poetry py3.9 fails packaging if poetry.lock is missing and flag requirePoe
 
   const { stdout: path } = npm(['pack', '../..']);
   npm(['i', path]);
-  const { stderr } = sls(['package'], {
+  const { stdout } = sls(['package'], {
     env: { requirePoetryLockFile: 'true', slim: 'true' },
     noThrow: true,
   });
   t.true(
-    stderr.includes(
+    stdout.includes(
       'poetry.lock file not found - set requirePoetryLockFile to false to disable this error'
     ),
     'flag works and error is properly reported'
