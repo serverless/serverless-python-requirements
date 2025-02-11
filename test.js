@@ -206,7 +206,7 @@ test(
     process.chdir('tests/base');
     const { stdout: path } = npm(['pack', '../..']);
     npm(['i', path]);
-    const { stderr } = sls(['package'], {
+    const { stderr, stdout } = sls(['package'], {
       noThrow: true,
       env: {
         dockerizePip: true,
@@ -219,8 +219,9 @@ test(
       `-v ${__dirname}${sep}tests${sep}base${sep}custom_ssh:/root/.ssh/custom_ssh:z`
     );
     console.log('stderr', stderr);
+    console.log('stdout', stdout);
     t.true(
-      stderr.includes(
+      stdout.includes(
         `-v ${__dirname}${sep}tests${sep}base${sep}custom_ssh:/root/.ssh/custom_ssh:z`
       ),
       'docker command properly resolved'
