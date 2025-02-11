@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.1.2](https://github.com/UnitedIncome/serverless-python-requirements/compare/v6.1.1...v6.1.2) (2025-02-11)
+
+### Bug Fixes
+
+- Use absolute paths to ensure compatibility with v4 Compose ([#854](https://github.com/UnitedIncome/serverless-python-requirements/issues/854)) ([bceb737](https://github.com/UnitedIncome/serverless-python-requirements/commit/bceb7371dd64d59829377fe6fd16e17f631d0251))
+
 ### [6.1.1](https://github.com/UnitedIncome/serverless-python-requirements/compare/v6.1.0...v6.1.1) (2024-06-03)
 
 ## [6.1.0](https://github.com/UnitedIncome/serverless-python-requirements/compare/v6.0.1...v6.1.0) (2024-03-27)
