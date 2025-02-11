@@ -77,9 +77,6 @@
     "sha256-file": "1.0.0",
     "shell-quote": "^1.8.1"
   },
-  "peerDependencies": {
-    "serverless": ">=2.32"
-  },
   "lint-staged": {
     "*.js": [
       "eslint"
