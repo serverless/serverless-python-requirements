@@ -137,7 +137,7 @@ const availablePythons = (() => {
     );
   } else {
     // For running outside of CI
-    binaries.push('python3');
+    binaries.push('python');
   }
   const exe = process.platform === 'win32' ? '.exe' : '';
   for (const bin of binaries) {
@@ -1742,12 +1742,10 @@ test('poetry py3.9 fails packaging if poetry.lock is missing and flag requirePoe
 
   const { stdout: path } = npm(['pack', '../..']);
   npm(['i', path]);
-  const { stderr, stdout } = sls(['package'], {
+  const { stdout } = sls(['package'], {
     env: { requirePoetryLockFile: 'true', slim: 'true' },
     noThrow: true,
   });
-  console.log('stderr', stderr);
-  console.log('stdout', stdout);
   t.true(
     stdout.includes(
       'poetry.lock file not found - set requirePoetryLockFile to false to disable this error'
