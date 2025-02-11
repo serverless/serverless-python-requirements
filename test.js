@@ -1,22 +1,22 @@
 const crossSpawn = require('cross-spawn');
 const glob = require('glob-all');
 const JSZip = require('jszip');
-const sha256File = require('sha256-file');
+// const sha256File = require('sha256-file');
 const tape = require('tape-promise/tape');
 
 const {
-  chmodSync,
+  // chmodSync,
   removeSync,
   readFile,
   copySync,
-  writeFileSync,
-  statSync,
-  pathExistsSync,
+  // writeFileSync,
+  // statSync,
+  // pathExistsSync,
 } = require('fs-extra');
 const { quote } = require('shell-quote');
 const { sep } = require('path');
 
-const { getUserCachePath, sha256Path } = require('./lib/shared');
+const { getUserCachePath } = require('./lib/shared');
 
 const initialWorkingDir = process.cwd();
 
@@ -53,7 +53,7 @@ const mkCommand =
 const sls = mkCommand('sls');
 const git = mkCommand('git');
 const npm = mkCommand('npm');
-const perl = mkCommand('perl');
+// const perl = mkCommand('perl');
 
 const setup = () => {
   removeSync(getUserCachePath());
@@ -161,31 +161,31 @@ const availablePythons = (() => {
   return mapping;
 })();
 
-const getPythonBin = (version) => {
-  const bin = availablePythons[String(version)];
-  if (!bin) throw new Error(`No python version ${version} available`);
-  return bin;
-};
-
-const listZipFiles = async function (filename) {
-  const file = await readFile(filename);
-  const zip = await new JSZip().loadAsync(file);
-  return Object.keys(zip.files);
-};
-
-const listZipFilesWithMetaData = async function (filename) {
-  const file = await readFile(filename);
-  const zip = await new JSZip().loadAsync(file);
-  return Object(zip.files);
-};
-
-const listRequirementsZipFiles = async function (filename) {
-  const file = await readFile(filename);
-  const zip = await new JSZip().loadAsync(file);
-  const reqsBuffer = await zip.file('.requirements.zip').async('nodebuffer');
-  const reqsZip = await new JSZip().loadAsync(reqsBuffer);
-  return Object.keys(reqsZip.files);
-};
+// const getPythonBin = (version) => {
+//   const bin = availablePythons[String(version)];
+//   if (!bin) throw new Error(`No python version ${version} available`);
+//   return bin;
+// };
+//
+// const listZipFiles = async function (filename) {
+//   const file = await readFile(filename);
+//   const zip = await new JSZip().loadAsync(file);
+//   return Object.keys(zip.files);
+// };
+//
+// const listZipFilesWithMetaData = async function (filename) {
+//   const file = await readFile(filename);
+//   const zip = await new JSZip().loadAsync(file);
+//   return Object(zip.files);
+// };
+//
+// const listRequirementsZipFiles = async function (filename) {
+//   const file = await readFile(filename);
+//   const zip = await new JSZip().loadAsync(file);
+//   const reqsBuffer = await zip.file('.requirements.zip').async('nodebuffer');
+//   const reqsZip = await new JSZip().loadAsync(reqsBuffer);
+//   return Object.keys(reqsZip.files);
+// };
 
 const canUseDocker = () => {
   let result;
