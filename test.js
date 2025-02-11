@@ -206,7 +206,7 @@ test(
     process.chdir('tests/base');
     const { stdout: path } = npm(['pack', '../..']);
     npm(['i', path]);
-    const {  stdout } = sls(['package'], {
+    const { stdout } = sls(['package'], {
       noThrow: true,
       env: {
         dockerizePip: true,
