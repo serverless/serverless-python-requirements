@@ -1,14 +1,14 @@
 const crossSpawn = require('cross-spawn');
 const glob = require('glob-all');
-const JSZip = require('jszip');
+// const JSZip = require('jszip');
 // const sha256File = require('sha256-file');
 const tape = require('tape-promise/tape');
 
 const {
   // chmodSync,
   removeSync,
-  readFile,
-  copySync,
+  // readFile,
+  // copySync,
   // writeFileSync,
   // statSync,
   // pathExistsSync,
@@ -128,38 +128,38 @@ const test = (desc, func, opts = {}) =>
     }
   });
 
-const availablePythons = (() => {
-  const binaries = [];
-  const mapping = {};
-  if (process.env.USE_PYTHON) {
-    binaries.push(
-      ...process.env.USE_PYTHON.split(',').map((v) => v.toString().trim())
-    );
-  } else {
-    // For running outside of CI
-    binaries.push('python');
-  }
-  const exe = process.platform === 'win32' ? '.exe' : '';
-  for (const bin of binaries) {
-    const python = `${bin}${exe}`;
-    const { stdout, status } = crossSpawn.sync(python, [
-      '-c',
-      'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:2])))',
-    ]);
-    const ver = stdout && stdout.toString().trim();
-    if (!status && ver) {
-      for (const recommend of [ver, ver.split('.')[0]]) {
-        if (!mapping[recommend]) {
-          mapping[recommend] = python;
-        }
-      }
-    }
-  }
-  if (!Object.entries(mapping).length) {
-    throw new Error('No pythons found');
-  }
-  return mapping;
-})();
+// const availablePythons = (() => {
+//   const binaries = [];
+//   const mapping = {};
+//   if (process.env.USE_PYTHON) {
+//     binaries.push(
+//       ...process.env.USE_PYTHON.split(',').map((v) => v.toString().trim())
+//     );
+//   } else {
+//     // For running outside of CI
+//     binaries.push('python3');
+//   }
+//   const exe = process.platform === 'win32' ? '.exe' : '';
+//   for (const bin of binaries) {
+//     const python = `${bin}${exe}`;
+//     const { stdout, status } = crossSpawn.sync(python, [
+//       '-c',
+//       'import sys; sys.stdout.write(".".join(map(str, sys.version_info[:2])))',
+//     ]);
+//     const ver = stdout && stdout.toString().trim();
+//     if (!status && ver) {
+//       for (const recommend of [ver, ver.split('.')[0]]) {
+//         if (!mapping[recommend]) {
+//           mapping[recommend] = python;
+//         }
+//       }
+//     }
+//   }
+//   if (!Object.entries(mapping).length) {
+//     throw new Error('No pythons found');
+//   }
+//   return mapping;
+// })();
 
 // const getPythonBin = (version) => {
 //   const bin = availablePythons[String(version)];
