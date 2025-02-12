@@ -273,7 +273,7 @@ functions:
   hello:
     handler: handler.hello
     layers:
-      - Ref: PythonRequirementsLambdaLayer
+      - ${cf:<stack-name>-${self:provider.stage}.PythonRequirementsLambdaLayerQualifiedArn}
 ```
 
 If the layer requires additional or custom configuration, add them onto the `layer` option.
@@ -289,6 +289,7 @@ custom:
       licenseInfo: GPLv3
       allowedAccounts:
         - '*'
+      retain: false
 ```
 
 ## Omitting Packages
