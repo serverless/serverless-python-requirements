@@ -615,6 +615,98 @@ test("pipenv py3.9 doesn't package bottle with noDeploy option", async (t) => {
   t.end();
 });
 
+test('uv py3.9 can package flask with default options', async (t) => {
+  process.chdir('tests/uv');
+  const { stdout: path } = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: {} });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(zipfiles.includes(`boto3${sep}__init__.py`), 'boto3 is packaged');
+  t.false(
+    zipfiles.includes(`pytest${sep}__init__.py`),
+    'dev-package pytest is NOT packaged'
+  );
+  t.end();
+});
+
+test('uv py3.9 can package flask with slim option', async (t) => {
+  process.chdir('tests/uv');
+  const { stdout: path } = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { slim: 'true' } });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.deepEqual(
+    zipfiles.filter((filename) => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged'
+  );
+  t.true(
+    zipfiles.filter((filename) => filename.endsWith('__main__.py')).length > 0,
+    '__main__.py files are packaged'
+  );
+  t.end();
+});
+
+test('uv py3.9 can package flask with slim & slimPatterns options', async (t) => {
+  process.chdir('tests/uv');
+
+  copySync('_slimPatterns.yml', 'slimPatterns.yml');
+  const { stdout: path } = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { slim: 'true' } });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.deepEqual(
+    zipfiles.filter((filename) => filename.endsWith('.pyc')),
+    [],
+    'no pyc files packaged'
+  );
+  t.deepEqual(
+    zipfiles.filter((filename) => filename.endsWith('__main__.py')),
+    [],
+    '__main__.py files are NOT packaged'
+  );
+  t.end();
+});
+
+test('uv py3.9 can package flask with zip option', async (t) => {
+  process.chdir('tests/uv');
+  const { stdout: path } = npm(['pack', '../..']);
+  npm(['i', path]);
+  sls(['package'], { env: { zip: 'true', pythonBin: getPythonBin(3) } });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(
+    zipfiles.includes('.requirements.zip'),
+    'zipped requirements are packaged'
+  );
+  t.true(zipfiles.includes(`unzip_requirements.py`), 'unzip util is packaged');
+  t.false(
+    zipfiles.includes(`flask${sep}__init__.py`),
+    "flask isn't packaged on its own"
+  );
+  t.end();
+});
+
+test("uv py3.9 doesn't package bottle with noDeploy option", async (t) => {
+  process.chdir('tests/uv');
+  const { stdout: path } = npm(['pack', '../..']);
+  npm(['i', path]);
+  perl([
+    '-p',
+    '-i.bak',
+    '-e',
+    's/(pythonRequirements:$)/\\1\\n    noDeploy: [bottle]/',
+    'serverless.yml',
+  ]);
+  sls(['package'], { env: {} });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.false(zipfiles.includes(`bottle.py`), 'bottle is NOT packaged');
+  t.end();
+});
+
 test('non build pyproject.toml uses requirements.txt', async (t) => {
   process.chdir('tests/non_build_pyproject');
   const { stdout: path } = npm(['pack', '../..']);
@@ -942,6 +1034,29 @@ test(
 
 test('pipenv py3.9 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', async (t) => {
   process.chdir('tests/pipenv');
+  copySync('_slimPatterns.yml', 'slimPatterns.yml');
+  const { stdout: path } = npm(['pack', '../..']);
+  npm(['i', path]);
+
+  sls(['package'], {
+    env: { slim: 'true', slimPatternsAppendDefaults: 'false' },
+  });
+  const zipfiles = await listZipFiles('.serverless/sls-py-req-test.zip');
+  t.true(zipfiles.includes(`flask${sep}__init__.py`), 'flask is packaged');
+  t.true(
+    zipfiles.filter((filename) => filename.endsWith('.pyc')).length >= 1,
+    'pyc files are packaged'
+  );
+  t.deepEqual(
+    zipfiles.filter((filename) => filename.endsWith('__main__.py')),
+    [],
+    '__main__.py files are NOT packaged'
+  );
+  t.end();
+});
+
+test('uv py3.9 can package flask with slim & slimPatterns & slimPatternsAppendDefaults=false  option', async (t) => {
+  process.chdir('tests/uv');
   copySync('_slimPatterns.yml', 'slimPatterns.yml');
   const { stdout: path } = npm(['pack', '../..']);
   npm(['i', path]);

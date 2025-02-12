@@ -49,6 +49,7 @@ yarn.lock
 
 # Lockfiles
 *.lock
+!uv.lock
 
 # Distribution / packaging
 .Python
